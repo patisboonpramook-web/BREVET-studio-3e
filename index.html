@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Révision Brevet 🎓</title>
+  <style>
+    :root {
+      --maths:    #3B82F6;
+      --francais: #8B5CF6;
+      --histoire: #F59E0B;
+      --sciences: #10B981;
+      --bg:       #F1F5F9;
+      --card:     #FFFFFF;
+      --text:     #1E293B;
+      --muted:    #64748B;
+      --border:   #E2E8F0;
+      --shadow:   0 4px 16px rgba(0,0,0,0.08);
+      --accent:   #3B82F6;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header .logo { font-size: 1.8rem; }
+    header h1  { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
+    header p   { font-size: 0.82rem; color: var(--muted); }
+
+    /* ── VIEWS ── */
+    .view { display: none; padding: 2rem 1.5rem; max-width: 1060px; margin: 0 auto; }
+    .view.active { display: block; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.55rem 1.15rem;
+      border: none; border-radius: 8px;
+      cursor: pointer; font-size: 0.88rem; font-weight: 600;
+      transition: filter .15s, transform .1s;
+    }
+    .btn:hover { filter: brightness(0.92); transform: translateY(-1px); }
+    .btn-primary { color: #fff; }
+    .btn-outline  { background: transparent; border: 2px solid; }
+    .btn-group    { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+    .btn-back {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 0.9rem; font-weight: 500;
+      margin-bottom: 1.5rem; padding: 0.4rem 0;
+      transition: color .15s;
+    }
+    .btn-back:hover { color: var(--text); }
+
+    /* ── HOME ── */
+    .hero {
+      text-align: center;
+      padding: 2.5rem 0 1.5rem;
+    }
+    .hero h2 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; }
+    .hero p  { color: var(--muted); margin-top: 0.4rem; font-size: 1rem; }
+
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .subject-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      border-top: 5px solid;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .subject-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.13);
+    }
+    .subject-card[data-subject="maths"]    { border-color: var(--maths); }
+    .subject-card[data-subject="francais"] { border-color: var(--francais); }
+    .subject-card[data-subject="histoire"] { border-color: var(--histoire); }
+    .subject-card[data-subject="sciences"] { border-color: var(--sciences); }
+
+    .sc-icon { font-size: 2.4rem; margin-bottom: 0.65rem; }
+    .sc-name { font-size: 1.15rem; font-weight: 700; }
+    .sc-desc { font-size: 0.8rem; color: var(--muted); margin: 0.2rem 0 1rem; }
+
+    /* Progress bar */
+    .prog-wrap { margin: 0.6rem 0 0; }
+    .prog-label {
+      display: flex; justify-content: space-between;
+      font-size: 0.75rem; color: var(--muted); margin-bottom: 0.3rem;
+    }
+    .prog-track { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .prog-fill  { height: 100%; border-radius: 4px; transition: width .5s ease; }
+    [data-subject="maths"]    .prog-fill { background: var(--maths); }
+    [data-subject="francais"] .prog-fill { background: var(--francais); }
+    [data-subject="histoire"] .prog-fill { background: var(--histoire); }
+    [data-subject="sciences"] .prog-fill { background: var(--sciences); }
+
+    /* Overall card */
+    .overall-card {
+      background: var(--card); border-radius: 14px;
+      padding: 1.35rem 1.5rem; box-shadow: var(--shadow);
+      margin-top: 1.5rem;
+    }
+    .overall-card h3 {
+      font-size: 0.75rem; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 0.75rem;
+    }
+    .overall-row { display: flex; align-items: center; gap: 1rem; }
+    .overall-pct { font-size: 1.15rem; font-weight: 800; min-width: 42px; }
+    .overall-track { flex: 1; height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+    .overall-fill  {
+      height: 100%; border-radius: 5px;
+      background: linear-gradient(90deg, var(--maths), var(--francais), var(--histoire), var(--sciences));
+      transition: width .5s ease;
+    }
+
+    /* ── SUBJECT VIEW ── */
+    .subject-hdr { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .subject-badge {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem;
+    }
+    .subject-hdr h2 { font-size: 1.5rem; font-weight: 800; }
+    .subject-hdr p  { font-size: 0.85rem; color: var(--muted); margin-top: 0.15rem; }
+
+    /* Tabs */
+    .tabs {
+      display: flex; gap: 0;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .tab {
+      padding: 0.7rem 1.35rem;
+      border: none; background: none; cursor: pointer;
+      font-size: 0.92rem; font-weight: 600;
+      color: var(--muted);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: color .15s, border-color .15s;
+    }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── NOTES ── */
+    .notes-section {
+      background: var(--card); border-radius: 14px;
+      padding: 1.4rem 1.5rem; margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+    }
+    .notes-section h3 {
+      font-size: 1rem; font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .notes-list { list-style: none; }
+    .notes-list li {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      font-size: 0.9rem; line-height: 1.55;
+    }
+    .notes-list li:last-child { border-bottom: none; }
+    .notes-list li .arrow { flex-shrink: 0; font-weight: 700; color: var(--accent); }
+    .formula-box {
+      background: #F8FAFC;
+      border-left: 4px solid var(--accent);
+      padding: 0.4rem 0.75rem;
+      border-radius: 0 6px 6px 0;
+      margin-top: 0.35rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    /* ── QUIZ START ── */
+    .quiz-start {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+    .quiz-start .qi { font-size: 3.5rem; }
+    .quiz-start h2  { font-size: 1.4rem; font-weight: 800; margin: 0.5rem 0 0.35rem; }
+    .quiz-start p   { color: var(--muted); margin-bottom: 1.25rem; }
+    .quiz-start .best {
+      font-weight: 700; font-size: 0.95rem;
+      margin-bottom: 1rem; display: block;
+    }
+
+    /* ── QUIZ ACTIVE ── */
+    .quiz-container { max-width: 680px; margin: 0 auto; }
+    .quiz-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.25rem; font-size: 0.83rem; color: var(--muted); font-weight: 600;
+    }
+    .q-prog-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; margin: 0 1rem; }
+    .q-prog-fill  { height: 100%; border-radius: 3px; background: var(--accent); transition: width .3s; }
+
+    .q-card {
+      background: var(--card); border-radius: 16px;
+      padding: 1.75rem 2rem; box-shadow: var(--shadow);
+    }
+    .q-text {
+      font-size: 1.1rem; font-weight: 600;
+      line-height: 1.55; margin-bottom: 1.4rem;
+    }
+    .options { display: flex; flex-direction: column; gap: 0.65rem; }
+    .option {
+      padding: 0.9rem 1.1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer; font-size: 0.9rem;
+      text-align: left; background: #fff;
+      transition: border-color .15s, background .15s;
+    }
+    .option:not([disabled]):hover {
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 6%, white);
+    }
+    .option.correct { border-color: #10B981; background: #ECFDF5; color: #065F46; font-weight: 600; }
+    .option.wrong   { border-color: #EF4444; background: #FEF2F2; color: #7F1D1D; }
+
+    .explanation {
+      margin-top: 1.1rem; padding: 0.85rem 1rem;
+      background: #F0F9FF;
+      border-left: 4px solid #38BDF8;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem; line-height: 1.55;
+      display: none;
+      color: #0C4A6E;
+    }
+    .btn-next { margin-top: 1.2rem; }
+
+    /* ── RESULTS ── */
+    #view-results { max-width: 480px; }
+    .results-card {
+      background: var(--card); border-radius: 18px;
+      padding: 2.5rem; text-align: center;
+      box-shadow: var(--shadow);
+      margin: 1rem auto;
+    }
+    .r-emoji { font-size: 2.5rem; }
+    .r-title { font-size: 1.4rem; font-weight: 800; margin: 0.5rem 0 1.25rem; }
+    .score-ring {
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      border: 6px solid var(--accent);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      margin: 0 auto 1.25rem;
+    }
+    .score-num   { font-size: 2.6rem; font-weight: 800; color: var(--accent); line-height: 1; }
+    .score-denom { font-size: 0.85rem; color: var(--muted); }
+    .score-msg   { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      header { padding: 0.9rem 1rem; }
+      .view  { padding: 1.25rem 1rem; }
+      .hero h2 { font-size: 1.5rem; }
+      .q-card { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<header>
+  <div class="logo">🎓</div>
+  <div>
+    <h1>Révision Brevet</h1>
+    <p>Prépare-toi au Brevet des Collèges</p>
+  </div>
+</header>
+
+<!-- ══════════ HOME VIEW ══════════ -->
+<div id="view-home" class="view active">
+  <div class="hero">
+    <h2>Bonjour, bonne révision ! 📚</h2>
+    <p>Choisis une matière pour commencer tes révisions</p>
+  </div>
+
+  <div class="subjects-grid" id="subjects-grid"></div>
+
+  <div class="overall-card">
+    <h3>Progression générale</h3>
+    <div class="overall-row">
+      <span class="overall-pct" id="overall-pct">0%</span>
+      <div class="overall-track">
+        <div class="overall-fill" id="overall-fill" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SUBJECT VIEW ══════════ -->
+<div id="view-subject" class="view">
+  <button class="btn-back" onclick="showHome()">← Retour</button>
+  <div class="subject-hdr" id="subject-hdr"></div>
+  <div class="tabs" id="subject-tabs">
+    <button class="tab active" id="tab-btn-quiz"  onclick="switchTab('quiz')">📝 Quiz</button>
+    <button class="tab"        id="tab-btn-notes" onclick="switchTab('notes')">📖 Fiches de révision</button>
+  </div>
+  <div id="tab-quiz"  class="tab-content active"></div>
+  <div id="tab-notes" class="tab-content"></div>
+</div>
+
+<!-- ══════════ QUIZ VIEW ══════════ -->
+<div id="view-quiz" class="view">
+  <button class="btn-back" id="quiz-back">← Quitter le quiz</button>
+  <div class="quiz-container">
+    <div class="quiz-meta">
+      <span id="q-num">Question 1/10</span>
+      <div class="q-prog-track">
+        <div class="q-prog-fill" id="q-prog" style="width:10%"></div>
+      </div>
+      <span id="q-score-live">Score : 0</span>
+    </div>
+    <div class="q-card">
+      <div class="q-text"    id="q-text"></div>
+      <div class="options"   id="q-options"></div>
+      <div class="explanation" id="q-expl"></div>
+      <button class="btn btn-primary btn-next" id="q-next" style="display:none" onclick="nextQuestion()">
+        Question suivante →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ RESULTS VIEW ══════════ -->
+<div id="view-results" class="view">
+  <div class="results-card" id="results-card">
+    <div class="r-emoji" id="r-emoji"></div>
+    <div class="r-title" id="r-title"></div>
+    <div class="score-ring" id="score-ring">
+      <div class="score-num"   id="score-num"></div>
+      <div class="score-denom" id="score-denom"></div>
+    </div>
+    <p class="score-msg" id="score-msg"></p>
+    <div class="btn-group" style="justify-content:center">
+      <button class="btn btn-primary" id="btn-retry" onclick="retryQuiz()">🔄 Réessayer</button>
+      <button class="btn btn-outline"  id="btn-home"  onclick="showHome()">🏠 Accueil</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SCRIPT ══════════ -->
+<script>
+/* ─────────────────────────────────────────
+   DATA
+───────────────────────────────────────── */
+const SUBJECTS = {
+  maths: {
+    name: "Mathématiques", icon: "📐", color: "#3B82F6",
+    desc: "Algèbre · Géométrie · Statistiques",
+    notes: [
+      {
+        title: "Algèbre — Identités remarquables",
+        items: [
+          { text: "(a + b)² = a² + 2ab + b²", formula: "(a+b)² = a² + 2ab + b²" },
+          { text: "(a − b)² = a² − 2ab + b²", formula: "(a−b)² = a² − 2ab + b²" },
+          { text: "(a + b)(a − b) = a² − b²  (différence de deux carrés)", formula: "(a+b)(a−b) = a² − b²" },
+          { text: "Résolution de ax + b = 0  →  x = −b/a  (si a ≠ 0)", formula: "x = −b/a" },
+        ]
+      },
+      {
+        title: "Géométrie",
+        items: [
+          { text: "Théorème de Pythagore : dans un triangle rectangle, c² = a² + b² où c est l'hypoténuse.", formula: "c² = a² + b²" },
+          { text: "Théorème de Thalès : si (DE) ∥ (BC), alors  AD/AB = AE/AC = DE/BC" },
+          { text: "Périmètre du cercle", formula: "P = 2πr" },
+          { text: "Aire du cercle", formula: "A = πr²" },
+          { text: "Aire d'un triangle", formula: "A = (base × hauteur) / 2" },
+        ]
+      },
+      {
+        title: "Statistiques & Probabilités",
+        items: [
+          { text: "Moyenne arithmétique", formula: "x̄ = (Σ xi) / n" },
+          { text: "Médiane : valeur centrale quand les données sont classées en ordre croissant." },
+          { text: "Probabilité d'un événement A", formula: "P(A) = cas favorables / cas totaux" },
+          { text: "Propriété fondamentale : 0 ≤ P(A) ≤ 1" },
+        ]
+      },
+      {
+        title: "Fonctions",
+        items: [
+          { text: "Fonction linéaire : f(x) = ax  (droite passant par l'origine O)" },
+          { text: "Fonction affine : f(x) = ax + b  (a = coefficient directeur, b = ordonnée à l'origine)" },
+          { text: "Calcul du coefficient directeur à partir de deux points", formula: "a = (y₂ − y₁) / (x₂ − x₁)" },
+        ]
+      }
+    ],
+    questions: [
+      { q: "Développer (x + 3)²", opts: ["x² + 6x + 9","x² + 9","x² + 3x + 9","x² + 6x + 6"], ans: 0,
+        expl: "Identité (a+b)² = a²+2ab+b². Ici a=x, b=3 → x² + 2·3·x + 9 = x² + 6x + 9." },
+      { q: "Dans un triangle rectangle, les cathètes mesurent 3 cm et 4 cm. Quelle est la longueur de l'hypoténuse ?", opts: ["5 cm","7 cm","√7 cm","25 cm"], ans: 0,
+        expl: "Pythagore : c² = 3² + 4² = 9 + 16 = 25, donc c = √25 = 5 cm." },
+      { q: "Quelle est la probabilité d'obtenir un nombre pair en lançant un dé à 6 faces ?", opts: ["1/2","1/3","2/3","1/6"], ans: 0,
+        expl: "Nombres pairs : 2, 4, 6 → 3 cas favorables sur 6. P = 3/6 = 1/2." },
+      { q: "Factoriser x² − 9", opts: ["(x − 3)(x + 3)","(x − 9)(x + 1)","(x − 3)²","(x + 3)²"], ans: 0,
+        expl: "x²−9 = x²−3² est une différence de carrés : (a−b)(a+b). Donc (x−3)(x+3)." },
+      { q: "Une droite passe par A(0, 2) et B(3, 8). Quelle est sa pente ?", opts: ["2","3","6","1/2"], ans: 0,
+        expl: "a = (8−2)/(3−0) = 6/3 = 2." },
+      { q: "Quelle est l'aire d'un cercle de rayon 5 cm ?", opts: ["25π cm²","10π cm²","5π cm²","50π cm²"], ans: 0,
+        expl: "A = πr² = π × 5² = 25π cm²." },
+      { q: "Résoudre 3x − 6 = 0", opts: ["x = 2","x = −2","x = 6","x = 3"], ans: 0,
+        expl: "3x − 6 = 0 → 3x = 6 → x = 2." },
+      { q: "La moyenne de 5 notes est 13. Les quatre premières sont 12, 14, 11, 15. Quelle est la 5ᵉ note ?", opts: ["13","12","15","10"], ans: 0,
+        expl: "Somme totale = 5×13 = 65. Somme des 4 premières = 52. 5ᵉ note = 65 − 52 = 13." },
+      { q: "Développer et réduire (2x − 1)(x + 4)", opts: ["2x² + 7x − 4","2x² + 8x − 4","2x² − 5x − 4","2x² + 7x + 4"], ans: 0,
+        expl: "(2x)(x) + (2x)(4) + (−1)(x) + (−1)(4) = 2x² + 8x − x − 4 = 2x² + 7x − 4." },
+      { q: "Dans △ABC, (DE) ∥ (BC) avec AD = 4, DB = 2, AE = 6. Quelle est EC ?", opts: ["3","4","6","2"], ans: 0,
+        expl: "Thalès : AD/DB = AE/EC → 4/2 = 6/EC → EC = 6×2/4 = 3." },
+    ]
+  },
+
+  francais: {
+    name: "Français", icon: "✍️", color: "#8B5CF6",
+    desc: "Grammaire · Littérature · Rédaction",
+    notes: [
+      {
+        title: "Conjugaison — Principaux temps",
+        items: [
+          { text: "Présent de l'indicatif : action actuelle ou vérité générale." },
+          { text: "Imparfait : action habituelle ou description dans le passé." },
+          { text: "Passé composé : action passée et terminée, avec lien au présent." },
+          { text: "Plus-que-parfait : action passée antérieure à une autre action passée." },
+          { text: "Futur simple : action à venir présentée comme certaine." },
+        ]
+      },
+      {
+        title: "Figures de style",
+        items: [
+          { text: "Métaphore : comparaison sans outil comparatif. Ex : « La vie est un long fleuve. »" },
+          { text: "Comparaison : avec outil (comme, tel, ainsi que…). Ex : « courageux comme un lion »." },
+          { text: "Personnification : attribuer des traits humains à un objet ou phénomène. Ex : « Le vent hurle. »" },
+          { text: "Hyperbole : exagération pour accentuer un effet. Ex : « mourir de rire »." },
+          { text: "Anaphore : répétition d'un mot ou groupe en début de phrase pour créer un rythme fort." },
+        ]
+      },
+      {
+        title: "Types de textes",
+        items: [
+          { text: "Texte narratif : raconte une histoire — verbes d'action, connecteurs temporels." },
+          { text: "Texte descriptif : décrit un lieu ou personnage — adjectifs, comparaisons, détails sensoriels." },
+          { text: "Texte argumentatif : défend une thèse — connecteurs logiques, exemples, contre-arguments." },
+          { text: "Texte explicatif : explique un phénomène — vocabulaire spécialisé, connecteurs de cause/conséquence." },
+        ]
+      },
+      {
+        title: "Rédaction — Méthode",
+        items: [
+          { text: "Introduction : accroche, présentation du sujet, annonce du plan." },
+          { text: "Développement : ≥ 2 paragraphes, chacun avec idée + exemple + explication." },
+          { text: "Conclusion : bilan des arguments + ouverture sur une question plus large." },
+          { text: "Connecteurs utiles : cependant, ainsi, de plus, or, en revanche, par conséquent, néanmoins." },
+        ]
+      }
+    ],
+    questions: [
+      { q: "Quelle figure de style est utilisée dans : « Le vent hurlait dans les arbres » ?", opts: ["Personnification","Métaphore","Hyperbole","Comparaison"], ans: 0,
+        expl: "On attribue l'action humaine « hurler » au vent, phénomène naturel → personnification." },
+      { q: "Quel temps exprime une action habituelle dans le passé ?", opts: ["L'imparfait","Le passé composé","Le présent","Le plus-que-parfait"], ans: 0,
+        expl: "L'imparfait traduit les actions habituelles ou répétées dans le passé. Ex : « Chaque matin, il se levait à 7h. »" },
+      { q: "Dans « Il est fort comme un lion », quelle figure de style est employée ?", opts: ["Comparaison","Métaphore","Personnification","Hyperbole"], ans: 0,
+        expl: "L'outil comparatif « comme » indique une comparaison. Sans cet outil, ce serait une métaphore." },
+      { q: "Qu'est-ce qu'une anaphore ?", opts: ["La répétition d'un mot en début de phrase","Une exagération","Une comparaison sans outil","L'attribution de traits humains à un objet"], ans: 0,
+        expl: "L'anaphore est la répétition d'un mot ou groupe en début de phrases/propositions consécutives. Ex : « I have a dream… »" },
+      { q: "Quelle est la structure correcte d'un texte argumentatif ?", opts: ["Introduction, développement, conclusion","Début, milieu, fin, annexe","Thèse, exemple, résumé","Problème, solution, bilan"], ans: 0,
+        expl: "Introduction (thèse + plan), développement (arguments + exemples), conclusion (bilan + ouverture)." },
+      { q: "Quelle est la différence entre métaphore et comparaison ?", opts: ["La comparaison utilise un outil (comme, tel), la métaphore non","La métaphore est plus longue","La comparaison parle toujours d'animaux","Il n'y a aucune différence"], ans: 0,
+        expl: "La comparaison = outil comparatif (comme…). La métaphore assimile directement deux éléments. Ex : « La vie est un voyage. »" },
+      { q: "Conjuguer « finir » à la 3ᵉ personne du pluriel au passé composé :", opts: ["Ils ont fini","Ils finissaient","Ils finirent","Ils finissent"], ans: 0,
+        expl: "Passé composé = auxiliaire (avoir) + participe passé. « Finir » → ils ont fini." },
+      { q: "Qu'est-ce qu'une hyperbole ?", opts: ["Une exagération pour accentuer un effet","Une répétition en début de phrase","Une comparaison directe","Un mot qui remplace un autre"], ans: 0,
+        expl: "Ex : « Je meurs de faim » — on n'est pas en train de mourir, mais l'exagération insiste sur la faim." },
+      { q: "Quel connecteur logique exprime une opposition ?", opts: ["Cependant","Ainsi","De plus","En effet"], ans: 0,
+        expl: "« Cependant » (= mais, or, en revanche, néanmoins, pourtant) marque une opposition ou restriction." },
+      { q: "Quel type de texte raconte une histoire avec des personnages et une intrigue ?", opts: ["Texte narratif","Texte argumentatif","Texte descriptif","Texte explicatif"], ans: 0,
+        expl: "Le texte narratif suit des personnages dans une trame : situation initiale → perturbation → résolution." },
+    ]
+  },
+
+  histoire: {
+    name: "Histoire-Géographie", icon: "🌍", color: "#F59E0B",
+    desc: "Histoire · Géographie · EMC",
+    notes: [
+      {
+        title: "Histoire — Les deux guerres mondiales",
+        items: [
+          { text: "1914–1918 : Première Guerre mondiale — guerre de tranchées, 10 millions de morts militaires." },
+          { text: "1917 : Révolution russe — chute du tsar Nicolas II, prise du pouvoir par les bolcheviks (Lénine)." },
+          { text: "1939–1945 : Deuxième Guerre mondiale — totalitarismes, Shoah (6 millions de Juifs assassinés), bombes atomiques (Hiroshima, Nagasaki)." },
+          { text: "1945 : Création de l'ONU pour maintenir la paix internationale." },
+        ]
+      },
+      {
+        title: "Histoire — France contemporaine",
+        items: [
+          { text: "1947–1991 : Guerre froide — opposition USA (bloc occidental) vs URSS (bloc soviétique)." },
+          { text: "1958 : Naissance de la Vᵉ République — de Gaulle, Constitution toujours en vigueur." },
+          { text: "1968 : Mai 68 — grèves étudiantes et ouvrières massives, transformations sociales profondes." },
+          { text: "1989 : Chute du mur de Berlin — symbole de la fin de la Guerre froide." },
+        ]
+      },
+      {
+        title: "Géographie — La mondialisation",
+        items: [
+          { text: "Mondialisation : circulation accélérée des biens, personnes, informations et capitaux à l'échelle mondiale." },
+          { text: "FMN (Firmes Multinationales) : entreprises implantées dans plusieurs pays, actrices majeures de la mondialisation." },
+          { text: "BRICS (Brésil, Russie, Inde, Chine, Afrique du Sud) : pays émergents dont le poids économique est en forte hausse." },
+          { text: "Inégalités mondiales : Nord développé vs Sud en développement, réduction lente mais réelle." },
+        ]
+      },
+      {
+        title: "EMC — Citoyenneté et République",
+        items: [
+          { text: "Devise de la République : Liberté, Égalité, Fraternité (héritée de la Révolution française)." },
+          { text: "Laïcité : séparation de l'Église et de l'État (loi de 1905) ; garantit la liberté de conscience." },
+          { text: "Déclaration Universelle des Droits de l'Homme : adoptée par l'ONU le 10 décembre 1948." },
+          { text: "Droit de vote en France : accordé à tout citoyen français de 18 ans et plus." },
+        ]
+      }
+    ],
+    questions: [
+      { q: "Quelle est la devise de la République française ?", opts: ["Liberté, Égalité, Fraternité","Liberté, Justice, Paix","Unité, Laïcité, Solidarité","Patrie, Honneur, Courage"], ans: 0,
+        expl: "Héritée de la Révolution française, cette devise est inscrite dans la Constitution de 1958." },
+      { q: "En quelle année a débuté la Première Guerre mondiale ?", opts: ["1914","1918","1939","1917"], ans: 0,
+        expl: "Le 28 juin 1914, l'attentat de Sarajevo déclenche le conflit. L'armistice sera signé le 11 novembre 1918." },
+      { q: "Qu'est-ce que la Guerre froide ?", opts: ["Un affrontement indirect entre USA et URSS","Une guerre dans les pays nordiques","La Seconde Guerre mondiale","Un conflit entre France et Allemagne"], ans: 0,
+        expl: "1947–1991 : tensions idéologiques, course aux armements et espionnage entre les deux superpuissances, sans guerre directe." },
+      { q: "En quelle année a été fondée la Vᵉ République française ?", opts: ["1958","1945","1968","1981"], ans: 0,
+        expl: "La Vᵉ République, fondée par de Gaulle, a été approuvée par référendum en septembre 1958." },
+      { q: "Qu'est-ce que la laïcité en France ?", opts: ["La séparation de l'Église et de l'État","L'interdiction de toute religion","La religion d'État","L'obligation d'être catholique"], ans: 0,
+        expl: "La loi de 1905 sépare l'Église de l'État et garantit la liberté de conscience et de culte à tous." },
+      { q: "En quelle année a eu lieu la chute du mur de Berlin ?", opts: ["1989","1991","1985","1945"], ans: 0,
+        expl: "Le 9 novembre 1989, le mur de Berlin tombe, marquant la fin symbolique de la Guerre froide." },
+      { q: "Que sont les BRICS ?", opts: ["Un groupe de pays émergents (Brésil, Russie, Inde, Chine, Afrique du Sud)","Une alliance militaire","Les pays les plus pauvres du monde","Un traité commercial européen"], ans: 0,
+        expl: "Les BRICS représentent une part croissante du PIB et de la population mondiales." },
+      { q: "Qu'est-ce que l'ONU ?", opts: ["Une organisation internationale pour la paix","Une alliance militaire occidentale","Une union économique européenne","Un accord commercial mondial"], ans: 0,
+        expl: "L'ONU, créée en 1945, vise à maintenir la paix internationale et à favoriser la coopération entre États." },
+      { q: "Quel événement majeur a secoué la France en mai 1968 ?", opts: ["Des grèves étudiantes et ouvrières massives","La création de la Vᵉ République","La fin de la Guerre froide","L'adhésion à la CEE"], ans: 0,
+        expl: "Mai 68 : mouvement social intense qui a entraîné des transformations profondes dans la société et la politique françaises." },
+      { q: "Quand a été adoptée la Déclaration Universelle des Droits de l'Homme ?", opts: ["1948","1789","1918","1945"], ans: 0,
+        expl: "Adoptée par l'ONU le 10 décembre 1948, elle proclame des droits fondamentaux pour tous les êtres humains." },
+    ]
+  },
+
+  sciences: {
+    name: "Sciences", icon: "🔬", color: "#10B981",
+    desc: "SVT · Physique · Chimie",
+    notes: [
+      {
+        title: "SVT — Cellule et organismes",
+        items: [
+          { text: "Photosynthèse (chloroplastes) : CO₂ + H₂O + lumière → glucose + O₂", formula: "6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂" },
+          { text: "Respiration cellulaire (mitochondries) : glucose + O₂ → CO₂ + H₂O + énergie (ATP)" },
+          { text: "L'ADN, support de l'information génétique, est situé dans le noyau de chaque cellule." },
+          { text: "Le système digestif transforme les aliments en nutriments absorbés par les villosités intestinales." },
+        ]
+      },
+      {
+        title: "SVT — Génétique et évolution",
+        items: [
+          { text: "L'être humain possède 46 chromosomes (23 paires) dans chaque cellule somatique." },
+          { text: "La méiose produit des gamètes (ovule, spermatozoïde) à 23 chromosomes chacun." },
+          { text: "Fécondation : 2 gamètes → cellule-œuf à 46 chromosomes → nouvel individu." },
+          { text: "Théorie de Darwin : sélection naturelle — les individus les mieux adaptés survivent et se reproduisent davantage." },
+        ]
+      },
+      {
+        title: "Physique — Forces, mouvements, électricité",
+        items: [
+          { text: "Loi d'inertie : un objet reste en mouvement rectiligne uniforme si les forces se compensent." },
+          { text: "Poids (N) = masse (kg) × intensité de la pesanteur  (g ≈ 10 N/kg sur Terre)", formula: "P = m × g" },
+          { text: "Vitesse moyenne", formula: "v = d / t" },
+          { text: "Loi d'Ohm", formula: "U = R × I  (V = Ω × A)" },
+        ]
+      },
+      {
+        title: "Chimie — Atomes et réactions",
+        items: [
+          { text: "Atome = noyau (protons + neutrons) + électrons en périphérie." },
+          { text: "Loi de conservation de la masse (Lavoisier) : rien ne se crée, rien ne se perd.", formula: "masse réactifs = masse produits" },
+          { text: "pH : < 7 → acide · = 7 → neutre · > 7 → basique (alcalin)." },
+          { text: "Combustion : combustible + O₂ → CO₂ + H₂O  (réaction exothermique, libère de l'énergie)." },
+        ]
+      }
+    ],
+    questions: [
+      { q: "Quelle est l'équation-bilan de la photosynthèse ?", opts: ["CO₂ + H₂O + lumière → glucose + O₂","O₂ + glucose → CO₂ + H₂O","H₂O + O₂ → glucose + CO₂","glucose → CO₂ + H₂O + O₂"], ans: 0,
+        expl: "Dans les chloroplastes, la lumière permet de synthétiser du glucose à partir de CO₂ et d'H₂O, en libérant de l'O₂." },
+      { q: "Combien de chromosomes possède une cellule humaine somatique ?", opts: ["46","23","48","44"], ans: 0,
+        expl: "Les cellules somatiques humaines (non-reproductrices) ont 46 chromosomes en 23 paires. Les gamètes en ont 23." },
+      { q: "Quelle est la formule du poids d'un objet ?", opts: ["P = m × g","P = m / g","P = m + g","P = m²"], ans: 0,
+        expl: "P (Newtons) = m (kg) × g (N/kg). Sur Terre, g ≈ 10 N/kg. Un objet de 5 kg pèse donc 50 N." },
+      { q: "Quelle est la loi d'Ohm ?", opts: ["U = R × I","I = U × R","R = U × I","U = I / R"], ans: 0,
+        expl: "U (tension en V) = R (résistance en Ω) × I (intensité en A). Elle relie les trois grandeurs électriques fondamentales." },
+      { q: "Quel organite est le siège de la photosynthèse ?", opts: ["Le chloroplaste","La mitochondrie","Le noyau","Le ribosome"], ans: 0,
+        expl: "Les chloroplastes, présents dans les cellules végétales, contiennent la chlorophylle nécessaire à la photosynthèse." },
+      { q: "Qu'énonce la loi de conservation de la masse (Lavoisier) ?", opts: ["Masse des réactifs = masse des produits","L'énergie se conserve toujours","La chaleur est proportionnelle à la masse","La masse augmente après une réaction"], ans: 0,
+        expl: "« Rien ne se crée, rien ne se perd, tout se transforme. » Au cours d'une réaction chimique, la masse totale est conservée." },
+      { q: "Une solution avec un pH de 4 est :", opts: ["Acide","Basique","Neutre","Alcaline"], ans: 0,
+        expl: "pH < 7 → acide. pH = 7 → neutre. pH > 7 → basique. Un pH de 4 est donc acide." },
+      { q: "Quelle est la vitesse moyenne d'un objet parcourant 150 m en 30 s ?", opts: ["5 m/s","50 m/s","0,2 m/s","4 500 m/s"], ans: 0,
+        expl: "v = d/t = 150/30 = 5 m/s." },
+      { q: "Qu'est-ce que la méiose ?", opts: ["La division cellulaire qui produit les gamètes","La division cellulaire de croissance","La fusion de deux cellules","La mort programmée des cellules"], ans: 0,
+        expl: "La méiose divise le nombre de chromosomes par 2 (46→23) pour former les gamètes (ovules et spermatozoïdes)." },
+      { q: "Que stipule la théorie de Darwin sur la sélection naturelle ?", opts: ["Les individus les mieux adaptés survivent et se reproduisent","Les espèces les plus fortes éliminent les autres","L'environnement choisit les espèces qu'il garde","Les mutations sont toujours bénéfiques"], ans: 0,
+        expl: "La sélection naturelle : les individus avec des caractères avantageux survivent mieux et transmettent leurs gènes à leur descendance." },
+    ]
+  }
+};
+
+/* ─────────────────────────────────────────
+   STATE
+───────────────────────────────────────── */
+let currentSubject = null;
+let currentQuiz    = [];
+let currentQ       = 0;
+let quizScore      = 0;
+let answered       = false;
+
+/* ─────────────────────────────────────────
+   PROGRESS (localStorage)
+───────────────────────────────────────── */
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem('brevetProgress') || '{}'); } catch { return {}; }
+}
+function saveProgress(sub, score) {
+  const p = getProgress();
+  p[sub] = Math.max(p[sub] || 0, score);
+  localStorage.setItem('brevetProgress', JSON.stringify(p));
+}
+
+/* ─────────────────────────────────────────
+   NAVIGATION
+───────────────────────────────────────── */
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showHome() {
+  renderHome();
+  showView('home');
+}
+
+/* ─────────────────────────────────────────
+   HOME
+───────────────────────────────────────── */
+function renderHome() {
+  const progress = getProgress();
+  const keys = Object.keys(SUBJECTS);
+  const grid = document.getElementById('subjects-grid');
+  grid.innerHTML = '';
+
+  let totalPct = 0;
+  keys.forEach(key => {
+    const s   = SUBJECTS[key];
+    const pct = Math.round(((progress[key] || 0) / s.questions.length) * 100);
+    totalPct += pct;
+
+    const card = document.createElement('div');
+    card.className = 'subject-card';
+    card.dataset.subject = key;
+    card.innerHTML = `
+      <div class="sc-icon">${s.icon}</div>
+      <div class="sc-name">${s.name}</div>
+      <div class="sc-desc">${s.desc}</div>
+      <div class="prog-wrap">
+        <div class="prog-label"><span>Progression</span><span>${pct}%</span></div>
+        <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" style="background:${s.color}"
+          onclick="event.stopPropagation(); openSubject('${key}'); switchTab('quiz')">📝 Quiz</button>
+        <button class="btn btn-outline" style="border-color:${s.color}; color:${s.color}"
+          onclick="event.stopPropagation(); openSubject('${key}'); switchTab('notes')">📖 Fiches</button>
+      </div>`;
+    card.addEventListener('click', () => openSubject(key));
+    grid.appendChild(card);
+  });
+
+  const overall = Math.round(totalPct / keys.length);
+  document.getElementById('overall-pct').textContent  = overall + '%';
+  document.getElementById('overall-fill').style.width = overall + '%';
+}
+
+/* ─────────────────────────────────────────
+   SUBJECT
+───────────────────────────────────────── */
+function openSubject(key) {
+  currentSubject = key;
+  const s = SUBJECTS[key];
+
+  /* accent colour on sub-views */
+  ['view-subject','view-quiz','view-results'].forEach(id =>
+    document.getElementById(id).style.setProperty('--accent', s.color));
+  document.getElementById('subject-tabs').style.setProperty('--accent', s.color);
+
+  /* Header */
+  document.getElementById('subject-hdr').innerHTML = `
+    <div class="subject-badge" style="background:${s.color}20">${s.icon}</div>
+    <div>
+      <h2>${s.name}</h2>
+      <p>${s.desc}</p>
+    </div>`;
+
+  /* Quiz tab */
+  const prog = getProgress();
+  const best = prog[key] || 0;
+  const bestPct = Math.round(best / s.questions.length * 100);
+  document.getElementById('tab-quiz').innerHTML = `
+    <div class="quiz-start">
+      <div class="qi">${s.icon}</div>
+      <h2>Quiz — ${s.name}</h2>
+      <p>${s.questions.length} questions pour tester tes connaissances</p>
+      ${best > 0 ? `<span class="best" style="color:${s.color}">🏆 Meilleur score : ${best}/${s.questions.length} (${bestPct}%)</span>` : ''}
+      <button class="btn btn-primary" style="background:${s.color}; font-size:1rem; padding:.8rem 2.2rem"
+        onclick="startQuiz('${key}')">🚀 Commencer le quiz</button>
+    </div>`;
+
+  /* Notes tab */
+  const notesDiv = document.getElementById('tab-notes');
+  notesDiv.innerHTML = '';
+  s.notes.forEach(section => {
+    const wrap = document.createElement('div');
+    wrap.className = 'notes-section';
+    wrap.innerHTML = `<h3><span style="color:${s.color}">◆</span> ${section.title}</h3>`;
+    const ul = document.createElement('ul');
+    ul.className = 'notes-list';
+    section.items.forEach(item => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="arrow">→</span><span>${item.text}${
+        item.formula ? `<div class="formula-box" style="border-color:${s.color}">${item.formula}</div>` : ''
+      }</span>`;
+      ul.appendChild(li);
+    });
+    wrap.appendChild(ul);
+    notesDiv.appendChild(wrap);
+  });
+
+  /* Reset tabs */
+  switchTab('quiz');
+  showView('subject');
+}
+
+function switchTab(tab) {
+  const isQuiz = (tab === 'quiz');
+  document.getElementById('tab-btn-quiz').classList.toggle('active',  isQuiz);
+  document.getElementById('tab-btn-notes').classList.toggle('active', !isQuiz);
+  document.getElementById('tab-quiz').classList.toggle('active',  isQuiz);
+  document.getElementById('tab-notes').classList.toggle('active', !isQuiz);
+}
+
+/* ─────────────────────────────────────────
+   QUIZ
+───────────────────────────────────────── */
+function startQuiz(key) {
+  currentSubject = key;
+  currentQ = 0; quizScore = 0; answered = false;
+  currentQuiz = [...SUBJECTS[key].questions].sort(() => Math.random() - 0.5);
+  document.getElementById('quiz-back').onclick = () => openSubject(key);
+  showView('quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q     = currentQuiz[currentQ];
+  const total = currentQuiz.length;
+  answered = false;
+
+  document.getElementById('q-num').textContent       = `Question ${currentQ + 1}/${total}`;
+  document.getElementById('q-prog').style.width       = `${((currentQ + 1) / total) * 100}%`;
+  document.getElementById('q-score-live').textContent = `Score : ${quizScore}`;
+  document.getElementById('q-text').textContent       = q.q;
+  document.getElementById('q-expl').style.display     = 'none';
+  document.getElementById('q-next').style.display     = 'none';
+
+  /* Shuffle options while tracking original indices */
+  const shuffled = q.opts.map((opt, i) => ({ opt, orig: i }))
+                         .sort(() => Math.random() - 0.5);
+  const optDiv = document.getElementById('q-options');
+  optDiv.innerHTML = '';
+  shuffled.forEach(({ opt, orig }) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(orig === q.ans, btn, shuffled, q);
+    optDiv.appendChild(btn);
+  });
+}
+
+function selectAnswer(isCorrect, chosenBtn, shuffled, q) {
+  if (answered) return;
+  answered = true;
+  if (isCorrect) quizScore++;
+
+  chosenBtn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+  /* Reveal correct answer if wrong */
+  const allBtns = document.getElementById('q-options').querySelectorAll('.option');
+  allBtns.forEach((b, i) => {
+    b.disabled = true;
+    if (shuffled[i].orig === q.ans && !isCorrect) b.classList.add('correct');
+  });
+
+  /* Explanation */
+  const expl = document.getElementById('q-expl');
+  expl.textContent = '💡 ' + q.expl;
+  expl.style.display = 'block';
+
+  document.getElementById('q-score-live').textContent = `Score : ${quizScore}`;
+  const nextBtn = document.getElementById('q-next');
+  nextBtn.textContent = (currentQ + 1 < currentQuiz.length) ? 'Question suivante →' : 'Voir les résultats 🏁';
+  nextBtn.style.background = SUBJECTS[currentSubject].color;
+  nextBtn.style.display = 'inline-flex';
+}
+
+function nextQuestion() {
+  currentQ++;
+  (currentQ < currentQuiz.length) ? renderQuestion() : showResults();
+}
+
+/* ─────────────────────────────────────────
+   RESULTS
+───────────────────────────────────────── */
+function showResults() {
+  const s     = SUBJECTS[currentSubject];
+  const total = currentQuiz.length;
+  saveProgress(currentSubject, quizScore);
+
+  const pct = Math.round(quizScore / total * 100);
+  let emoji, msg;
+  if      (pct >= 90) { emoji = '🏆'; msg = 'Excellent ! Tu maîtrises parfaitement ce sujet !'; }
+  else if (pct >= 70) { emoji = '🎉'; msg = 'Très bien ! Encore un peu de travail et tu seras prêt(e) !'; }
+  else if (pct >= 50) { emoji = '👍'; msg = 'Bien ! Continue à réviser les fiches pour progresser.'; }
+  else                { emoji = '📚'; msg = 'Continue tes révisions ! Relis les fiches et réessaie.'; }
+
+  document.getElementById('r-emoji').textContent   = emoji;
+  document.getElementById('r-title').textContent   = s.name;
+  document.getElementById('score-num').textContent  = quizScore;
+  document.getElementById('score-denom').textContent = '/' + total;
+  document.getElementById('score-msg').textContent  = msg;
+
+  const ring = document.getElementById('score-ring');
+  ring.style.borderColor = s.color;
+  document.getElementById('score-num').style.color = s.color;
+
+  document.getElementById('btn-retry').style.background  = s.color;
+  document.getElementById('btn-home').style.borderColor  = s.color;
+  document.getElementById('btn-home').style.color        = s.color;
+
+  showView('results');
+}
+
+function retryQuiz() { startQuiz(currentSubject); }
+
+/* ─────────────────────────────────────────
+   INIT
+───────────────────────────────────────── */
+renderHome();
+</script>
+</body>
+</html>
