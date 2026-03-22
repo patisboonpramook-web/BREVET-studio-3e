@@ -1,347 +1,763 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Révision Brevet 🎓</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎓 Révision Brevet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --maths:    #3B82F6;
-      --francais: #8B5CF6;
-      --histoire: #F59E0B;
-      --sciences: #10B981;
-      --bg:       #F1F5F9;
-      --card:     #FFFFFF;
-      --text:     #1E293B;
-      --muted:    #64748B;
-      --border:   #E2E8F0;
-      --shadow:   0 4px 16px rgba(0,0,0,0.08);
-      --accent:   #3B82F6;
+      --maths:    #C9A84C;
+      --francais: #A0192E;
+      --histoire: #CD7F32;
+      --sciences: #1A7A50;
+      --bg:       #070500;
+      --bg2:      #0B0800;
+      --card:     #100D06;
+      --card2:    #181208;
+      --text:     #F0E6C8;
+      --muted:    #7A6A45;
+      --border:   #2C2210;
+      --shadow:   0 8px 40px rgba(0,0,0,0.9);
+      --accent:   #C9A84C;
+      --gold-hi:  #F5D98A;
+      --gold-lo:  #8B6914;
     }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Nunito', 'Segoe UI', sans-serif;
+      font-weight: 800;
       background: var(--bg);
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 60px,
+          rgba(201,168,76,0.018) 60px, rgba(201,168,76,0.018) 61px),
+        repeating-linear-gradient(-45deg, transparent, transparent 60px,
+          rgba(201,168,76,0.012) 60px, rgba(201,168,76,0.012) 61px);
       color: var(--text);
       min-height: 100vh;
     }
 
-    /* ── HEADER ── */
+    /* ══ HEADER ══ */
     header {
-      background: #fff;
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 2rem;
+      background: #0B0800;
+      border-bottom: 1px solid rgba(201,168,76,0.35);
+      padding: 0.85rem 1.5rem;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      justify-content: space-between;
+      gap: 1rem;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.85);
     }
-    header .logo { font-size: 1.8rem; }
-    header h1  { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
-    header p   { font-size: 0.82rem; color: var(--muted); }
+    .hdr-left { display: flex; align-items: center; gap: 0.75rem; }
+    .hdr-logo { font-size: 2rem; }
+    header h1 {
+      font-size: 1.3rem; font-weight: 900; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #8B6914, #C9A84C, #F5D98A, #C9A84C, #8B6914);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header p  { font-size: 0.76rem; color: var(--muted); font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .lang-toggle {
+      display: flex; gap: 0.3rem;
+      background: #0F0C04; border-radius: 10px; padding: 0.3rem;
+      border: 1px solid rgba(201,168,76,0.25);
+    }
+    .lang-btn {
+      padding: 0.32rem 0.85rem; border: none; border-radius: 7px;
+      cursor: pointer; font-family: 'Nunito', sans-serif;
+      font-size: 0.82rem; font-weight: 900;
+      background: transparent; color: var(--muted);
+      transition: all .2s;
+    }
+    .lang-btn.active { background: linear-gradient(135deg, #C9A84C, #8B6914); color: #070500; }
 
-    /* ── VIEWS ── */
-    .view { display: none; padding: 2rem 1.5rem; max-width: 1060px; margin: 0 auto; }
+    /* ══ VIEWS ══ */
+    .view { display: none; padding: 1.75rem 1.5rem; max-width: 1060px; margin: 0 auto; }
     .view.active { display: block; }
 
-    /* ── BUTTONS ── */
+    /* ══ BUTTONS ══ */
     .btn {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      padding: 0.55rem 1.15rem;
-      border: none; border-radius: 8px;
-      cursor: pointer; font-size: 0.88rem; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.6rem 1.25rem; border: none; border-radius: 10px;
+      cursor: pointer; font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem; font-weight: 900;
       transition: filter .15s, transform .1s;
     }
-    .btn:hover { filter: brightness(0.92); transform: translateY(-1px); }
+    .btn:hover { filter: brightness(1.12); transform: translateY(-2px); }
     .btn-primary { color: #fff; }
-    .btn-outline  { background: transparent; border: 2px solid; }
-    .btn-group    { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+    .btn-outline { background: transparent; border: 2.5px solid; }
+    .btn-group { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
     .btn-back {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: 0.9rem; font-weight: 500;
-      margin-bottom: 1.5rem; padding: 0.4rem 0;
-      transition: color .15s;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: #100D06; border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 10px; padding: 0.5rem 1rem;
+      cursor: pointer; color: var(--muted);
+      font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 900;
+      margin-bottom: 1.5rem; transition: color .15s, border-color .15s;
     }
-    .btn-back:hover { color: var(--text); }
+    .btn-back:hover { color: #C9A84C; border-color: rgba(201,168,76,0.6); }
 
-    /* ── HOME ── */
+    /* ══ HOME ══ */
     .hero {
-      text-align: center;
-      padding: 2.5rem 0 1.5rem;
+      text-align: center; padding: 2.5rem 1.5rem 2rem;
+      background: linear-gradient(160deg, #0F0B02 0%, #1C1508 50%, #0F0B02 100%);
+      border: 1px solid rgba(201,168,76,0.4);
+      border-radius: 20px; margin-bottom: 1.5rem;
+      box-shadow: 0 0 80px rgba(201,168,76,0.07), inset 0 1px 0 rgba(201,168,76,0.25), var(--shadow);
+      position: relative; overflow: hidden;
     }
-    .hero h2 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; }
-    .hero p  { color: var(--muted); margin-top: 0.4rem; font-size: 1rem; }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% -10%, rgba(201,168,76,0.14) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '✦'; position: absolute; top: 1rem; left: 1.5rem;
+      font-size: 0.7rem; color: rgba(201,168,76,0.3);
+    }
+    .hero h2 {
+      font-size: 2rem; font-weight: 900; letter-spacing: 0.04em;
+      background: linear-gradient(90deg, #8B6914, #C9A84C, #F5D98A, #C9A84C, #8B6914);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p  { color: #9A875A; margin-top: 0.5rem; font-size: 0.95rem; font-weight: 800; letter-spacing: 0.05em; }
 
     .subjects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 1.25rem;
-      margin-top: 1.5rem;
+      gap: 1.25rem; margin-top: 1.5rem;
     }
     .subject-card {
-      background: var(--card);
-      border-radius: 18px;
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
+      background: linear-gradient(160deg, #100D06 0%, #181208 100%);
+      border-radius: 20px;
+      padding: 1.5rem; box-shadow: var(--shadow);
       cursor: pointer;
-      border-top: 5px solid;
-      transition: transform .2s, box-shadow .2s;
+      border: 1px solid rgba(201,168,76,0.15);
+      border-top: 4px solid;
+      transition: transform .22s, box-shadow .22s, border-color .22s;
     }
     .subject-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.13);
+      transform: translateY(-8px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.85), 0 0 30px rgba(201,168,76,0.12);
+      border-color: rgba(201,168,76,0.5);
+      border-top-color: inherit;
     }
     .subject-card[data-subject="maths"]    { border-color: var(--maths); }
     .subject-card[data-subject="francais"] { border-color: var(--francais); }
     .subject-card[data-subject="histoire"] { border-color: var(--histoire); }
     .subject-card[data-subject="sciences"] { border-color: var(--sciences); }
 
-    .sc-icon { font-size: 2.4rem; margin-bottom: 0.65rem; }
-    .sc-name { font-size: 1.15rem; font-weight: 700; }
-    .sc-desc { font-size: 0.8rem; color: var(--muted); margin: 0.2rem 0 1rem; }
+    .sc-icon { font-size: 3rem; margin-bottom: 0.6rem; }
+    .sc-name { font-size: 1.15rem; font-weight: 900; }
+    .sc-desc { font-size: 0.78rem; color: var(--muted); margin: 0.2rem 0 0.75rem; font-weight: 800; }
+    .sc-chapters { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.75rem; font-weight: 900; }
 
-    /* Progress bar */
     .prog-wrap { margin: 0.6rem 0 0; }
-    .prog-label {
-      display: flex; justify-content: space-between;
-      font-size: 0.75rem; color: var(--muted); margin-bottom: 0.3rem;
-    }
-    .prog-track { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .prog-label { display: flex; justify-content: space-between; font-size: 0.76rem; color: var(--muted); margin-bottom: 0.35rem; font-weight: 900; }
+    .prog-track { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
     .prog-fill  { height: 100%; border-radius: 4px; transition: width .5s ease; }
     [data-subject="maths"]    .prog-fill { background: var(--maths); }
     [data-subject="francais"] .prog-fill { background: var(--francais); }
     [data-subject="histoire"] .prog-fill { background: var(--histoire); }
     [data-subject="sciences"] .prog-fill { background: var(--sciences); }
 
-    /* Overall card */
     .overall-card {
-      background: var(--card); border-radius: 14px;
-      padding: 1.35rem 1.5rem; box-shadow: var(--shadow);
-      margin-top: 1.5rem;
+      background: #100D06;
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem; box-shadow: var(--shadow); margin-top: 1.5rem;
     }
     .overall-card h3 {
-      font-size: 0.75rem; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 0.75rem;
+      font-size: 0.74rem; font-weight: 900; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .07em; margin-bottom: 0.7rem;
     }
     .overall-row { display: flex; align-items: center; gap: 1rem; }
-    .overall-pct { font-size: 1.15rem; font-weight: 800; min-width: 42px; }
-    .overall-track { flex: 1; height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
-    .overall-fill  {
-      height: 100%; border-radius: 5px;
-      background: linear-gradient(90deg, var(--maths), var(--francais), var(--histoire), var(--sciences));
+    .overall-pct { font-size: 1.15rem; font-weight: 900; min-width: 44px; }
+    .overall-track { flex:1; height:10px; background:var(--border); border-radius:5px; overflow:hidden; }
+    .overall-fill {
+      height:100%; border-radius:5px;
+      background: linear-gradient(90deg, #8B6914, #C9A84C, #F5D98A, #C9A84C, #8B6914);
       transition: width .5s ease;
     }
 
-    /* ── SUBJECT VIEW ── */
+    /* ══ SUBJECT VIEW ══ */
     .subject-hdr { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
     .subject-badge {
-      width: 56px; height: 56px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.75rem;
+      width: 60px; height: 60px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center; font-size: 2.1rem;
     }
-    .subject-hdr h2 { font-size: 1.5rem; font-weight: 800; }
-    .subject-hdr p  { font-size: 0.85rem; color: var(--muted); margin-top: 0.15rem; }
+    .subject-hdr h2 { font-size: 1.45rem; font-weight: 900; }
+    .subject-hdr p  { font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; font-weight: 800; }
 
     /* Tabs */
-    .tabs {
-      display: flex; gap: 0;
-      border-bottom: 2px solid var(--border);
-      margin-bottom: 1.5rem;
-    }
+    .tabs { display: flex; background: #100D06; border: 1px solid rgba(201,168,76,0.18); border-radius: 12px; padding: 0.3rem; margin-bottom: 1.5rem; gap: 0.3rem; }
     .tab {
-      padding: 0.7rem 1.35rem;
-      border: none; background: none; cursor: pointer;
-      font-size: 0.92rem; font-weight: 600;
-      color: var(--muted);
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      transition: color .15s, border-color .15s;
+      flex:1; padding: 0.6rem 1rem; border: none; background: none;
+      cursor: pointer; font-family: 'Nunito', sans-serif;
+      font-size: 0.88rem; font-weight: 900; color: var(--muted);
+      border-radius: 9px; transition: background .15s, color .15s;
     }
-    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab.active { background: linear-gradient(135deg, #C9A84C, #8B6914); color: #070500; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* ── NOTES ── */
-    .notes-section {
-      background: var(--card); border-radius: 14px;
-      padding: 1.4rem 1.5rem; margin-bottom: 1rem;
-      box-shadow: var(--shadow);
+    /* ══ CHAPTERS / NOTES ══ */
+    .notes-toolbar {
+      display: flex; justify-content: flex-end; margin-bottom: 0.9rem; gap: 0.5rem;
     }
-    .notes-section h3 {
-      font-size: 1rem; font-weight: 700;
-      margin-bottom: 1rem;
-      display: flex; align-items: center; gap: 0.5rem;
+    .notes-toolbar button {
+      background: #100D06; border: 1px solid rgba(201,168,76,0.22);
+      border-radius: 8px; padding: 0.35rem 0.9rem;
+      cursor: pointer; font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem; font-weight: 900; color: var(--muted);
+      transition: border-color .15s, color .15s;
     }
-    .notes-list { list-style: none; }
+    .notes-toolbar button:hover { border-color: #C9A84C; color: #C9A84C; }
+
+    .chapter-card { background: #100D06; border: 1px solid rgba(201,168,76,0.14); border-radius: 14px; margin-bottom: 0.75rem; box-shadow: var(--shadow); overflow: hidden; }
+    .chapter-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.9rem 1.2rem; cursor: pointer;
+      transition: background .15s;
+    }
+    .chapter-header:hover { background: #181208; }
+    .chapter-num {
+      min-width: 34px; height: 34px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.88rem; font-weight: 900; color: #fff; flex-shrink: 0;
+    }
+    .chapter-emoji { font-size: 1.3rem; flex-shrink: 0; }
+    .chapter-info { flex:1; }
+    .chapter-title { font-size: 0.93rem; font-weight: 900; }
+    .chapter-sub   { font-size: 0.74rem; color: var(--muted); font-weight: 800; margin-top: 0.1rem; }
+    .chapter-tag   {
+      font-size: 0.68rem; font-weight: 900; padding: 0.2rem 0.55rem;
+      border-radius: 6px; margin-left: 0.4rem; color: #fff;
+    }
+    .chapter-arrow { color: var(--muted); font-size: 0.9rem; transition: transform .25s; font-weight: 900; }
+    .chapter-arrow.open { transform: rotate(90deg); }
+
+    .chapter-body { display: none; padding: 0 1.2rem 1.2rem; border-top: 2px solid var(--border); }
+    .chapter-body.open { display: block; }
+
+    .notes-list { list-style: none; margin-top: 0.7rem; }
     .notes-list li {
-      padding: 0.6rem 0;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: flex-start; gap: 0.6rem;
-      font-size: 0.9rem; line-height: 1.55;
+      padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 0.55rem;
+      font-size: 0.86rem; line-height: 1.55; font-weight: 800;
     }
     .notes-list li:last-child { border-bottom: none; }
-    .notes-list li .arrow { flex-shrink: 0; font-weight: 700; color: var(--accent); }
+    .ni-arrow { flex-shrink: 0; font-weight: 900; color: var(--accent); }
     .formula-box {
-      background: #F8FAFC;
-      border-left: 4px solid var(--accent);
-      padding: 0.4rem 0.75rem;
-      border-radius: 0 6px 6px 0;
-      margin-top: 0.35rem;
-      font-family: 'Courier New', monospace;
-      font-size: 0.88rem;
-      color: var(--text);
+      background: #060400; border-left: 4px solid #C9A84C;
+      padding: 0.35rem 0.75rem; border-radius: 0 8px 8px 0;
+      margin-top: 0.35rem; font-family: 'Courier New', monospace;
+      font-size: 0.86rem; color: #C9A84C; font-weight: 700; display: block;
     }
 
-    /* ── QUIZ START ── */
+    /* ══ QUIZ START ══ */
     .quiz-start {
-      text-align: center;
-      padding: 2.5rem 1rem;
-      background: var(--card);
-      border-radius: 14px;
-      box-shadow: var(--shadow);
+      text-align: center; padding: 2.5rem 1.5rem;
+      background: #100D06; border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 18px; box-shadow: var(--shadow);
     }
-    .quiz-start .qi { font-size: 3.5rem; }
-    .quiz-start h2  { font-size: 1.4rem; font-weight: 800; margin: 0.5rem 0 0.35rem; }
-    .quiz-start p   { color: var(--muted); margin-bottom: 1.25rem; }
-    .quiz-start .best {
-      font-weight: 700; font-size: 0.95rem;
-      margin-bottom: 1rem; display: block;
+    .quiz-start .qs-icon { font-size: 3.8rem; }
+    .quiz-start h2 { font-size: 1.4rem; font-weight: 900; margin: 0.6rem 0 0.4rem; }
+    .quiz-start p  { color: var(--muted); font-weight: 800; margin-bottom: 0.65rem; }
+    .best-badge {
+      display: inline-block; padding: 0.35rem 1rem;
+      border-radius: 20px; font-size: 0.85rem; font-weight: 900;
+      margin-bottom: 1.25rem;
     }
 
-    /* ── QUIZ ACTIVE ── */
-    .quiz-container { max-width: 680px; margin: 0 auto; }
+    /* ══ QUIZ ACTIVE ══ */
+    .quiz-wrap { max-width: 680px; margin: 0 auto; }
     .quiz-meta {
       display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 1.25rem; font-size: 0.83rem; color: var(--muted); font-weight: 600;
+      margin-bottom: 1.25rem; font-size: 0.82rem; color: var(--muted); font-weight: 900;
     }
-    .q-prog-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; margin: 0 1rem; }
-    .q-prog-fill  { height: 100%; border-radius: 3px; background: var(--accent); transition: width .3s; }
+    .q-prog-track { flex:1; height:7px; background:var(--border); border-radius:4px; margin: 0 1rem; }
+    .q-prog-fill  { height:100%; border-radius:4px; background:var(--accent); transition:width .3s; }
 
-    .q-card {
-      background: var(--card); border-radius: 16px;
-      padding: 1.75rem 2rem; box-shadow: var(--shadow);
-    }
-    .q-text {
-      font-size: 1.1rem; font-weight: 600;
-      line-height: 1.55; margin-bottom: 1.4rem;
-    }
+    .q-card { background: #100D06; border: 1px solid rgba(201,168,76,0.18); border-radius: 18px; padding: 1.85rem 2rem; box-shadow: var(--shadow); }
+    .q-text { font-size: 1.1rem; font-weight: 900; line-height: 1.55; margin-bottom: 1.4rem; }
     .options { display: flex; flex-direction: column; gap: 0.65rem; }
     .option {
-      padding: 0.9rem 1.1rem;
-      border: 2px solid var(--border);
-      border-radius: 10px;
-      cursor: pointer; font-size: 0.9rem;
-      text-align: left; background: #fff;
-      transition: border-color .15s, background .15s;
+      padding: 0.75rem 1rem; border: 1.5px solid rgba(201,168,76,0.18);
+      border-radius: 12px; cursor: pointer; font-size: 0.9rem;
+      text-align: left; background: #181208; color: var(--text);
+      font-family: 'Nunito', sans-serif; font-weight: 800;
+      display: flex; align-items: center; gap: 0.85rem;
+      transition: border-color .15s, background .15s, box-shadow .15s;
     }
-    .option:not([disabled]):hover {
-      border-color: var(--accent);
-      background: color-mix(in srgb, var(--accent) 6%, white);
+    .option:not([disabled]):hover { border-color: #C9A84C; background: #1E1608; box-shadow: 0 0 16px rgba(201,168,76,0.1); }
+    .option.correct { border-color: #2ECC9A; background: #041A0E; color: #6EE7B7; font-weight: 900; }
+    .option.wrong   { border-color: #E05252; background: #1A0404; color: #FCA5A5; }
+
+    /* A / B / C / D letter badge */
+    .opt-label {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 30px; height: 30px; border-radius: 8px;
+      background: var(--border); color: var(--muted);
+      font-size: 0.82rem; font-weight: 900; flex-shrink: 0;
+      transition: background .15s, color .15s;
     }
-    .option.correct { border-color: #10B981; background: #ECFDF5; color: #065F46; font-weight: 600; }
-    .option.wrong   { border-color: #EF4444; background: #FEF2F2; color: #7F1D1D; }
+    .option:not([disabled]):hover .opt-label { background: #C9A84C; color: #070500; }
+    .option.correct .opt-label { background: #0A3D22; color: #6EE7B7; }
+    .option.wrong   .opt-label { background: #3D0A0A; color: #FCA5A5; }
+    .opt-text { flex: 1; }
+
+    /* Calculator toggle button (in quiz meta bar) */
+    .calc-toggle-btn {
+      background: var(--card); border: 2px solid var(--border);
+      border-radius: 9px; padding: 0.3rem 0.6rem;
+      cursor: pointer; font-size: 1.1rem;
+      transition: border-color .15s, transform .1s;
+      display: none; /* shown via JS for maths quizzes */
+    }
+    .calc-toggle-btn:hover { border-color: var(--maths); transform: scale(1.1); }
+    .calc-toggle-btn.calc-open { border-color: #C9A84C; background: #1A1208; }
+
+    /* ══ FLOATING CALCULATOR ══ */
+    .calculator {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      width: 272px; background: #0B0800;
+      border: 1px solid rgba(201,168,76,0.4); border-radius: 20px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.95), 0 0 40px rgba(201,168,76,0.06);
+      z-index: 500; display: none; overflow: hidden;
+    }
+    .calculator.open { display: block; }
+
+    .calc-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 1rem 0.5rem;
+      background: #0F0B02;
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+    .calc-hdr-title {
+      font-size: 0.85rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase;
+      background: linear-gradient(90deg, #8B6914, #C9A84C, #F5D98A);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .calc-close-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 1rem; font-weight: 900;
+      transition: color .15s;
+    }
+    .calc-close-btn:hover { color: #F87171; }
+
+    .calc-screen {
+      background: #060400; margin: 0.5rem 0.85rem 0.6rem;
+      border-radius: 10px; padding: 0.6rem 0.85rem;
+      text-align: right; border: 1px solid rgba(201,168,76,0.2);
+    }
+    .calc-expr {
+      font-size: 0.75rem; color: var(--muted); font-weight: 800;
+      min-height: 1.1rem; word-break: break-all;
+    }
+    .calc-display {
+      font-size: 1.65rem; font-weight: 900; color: #D4AF37;
+      word-break: break-all; line-height: 1.2; margin-top: 0.2rem;
+    }
+
+    .calc-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0.45rem; padding: 0 0.85rem 0.85rem;
+    }
+    .cbtn {
+      padding: 0.72rem 0; border: none; border-radius: 10px;
+      font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 900;
+      cursor: pointer; transition: filter .12s, transform .08s;
+    }
+    .cbtn:hover  { filter: brightness(1.18); transform: scale(1.05); }
+    .cbtn:active { transform: scale(0.95); }
+    .cbtn-num   { background: #181208; color: #F0E6C8; border: 1px solid rgba(201,168,76,0.1); }
+    .cbtn-op    { background: #1E1608; color: #C9A84C; border: 1px solid rgba(201,168,76,0.2); }
+    .cbtn-fn    { background: #150F04; color: #D4A04A; border: 1px solid rgba(201,168,76,0.15); }
+    .cbtn-clear { background: #1A0404; color: #FCA5A5; border: 1px solid rgba(224,82,82,0.2); }
+    .cbtn-del   { background: #1A1004; color: #F5D98A; border: 1px solid rgba(201,168,76,0.15); }
+    .cbtn-eq    { background: linear-gradient(135deg, #C9A84C, #8B6914); color: #070500; grid-column: span 2; font-size: 1.2rem; border: none; box-shadow: 0 2px 12px rgba(201,168,76,0.25); }
+    .cbtn-zero  { grid-column: span 1; }
 
     .explanation {
-      margin-top: 1.1rem; padding: 0.85rem 1rem;
-      background: #F0F9FF;
-      border-left: 4px solid #38BDF8;
-      border-radius: 0 8px 8px 0;
-      font-size: 0.88rem; line-height: 1.55;
-      display: none;
-      color: #0C4A6E;
+      margin-top: 1.1rem; padding: 0.9rem 1rem;
+      background: #0F0B02; border-left: 4px solid #C9A84C;
+      border-radius: 0 10px 10px 0;
+      font-size: 0.87rem; line-height: 1.55;
+      display: none; color: #D4B870; font-weight: 800;
     }
-    .btn-next { margin-top: 1.2rem; }
+    .btn-next { margin-top: 1.25rem; }
 
-    /* ── RESULTS ── */
+    /* ══ RESULTS ══ */
     #view-results { max-width: 480px; }
     .results-card {
-      background: var(--card); border-radius: 18px;
-      padding: 2.5rem; text-align: center;
-      box-shadow: var(--shadow);
-      margin: 1rem auto;
+      background: #100D06; border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 22px;
+      padding: 2.5rem; text-align: center; box-shadow: var(--shadow);
     }
-    .r-emoji { font-size: 2.5rem; }
-    .r-title { font-size: 1.4rem; font-weight: 800; margin: 0.5rem 0 1.25rem; }
+    .r-emoji { font-size: 3.2rem; }
+    .r-title { font-size: 1.5rem; font-weight: 900; margin: 0.5rem 0 1.25rem; }
     .score-ring {
-      width: 120px; height: 120px;
-      border-radius: 50%;
-      border: 6px solid var(--accent);
+      width: 130px; height: 130px; border-radius: 50%;
+      border: 4px solid transparent;
+      background: linear-gradient(#100D06, #100D06) padding-box,
+                  linear-gradient(135deg, #8B6914, #F5D98A, #8B6914) border-box;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       margin: 0 auto 1.25rem;
+      box-shadow: 0 0 30px rgba(201,168,76,0.2);
     }
-    .score-num   { font-size: 2.6rem; font-weight: 800; color: var(--accent); line-height: 1; }
-    .score-denom { font-size: 0.85rem; color: var(--muted); }
-    .score-msg   { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .score-num   { font-size: 2.9rem; font-weight: 900; color: var(--accent); line-height: 1; }
+    .score-denom { font-size: 0.88rem; color: var(--muted); font-weight: 800; }
+    .score-msg   { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; font-weight: 800; }
 
-    /* ── RESPONSIVE ── */
+    /* ══ CUSTOM QUIZ BANNER (home) ══ */
+    .cq-banner {
+      background: linear-gradient(135deg, #0F0B02 0%, #1C1508 100%);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 18px;
+      padding: 1.4rem 1.75rem;
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow);
+    }
+    .cq-banner-left { display: flex; align-items: center; gap: 1rem; }
+    .cq-banner-icon { font-size: 2.2rem; }
+    .cq-banner h3 { font-size: 1.1rem; font-weight: 900; }
+    .cq-banner p  { font-size: 0.82rem; color: var(--muted); font-weight: 800; margin-top: 0.15rem; }
+
+    /* ══ QUIZ SELECTOR VIEW ══ */
+    .qs-title { text-align: center; padding: 1.25rem 0 1.75rem; }
+    .qs-title h2 { font-size: 1.7rem; font-weight: 900; }
+    .qs-title p  { color: var(--muted); font-size: 0.95rem; font-weight: 800; margin-top: 0.4rem; }
+
+    .qs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.1rem;
+      margin-bottom: 1.75rem;
+    }
+    .qs-subject-card {
+      background: #100D06;
+      border: 1px solid rgba(201,168,76,0.18);
+      border-radius: 18px;
+      padding: 1.4rem 1.2rem;
+      cursor: pointer;
+      text-align: center;
+      transition: transform .18s, border-color .18s, background .18s;
+      position: relative;
+      user-select: none;
+    }
+    .qs-subject-card:hover { transform: translateY(-4px); }
+    .qs-subject-card.selected {
+      background: #181208;
+      border-color: rgba(201,168,76,0.55);
+      box-shadow: 0 0 20px rgba(201,168,76,0.1);
+    }
+    .qs-check {
+      position: absolute; top: 0.75rem; right: 0.85rem;
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 900; transition: all .2s;
+    }
+    .qs-subject-card.selected .qs-check { color: #fff; border-color: transparent; }
+    .qs-card-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+    .qs-card-name { font-size: 1rem; font-weight: 900; margin-bottom: 0.25rem; }
+    .qs-card-desc { font-size: 0.76rem; color: var(--muted); font-weight: 800; }
+    .qs-card-count { font-size: 0.75rem; font-weight: 900; margin-top: 0.6rem; }
+
+    /* Question count row */
+    .qs-options-row {
+      background: #100D06; border: 1px solid rgba(201,168,76,0.18);
+      border-radius: 14px;
+      padding: 1.2rem 1.5rem; margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .qs-options-row h4 { font-size: 0.82rem; font-weight: 900; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 0.9rem; }
+    .qs-count-btns { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .qs-count-btn {
+      padding: 0.45rem 1.1rem; border: 2.5px solid var(--border);
+      border-radius: 9px; cursor: pointer; background: transparent;
+      font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 900;
+      color: var(--muted); transition: all .2s;
+    }
+    .qs-count-btn.active { color: #fff; border-color: transparent; }
+
+    /* Start button row */
+    .qs-footer {
+      display: flex; justify-content: center; gap: 1rem;
+      padding: 0.5rem 0 1rem;
+    }
+    .qs-start-btn {
+      padding: 0.85rem 2.5rem;
+      border: none; border-radius: 12px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem; font-weight: 900; color: #070500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      background: linear-gradient(135deg, #C9A84C, #8B6914, #C9A84C);
+      cursor: pointer; transition: filter .15s, transform .1s;
+      box-shadow: 0 4px 24px rgba(201,168,76,0.4);
+    }
+    .qs-start-btn:hover:not(:disabled) { filter: brightness(1.12); transform: translateY(-2px); }
+    .qs-start-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+    /* Subject badge in quiz question (for mixed quizzes) */
+    .q-subject-tag {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.28rem 0.8rem; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 900; color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    /* ══ ANNALES BANNER (home) ══ */
+    .annales-banner {
+      background: linear-gradient(135deg, #0F0B02 0%, #1C1508 60%, #0F0B02 100%);
+      border: 1px solid rgba(201,168,76,0.35);
+      border-left: 4px solid #C9A84C;
+      border-radius: 18px;
+      padding: 1.3rem 1.75rem;
+      margin-top: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow);
+    }
+    .annales-banner-left { display: flex; align-items: center; gap: 1rem; }
+    .annales-banner-icon { font-size: 2rem; }
+    .annales-banner h3 {
+      font-size: 1rem; font-weight: 900; letter-spacing: 0.04em;
+      background: linear-gradient(90deg, #C9A84C, #F5D98A);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .annales-banner p { font-size: 0.8rem; color: var(--muted); font-weight: 800; margin-top: 0.12rem; }
+
+    /* ══ ANNALES VIEW ══ */
+    .annales-hdr {
+      text-align: center; padding: 0.5rem 0 1.75rem;
+    }
+    .annales-hdr h2 {
+      font-size: 1.55rem; font-weight: 900; letter-spacing: 0.07em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #8B6914, #C9A84C, #F5D98A, #C9A84C, #8B6914);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .annales-hdr p { color: var(--muted); font-size: 0.88rem; font-weight: 800; margin-top: 0.4rem; }
+
+    .year-tabs {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      justify-content: center; margin-bottom: 1.75rem;
+    }
+    .year-btn {
+      padding: 0.48rem 1.2rem;
+      border: 1px solid rgba(201,168,76,0.3); border-radius: 30px;
+      cursor: pointer; background: #100D06;
+      font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 900;
+      color: var(--muted); transition: all .2s;
+    }
+    .year-btn:hover { border-color: #C9A84C; color: #C9A84C; }
+    .year-btn.active {
+      background: linear-gradient(135deg, #C9A84C, #8B6914);
+      color: #070500; border-color: transparent;
+      box-shadow: 0 3px 14px rgba(201,168,76,0.35);
+    }
+
+    .annales-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.1rem;
+    }
+    .annale-card {
+      background: #100D06;
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 16px;
+      padding: 1.25rem 1.4rem;
+      box-shadow: var(--shadow);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .annale-card:hover { border-color: rgba(201,168,76,0.4); box-shadow: 0 12px 36px rgba(0,0,0,0.75); }
+    .annale-card-hdr {
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;
+      padding-bottom: 0.75rem; border-bottom: 1px solid rgba(201,168,76,0.12);
+    }
+    .annale-card-icon { font-size: 1.6rem; }
+    .annale-card-name { font-size: 0.97rem; font-weight: 900; }
+    .annale-topics {
+      list-style: none; display: flex; flex-direction: column; gap: 0.45rem;
+      margin-bottom: 1rem;
+    }
+    .annale-topics li {
+      display: flex; align-items: flex-start; gap: 0.5rem;
+      font-size: 0.82rem; font-weight: 800; line-height: 1.5; color: var(--text);
+    }
+    .annale-bullet {
+      min-width: 6px; height: 6px; border-radius: 50%;
+      background: #C9A84C; margin-top: 0.45rem; flex-shrink: 0;
+    }
+    .annale-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; font-weight: 900; color: #C9A84C;
+      text-decoration: none; border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 8px; padding: 0.3rem 0.8rem;
+      transition: background .15s, color .15s;
+    }
+    .annale-link:hover { background: rgba(201,168,76,0.1); color: #F5D98A; }
+
+    .annales-sources {
+      margin-top: 1.75rem; padding: 1.1rem 1.4rem;
+      background: #0F0B02; border: 1px solid rgba(201,168,76,0.18);
+      border-radius: 14px;
+    }
+    .annales-sources h4 {
+      font-size: 0.75rem; font-weight: 900; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .07em; margin-bottom: 0.65rem;
+    }
+    .sources-links { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .source-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.78rem; font-weight: 900; color: #C9A84C;
+      text-decoration: none; border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 8px; padding: 0.3rem 0.85rem;
+      background: #100D06; transition: background .15s, border-color .15s;
+    }
+    .source-link:hover { background: rgba(201,168,76,0.08); border-color: #C9A84C; }
+
+    .covid-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; font-weight: 900; color: #CD7F32;
+      background: rgba(205,127,50,0.1); border: 1px solid rgba(205,127,50,0.3);
+      border-radius: 20px; padding: 0.3rem 0.85rem; margin-bottom: 0.9rem;
+    }
+
     @media (max-width: 600px) {
-      header { padding: 0.9rem 1rem; }
-      .view  { padding: 1.25rem 1rem; }
-      .hero h2 { font-size: 1.5rem; }
-      .q-card { padding: 1.25rem; }
+      header { padding: 0.8rem 1rem; flex-wrap: wrap; }
+      .view  { padding: 1.2rem 1rem; }
+      .hero h2 { font-size: 1.45rem; }
+      .q-card  { padding: 1.25rem; }
+      .qs-grid { grid-template-columns: repeat(2, 1fr); }
+      .annales-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══════════ HEADER ══════════ -->
+<!-- ══════ HEADER ══════ -->
 <header>
-  <div class="logo">🎓</div>
-  <div>
-    <h1>Révision Brevet</h1>
-    <p>Prépare-toi au Brevet des Collèges</p>
+  <div class="hdr-left">
+    <div class="hdr-logo">🎓</div>
+    <div>
+      <h1 id="app-title">Révision Brevet</h1>
+      <p id="app-sub">Prépare-toi au Brevet des Collèges</p>
+    </div>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="lang-fr" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button class="lang-btn"        id="lang-en" onclick="setLang('en')">🇬🇧 EN</button>
   </div>
 </header>
 
-<!-- ══════════ HOME VIEW ══════════ -->
+<!-- ══════ HOME ══════ -->
 <div id="view-home" class="view active">
   <div class="hero">
-    <h2>Bonjour, bonne révision ! 📚</h2>
-    <p>Choisis une matière pour commencer tes révisions</p>
+    <h2 id="hero-title">Bonne révision ! 📚</h2>
+    <p  id="hero-sub">Choisis une matière pour commencer</p>
+  </div>
+  <!-- Custom Quiz Banner -->
+  <div class="cq-banner">
+    <div class="cq-banner-left">
+      <div class="cq-banner-icon">🎯</div>
+      <div>
+        <h3 id="cq-banner-title">Créer un quiz personnalisé</h3>
+        <p  id="cq-banner-sub">Choisis tes matières et le nombre de questions</p>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="background:#C9A84C; color:#070500; font-size:0.95rem" onclick="openQuizSelector()">
+      ⚙️ <span id="cq-banner-btn">Personnaliser</span>
+    </button>
   </div>
 
   <div class="subjects-grid" id="subjects-grid"></div>
-
   <div class="overall-card">
-    <h3>Progression générale</h3>
+    <h3 id="overall-label">PROGRESSION GÉNÉRALE</h3>
     <div class="overall-row">
       <span class="overall-pct" id="overall-pct">0%</span>
-      <div class="overall-track">
-        <div class="overall-fill" id="overall-fill" style="width:0%"></div>
+      <div class="overall-track"><div class="overall-fill" id="overall-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+  <!-- Annales Banner -->
+  <div class="annales-banner">
+    <div class="annales-banner-left">
+      <div class="annales-banner-icon">📋</div>
+      <div>
+        <h3 id="annales-banner-title">Sujets des Années Précédentes</h3>
+        <p  id="annales-banner-sub">Consulte les thèmes tombés de 2019 à 2024</p>
       </div>
+    </div>
+    <button class="btn btn-primary" style="background:#C9A84C; color:#070500; font-size:0.95rem; letter-spacing:0.04em" onclick="openAnnales()">
+      📋 <span id="annales-banner-btn">Voir les annales</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════ ANNALES ══════ -->
+<div id="view-annales" class="view">
+  <button class="btn-back" onclick="showHome()">← <span class="back-qs-lbl">Retour</span></button>
+  <div class="annales-hdr">
+    <h2 id="annales-title">SUJETS DE BREVETS DES ANNÉES PRÉCÉDENTS</h2>
+    <p  id="annales-sub">Explore les thèmes et exercices tombés à l'examen pour mieux te préparer</p>
+  </div>
+  <div class="year-tabs" id="year-tabs"></div>
+  <div class="annales-grid" id="annales-grid"></div>
+  <div class="annales-sources">
+    <h4 id="sources-label">📎 Télécharger les sujets officiels</h4>
+    <div class="sources-links">
+      <a class="source-link" href="https://www.education.gouv.fr/reussir-au-lycee/brevet-bac-et-cap-les-sujets-des-examens-2024-414462" target="_blank">🏛️ Ministère de l'Éducation</a>
+      <a class="source-link" href="https://www.apmep.fr/Annales-du-Brevet-des-colleges" target="_blank">📐 APMEP (Maths)</a>
+      <a class="source-link" href="https://www.letudiant.fr/college/annales-du-brevet.html" target="_blank">📰 L'Étudiant</a>
+      <a class="source-link" href="https://www.france-examen.com/brevet/annales/" target="_blank">📄 France-Examen</a>
     </div>
   </div>
 </div>
 
-<!-- ══════════ SUBJECT VIEW ══════════ -->
+<!-- ══════ SUBJECT ══════ -->
 <div id="view-subject" class="view">
-  <button class="btn-back" onclick="showHome()">← Retour</button>
+  <button class="btn-back" id="btn-back-sub" onclick="showHome()">← <span id="back-sub-lbl">Retour</span></button>
   <div class="subject-hdr" id="subject-hdr"></div>
-  <div class="tabs" id="subject-tabs">
-    <button class="tab active" id="tab-btn-quiz"  onclick="switchTab('quiz')">📝 Quiz</button>
-    <button class="tab"        id="tab-btn-notes" onclick="switchTab('notes')">📖 Fiches de révision</button>
+  <div class="tabs">
+    <button class="tab active" id="tab-btn-quiz"  onclick="switchTab('quiz')">📝 <span id="lbl-quiz-tab">Quiz</span></button>
+    <button class="tab"        id="tab-btn-notes" onclick="switchTab('notes')">📖 <span id="lbl-notes-tab">Fiches de révision</span></button>
   </div>
   <div id="tab-quiz"  class="tab-content active"></div>
   <div id="tab-notes" class="tab-content"></div>
 </div>
 
-<!-- ══════════ QUIZ VIEW ══════════ -->
+<!-- ══════ QUIZ ══════ -->
 <div id="view-quiz" class="view">
-  <button class="btn-back" id="quiz-back">← Quitter le quiz</button>
-  <div class="quiz-container">
+  <button class="btn-back" id="quiz-back">← <span id="quiz-back-lbl">Quitter le quiz</span></button>
+  <div class="quiz-wrap">
     <div class="quiz-meta">
       <span id="q-num">Question 1/10</span>
-      <div class="q-prog-track">
-        <div class="q-prog-fill" id="q-prog" style="width:10%"></div>
+      <div class="q-prog-track"><div class="q-prog-fill" id="q-prog" style="width:10%"></div></div>
+      <div style="display:flex;align-items:center;gap:0.6rem">
+        <span id="q-score-live">Score : 0</span>
+        <button id="calc-toggle-btn" class="calc-toggle-btn" onclick="toggleCalc()" title="Calculatrice 🧮">🧮</button>
       </div>
-      <span id="q-score-live">Score : 0</span>
     </div>
     <div class="q-card">
+      <div id="q-subject-tag" class="q-subject-tag" style="display:none"></div>
       <div class="q-text"    id="q-text"></div>
       <div class="options"   id="q-options"></div>
       <div class="explanation" id="q-expl"></div>
@@ -352,9 +768,39 @@
   </div>
 </div>
 
-<!-- ══════════ RESULTS VIEW ══════════ -->
+<!-- ══════ QUIZ SELECTOR ══════ -->
+<div id="view-quiz-select" class="view">
+  <button class="btn-back" onclick="showHome()">← <span class="back-qs-lbl">Retour</span></button>
+  <div class="qs-title">
+    <h2 id="qs-main-title">🎯 Créer ton quiz</h2>
+    <p  id="qs-main-sub">Sélectionne les matières que tu veux réviser</p>
+  </div>
+
+  <!-- Subject cards -->
+  <div class="qs-grid" id="qs-grid"></div>
+
+  <!-- Question count -->
+  <div class="qs-options-row">
+    <h4 id="qs-count-label">Nombre de questions</h4>
+    <div class="qs-count-btns" id="qs-count-btns">
+      <button class="qs-count-btn" data-val="5"  onclick="setQCount(5)">5</button>
+      <button class="qs-count-btn active" data-val="10" onclick="setQCount(10)">10</button>
+      <button class="qs-count-btn" data-val="20" onclick="setQCount(20)">20</button>
+      <button class="qs-count-btn" data-val="40" onclick="setQCount(40)">40</button>
+      <button class="qs-count-btn" data-val="0"  onclick="setQCount(0)" id="qs-count-all">Toutes</button>
+    </div>
+  </div>
+
+  <div class="qs-footer">
+    <button class="qs-start-btn" id="qs-start-btn" onclick="buildCustomQuiz()" disabled>
+      🚀 <span id="qs-start-lbl">Lancer le quiz</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════ RESULTS ══════ -->
 <div id="view-results" class="view">
-  <div class="results-card" id="results-card">
+  <div class="results-card">
     <div class="r-emoji" id="r-emoji"></div>
     <div class="r-title" id="r-title"></div>
     <div class="score-ring" id="score-ring">
@@ -363,458 +809,810 @@
     </div>
     <p class="score-msg" id="score-msg"></p>
     <div class="btn-group" style="justify-content:center">
-      <button class="btn btn-primary" id="btn-retry" onclick="retryQuiz()">🔄 Réessayer</button>
-      <button class="btn btn-outline"  id="btn-home"  onclick="showHome()">🏠 Accueil</button>
+      <button class="btn btn-primary" id="btn-retry" onclick="retryQuiz()">🔄 <span id="lbl-retry">Réessayer</span></button>
+      <button class="btn btn-outline"  id="btn-home"  onclick="showHome()">🏠 <span id="lbl-home">Accueil</span></button>
     </div>
   </div>
 </div>
 
-<!-- ══════════ SCRIPT ══════════ -->
+<!-- ══════ FLOATING CALCULATOR ══════ -->
+<div id="calculator" class="calculator">
+  <div class="calc-hdr">
+    <span class="calc-hdr-title">🧮 Calculatrice</span>
+    <button class="calc-close-btn" onclick="toggleCalc()">✕</button>
+  </div>
+  <div class="calc-screen">
+    <div class="calc-expr"    id="calc-expr"></div>
+    <div class="calc-display" id="calc-display">0</div>
+  </div>
+  <div class="calc-grid">
+    <!-- Row 1: clear, parens, del -->
+    <button class="cbtn cbtn-clear" onclick="cKey('C')">C</button>
+    <button class="cbtn cbtn-fn"    onclick="cKey('(')">( )</button>
+    <button class="cbtn cbtn-fn"    onclick="cKey(')')"> )</button>
+    <button class="cbtn cbtn-del"   onclick="cKey('DEL')">⌫</button>
+    <!-- Row 2: functions + ÷ -->
+    <button class="cbtn cbtn-fn"    onclick="cKey('√(')">√</button>
+    <button class="cbtn cbtn-fn"    onclick="cKey('^2')">x²</button>
+    <button class="cbtn cbtn-fn"    onclick="cKey('π')">π</button>
+    <button class="cbtn cbtn-op"    onclick="cKey('÷')">÷</button>
+    <!-- Row 3: 7 8 9 × -->
+    <button class="cbtn cbtn-num"   onclick="cKey('7')">7</button>
+    <button class="cbtn cbtn-num"   onclick="cKey('8')">8</button>
+    <button class="cbtn cbtn-num"   onclick="cKey('9')">9</button>
+    <button class="cbtn cbtn-op"    onclick="cKey('×')">×</button>
+    <!-- Row 4: 4 5 6 - -->
+    <button class="cbtn cbtn-num"   onclick="cKey('4')">4</button>
+    <button class="cbtn cbtn-num"   onclick="cKey('5')">5</button>
+    <button class="cbtn cbtn-num"   onclick="cKey('6')">6</button>
+    <button class="cbtn cbtn-op"    onclick="cKey('−')">−</button>
+    <!-- Row 5: 1 2 3 + -->
+    <button class="cbtn cbtn-num"   onclick="cKey('1')">1</button>
+    <button class="cbtn cbtn-num"   onclick="cKey('2')">2</button>
+    <button class="cbtn cbtn-num"   onclick="cKey('3')">3</button>
+    <button class="cbtn cbtn-op"    onclick="cKey('+')">+</button>
+    <!-- Row 6: 0 . = (= spans 2) -->
+    <button class="cbtn cbtn-num"   onclick="cKey('0')">0</button>
+    <button class="cbtn cbtn-num"   onclick="cKey('.')">.</button>
+    <button class="cbtn cbtn-eq"    onclick="cCalc()">=</button>
+  </div>
+</div>
+
 <script>
-/* ─────────────────────────────────────────
+/* ═══════════════════════════════════════
+   LANGUAGE
+═══════════════════════════════════════ */
+let LANG = 'fr';
+
+const UI = {
+  appTitle:    { fr:"Révision Brevet",              en:"Brevet Revision" },
+  appSub:      { fr:"Prépare-toi au Brevet des Collèges", en:"Prepare for your Brevet des Collèges" },
+  heroTitle:   { fr:"Bonne révision ! 📚",          en:"Happy studying! 📚" },
+  heroSub:     { fr:"Choisis une matière pour commencer", en:"Choose a subject to get started" },
+  overall:     { fr:"PROGRESSION GÉNÉRALE",         en:"OVERALL PROGRESS" },
+  progress:    { fr:"Progression",                  en:"Progress" },
+  chapters:    { fr:"chapitres",                    en:"chapters" },
+  quizTab:     { fr:"Quiz",                         en:"Quiz" },
+  notesTab:    { fr:"Fiches de révision",            en:"Study Notes" },
+  back:        { fr:"Retour",                       en:"Back" },
+  quitQuiz:    { fr:"Quitter le quiz",              en:"Quit Quiz" },
+  startQuiz:   { fr:"🚀 Commencer le quiz",         en:"🚀 Start the Quiz" },
+  questions:   { fr:"questions",                    en:"questions" },
+  bestScore:   { fr:"🏆 Meilleur score",            en:"🏆 Best Score" },
+  question:    { fr:"Question",                     en:"Question" },
+  score:       { fr:"Score",                        en:"Score" },
+  nextQ:       { fr:"Question suivante →",          en:"Next Question →" },
+  seeResults:  { fr:"Voir les résultats 🏁",        en:"See Results 🏁" },
+  retry:       { fr:"Réessayer",                    en:"Try Again" },
+  home:        { fr:"Accueil",                      en:"Home" },
+  expandAll:   { fr:"Tout déplier",                 en:"Expand All" },
+  collapseAll: { fr:"Tout replier",                 en:"Collapse All" },
+  cqBannerTitle: { fr:"Créer un quiz personnalisé",     en:"Build a Custom Quiz" },
+  cqBannerSub:   { fr:"Choisis tes matières et le nombre de questions", en:"Pick your subjects and number of questions" },
+  cqBannerBtn:   { fr:"Personnaliser",                  en:"Customise" },
+  qsMainTitle:   { fr:"🎯 Créer ton quiz",              en:"🎯 Build Your Quiz" },
+  qsMainSub:     { fr:"Sélectionne les matières que tu veux réviser",   en:"Select the subjects you want to be tested on" },
+  qsCountLabel:  { fr:"Nombre de questions",            en:"Number of Questions" },
+  qsCountAll:    { fr:"Toutes",                         en:"All" },
+  qsStartBtn:    { fr:"Lancer le quiz",                 en:"Start Quiz" },
+  qsSelectHint:  { fr:"Sélectionne au moins une matière",               en:"Select at least one subject" },
+  customQuizTitle: { fr:"Quiz Personnalisé",            en:"Custom Quiz" },
+  msg90: { fr:"Excellent ! Tu maîtrises parfaitement ce sujet !", en:"Excellent! You've mastered this subject!" },
+  msg70: { fr:"Très bien ! Encore un peu de travail et tu seras prêt(e) !", en:"Great job! Keep practising and you'll be ready!" },
+  msg50: { fr:"Bien ! Continue à réviser les fiches pour progresser.", en:"Good effort! Review the notes to keep improving." },
+  msg0:  { fr:"Continue tes révisions ! Relis les fiches et réessaie.", en:"Keep studying! Review your notes and try again." },
+  tagHist: { fr:"Histoire", en:"History" },
+  tagGeo:  { fr:"Géographie", en:"Geography" },
+  tagEMC:  { fr:"EMC", en:"Civics" },
+  tagSVT:  { fr:"SVT", en:"Biology" },
+  tagPC:   { fr:"Physique-Chimie", en:"Physics-Chem" },
+};
+function T(k){ return (UI[k] && UI[k][LANG]) || k; }
+
+function setLang(l) {
+  LANG = l;
+  document.documentElement.lang = l;
+  document.getElementById('lang-fr').classList.toggle('active', l==='fr');
+  document.getElementById('lang-en').classList.toggle('active', l==='en');
+  document.getElementById('app-title').textContent = T('appTitle');
+  document.getElementById('app-sub').textContent   = T('appSub');
+  document.getElementById('hero-title').textContent = T('heroTitle');
+  document.getElementById('hero-sub').textContent   = T('heroSub');
+  document.getElementById('overall-label').textContent = T('overall');
+  document.getElementById('back-sub-lbl').textContent  = T('back');
+  document.getElementById('quiz-back-lbl').textContent = T('quitQuiz');
+  document.getElementById('lbl-quiz-tab').textContent  = T('quizTab');
+  document.getElementById('lbl-notes-tab').textContent = T('notesTab');
+  document.getElementById('lbl-retry').textContent = T('retry');
+  document.getElementById('lbl-home').textContent  = T('home');
+  // Quiz selector UI
+  document.getElementById('cq-banner-title').textContent = T('cqBannerTitle');
+  document.getElementById('cq-banner-sub').textContent   = T('cqBannerSub');
+  document.getElementById('cq-banner-btn').textContent   = T('cqBannerBtn');
+  document.getElementById('qs-main-title').textContent   = T('qsMainTitle');
+  document.getElementById('qs-main-sub').textContent     = T('qsMainSub');
+  document.getElementById('qs-count-label').textContent  = T('qsCountLabel');
+  document.getElementById('qs-count-all').textContent    = T('qsCountAll');
+  document.getElementById('qs-start-lbl').textContent    = T('qsStartBtn');
+  document.querySelectorAll('.back-qs-lbl').forEach(el => el.textContent = T('back'));
+  document.title = T('appTitle') + ' 🎓';
+  const active = document.querySelector('.view.active');
+  // Annales banner strings
+  const ab = document.getElementById('annales-banner-title');
+  const as = document.getElementById('annales-banner-sub');
+  const abtn = document.getElementById('annales-banner-btn');
+  if (ab) ab.textContent   = l==='fr' ? 'Sujets des Années Précédentes' : 'Past Exam Papers';
+  if (as) as.textContent   = l==='fr' ? 'Consulte les thèmes tombés de 2019 à 2024' : 'Browse topics tested from 2019 to 2024';
+  if (abtn) abtn.textContent = l==='fr' ? 'Voir les annales' : 'View past papers';
+  const at = document.getElementById('annales-title');
+  const asub = document.getElementById('annales-sub');
+  const sl = document.getElementById('sources-label');
+  if (at) at.textContent   = l==='fr' ? 'SUJETS DE BREVETS DES ANNÉES PRÉCÉDENTS' : 'PAST BREVET EXAM PAPERS';
+  if (asub) asub.textContent = l==='fr' ? 'Explore les thèmes et exercices tombés à l\'examen pour mieux te préparer' : 'Explore past exam themes and exercises to sharpen your preparation';
+  if (sl) sl.textContent   = l==='fr' ? '📎 Télécharger les sujets officiels' : '📎 Download official papers';
+  if (active.id === 'view-home')        renderHome();
+  if (active.id === 'view-subject')     openSubject(currentSubject);
+  if (active.id === 'view-quiz')        renderQuestion();
+  if (active.id === 'view-quiz-select') renderQuizSelector();
+  if (active.id === 'view-annales')     renderAnnales();
+}
+
+/* ═══════════════════════════════════════
    DATA
-───────────────────────────────────────── */
+═══════════════════════════════════════ */
 const SUBJECTS = {
+
+  /* ─── MATHÉMATIQUES ─── */
   maths: {
-    name: "Mathématiques", icon: "📐", color: "#3B82F6",
-    desc: "Algèbre · Géométrie · Statistiques",
-    notes: [
-      {
-        title: "Algèbre — Identités remarquables",
-        items: [
-          { text: "(a + b)² = a² + 2ab + b²", formula: "(a+b)² = a² + 2ab + b²" },
-          { text: "(a − b)² = a² − 2ab + b²", formula: "(a−b)² = a² − 2ab + b²" },
-          { text: "(a + b)(a − b) = a² − b²  (différence de deux carrés)", formula: "(a+b)(a−b) = a² − b²" },
-          { text: "Résolution de ax + b = 0  →  x = −b/a  (si a ≠ 0)", formula: "x = −b/a" },
-        ]
-      },
-      {
-        title: "Géométrie",
-        items: [
-          { text: "Théorème de Pythagore : dans un triangle rectangle, c² = a² + b² où c est l'hypoténuse.", formula: "c² = a² + b²" },
-          { text: "Théorème de Thalès : si (DE) ∥ (BC), alors  AD/AB = AE/AC = DE/BC" },
-          { text: "Périmètre du cercle", formula: "P = 2πr" },
-          { text: "Aire du cercle", formula: "A = πr²" },
-          { text: "Aire d'un triangle", formula: "A = (base × hauteur) / 2" },
-        ]
-      },
-      {
-        title: "Statistiques & Probabilités",
-        items: [
-          { text: "Moyenne arithmétique", formula: "x̄ = (Σ xi) / n" },
-          { text: "Médiane : valeur centrale quand les données sont classées en ordre croissant." },
-          { text: "Probabilité d'un événement A", formula: "P(A) = cas favorables / cas totaux" },
-          { text: "Propriété fondamentale : 0 ≤ P(A) ≤ 1" },
-        ]
-      },
-      {
-        title: "Fonctions",
-        items: [
-          { text: "Fonction linéaire : f(x) = ax  (droite passant par l'origine O)" },
-          { text: "Fonction affine : f(x) = ax + b  (a = coefficient directeur, b = ordonnée à l'origine)" },
-          { text: "Calcul du coefficient directeur à partir de deux points", formula: "a = (y₂ − y₁) / (x₂ − x₁)" },
-        ]
-      }
+    name:  { fr:"Mathématiques",  en:"Mathematics" },
+    icon:  "🧮",
+    color: "#C9A84C",
+    desc:  { fr:"Algèbre · Géométrie · Statistiques", en:"Algebra · Geometry · Statistics" },
+    chapters: [
+      { id:1, emoji:"🔢", title:{fr:"Nombres et calculs",en:"Numbers & Calculations"}, tag:null, notes:[
+        { text:{fr:"Puissances : a⁰=1, a⁻ⁿ=1/aⁿ, (aⁿ)ᵐ=aⁿˣᵐ",en:"Powers: a⁰=1, a⁻ⁿ=1/aⁿ, (aⁿ)ᵐ=aⁿˣᵐ"}, formula:"a^n × a^m = a^(n+m)" },
+        { text:{fr:"Racines carrées : √(a×b) = √a × √b ; √(a/b) = √a/√b",en:"Square roots: √(a×b)=√a×√b ; √(a/b)=√a/√b"} },
+        { text:{fr:"Notation scientifique : a × 10ⁿ avec 1 ≤ a < 10",en:"Scientific notation: a × 10ⁿ where 1 ≤ a < 10"} },
+        { text:{fr:"Priorités : parenthèses → puissances → ×÷ → +−",en:"Order of operations: brackets → powers → ×÷ → +−"} },
+        { text:{fr:"Fractions : a/b + c/d = (ad+bc)/bd ; simplification par PGCD",en:"Fractions: a/b + c/d = (ad+bc)/bd ; simplify by GCD"} },
+      ]},
+      { id:2, emoji:"🔤", title:{fr:"Calcul littéral",en:"Algebraic Expressions"}, tag:null, notes:[
+        { text:{fr:"Développer et réduire : distribuer chaque terme, regrouper les termes semblables",en:"Expand and simplify: distribute each term, collect like terms"}, formula:"(a+b)² = a² + 2ab + b²" },
+        { text:{fr:"(a−b)² = a² − 2ab + b²",en:"(a−b)² = a² − 2ab + b²"}, formula:"(a−b)² = a² − 2ab + b²" },
+        { text:{fr:"Différence de deux carrés : (a+b)(a−b) = a² − b²",en:"Difference of two squares: (a+b)(a−b) = a² − b²"}, formula:"(a+b)(a−b) = a² − b²" },
+        { text:{fr:"Factoriser : mettre en évidence le facteur commun ou utiliser une identité remarquable",en:"Factorise: take out the common factor or use a special identity"} },
+      ]},
+      { id:3, emoji:"⚖️", title:{fr:"Équations & Inéquations",en:"Equations & Inequalities"}, tag:null, notes:[
+        { text:{fr:"Équation du 1er degré : ax + b = 0 → x = −b/a (si a ≠ 0)",en:"1st-degree equation: ax+b=0 → x=−b/a (if a≠0)"}, formula:"x = −b/a" },
+        { text:{fr:"Système de 2 équations : méthode de substitution ou par combinaison",en:"System of 2 equations: substitution or elimination method"} },
+        { text:{fr:"Inéquation : même règles qu'une équation SAUF si l'on divise/multiplie par un négatif → inverser le signe",en:"Inequality: same rules as equations EXCEPT when dividing/multiplying by a negative → flip the sign"} },
+        { text:{fr:"Équation du 2nd degré (racines) : x = (−b ± √Δ) / 2a avec Δ = b² − 4ac",en:"Quadratic formula: x = (−b ± √Δ) / 2a where Δ = b² − 4ac"}, formula:"Δ = b² − 4ac" },
+      ]},
+      { id:4, emoji:"📈", title:{fr:"Fonctions",en:"Functions"}, tag:null, notes:[
+        { text:{fr:"Image et antécédent : si f(3)=5, l'image de 3 est 5 ; l'antécédent de 5 est 3",en:"Image & preimage: if f(3)=5, the image of 3 is 5; the preimage of 5 is 3"} },
+        { text:{fr:"Fonction linéaire f(x) = ax : droite passant par l'origine O(0,0)",en:"Linear function f(x)=ax: straight line through the origin O(0,0)"} },
+        { text:{fr:"Fonction affine f(x) = ax + b : a = pente (coefficient directeur), b = ordonnée à l'origine",en:"Affine function f(x)=ax+b: a = gradient, b = y-intercept"}, formula:"a = (y₂−y₁) / (x₂−x₁)" },
+        { text:{fr:"Tableau de valeurs → représentation graphique → lecture des images/antécédents",en:"Table of values → graph → reading images/preimages"} },
+      ]},
+      { id:5, emoji:"📐", title:{fr:"Théorème de Pythagore",en:"Pythagorean Theorem"}, tag:null, notes:[
+        { text:{fr:"Dans tout triangle rectangle, c² = a² + b² (c = hypoténuse, a et b = cathètes)",en:"In any right-angled triangle: c² = a² + b² (c = hypotenuse, a,b = legs)"}, formula:"c² = a² + b²" },
+        { text:{fr:"Réciproque : si c² = a² + b² alors le triangle est rectangle en C",en:"Converse: if c² = a² + b² then the triangle is right-angled at C"} },
+        { text:{fr:"Applications : calculer une longueur manquante, vérifier qu'un angle est droit",en:"Uses: find a missing length, check that an angle is 90°"} },
+      ]},
+      { id:6, emoji:"🔀", title:{fr:"Théorème de Thalès",en:"Thales' Theorem"}, tag:null, notes:[
+        { text:{fr:"Si (DE) ∥ (BC) dans le triangle ABC, alors : AD/AB = AE/AC = DE/BC",en:"If (DE) ∥ (BC) in triangle ABC, then: AD/AB = AE/AC = DE/BC"}, formula:"AD/AB = AE/AC = DE/BC" },
+        { text:{fr:"Réciproque : si AD/AB = AE/AC alors (DE) ∥ (BC)",en:"Converse: if AD/AB = AE/AC then (DE) ∥ (BC)"} },
+        { text:{fr:"Attention au sens du rapport et à l'ordre des points sur chaque droite",en:"Pay attention to the order of the ratios and the position of points on each line"} },
+      ]},
+      { id:7, emoji:"📏", title:{fr:"Trigonométrie",en:"Trigonometry"}, tag:null, notes:[
+        { text:{fr:"Dans un triangle rectangle d'angle aigu α :", en:"In a right-angled triangle with acute angle α:"}, formula:"sin α = côté opposé / hypoténuse" },
+        { text:{fr:"cos α = côté adjacent / hypoténuse",en:"cos α = adjacent side / hypotenuse"}, formula:"cos α = adjacent / hypotenuse" },
+        { text:{fr:"tan α = côté opposé / côté adjacent = sin α / cos α",en:"tan α = opposite / adjacent = sin α / cos α"}, formula:"tan α = sin α / cos α" },
+        { text:{fr:"Relation fondamentale : sin²α + cos²α = 1",en:"Fundamental identity: sin²α + cos²α = 1"}, formula:"sin²α + cos²α = 1" },
+      ]},
+      { id:8, emoji:"🧊", title:{fr:"Géométrie dans l'espace",en:"3D Geometry"}, tag:null, notes:[
+        { text:{fr:"Cylindre de rayon r et hauteur h",en:"Cylinder of radius r and height h"}, formula:"V = πr²h  |  Alat = 2πrh" },
+        { text:{fr:"Cône de rayon r et hauteur h",en:"Cone of radius r and height h"}, formula:"V = πr²h / 3" },
+        { text:{fr:"Sphère de rayon r",en:"Sphere of radius r"}, formula:"V = (4/3)πr³  |  A = 4πr²" },
+        { text:{fr:"Pyramide : base B, hauteur h",en:"Pyramid: base B, height h"}, formula:"V = (B × h) / 3" },
+      ]},
+      { id:9, emoji:"📊", title:{fr:"Statistiques",en:"Statistics"}, tag:null, notes:[
+        { text:{fr:"Moyenne pondérée",en:"Weighted mean"}, formula:"x̄ = Σ(xi × ni) / Σni" },
+        { text:{fr:"Médiane : valeur centrale qui partage la série en deux moitiés égales",en:"Median: middle value that splits the data set into two equal halves"} },
+        { text:{fr:"Étendue = valeur maximale − valeur minimale",en:"Range = maximum value − minimum value"} },
+        { text:{fr:"Diagrammes : barres, circulaire (secteurs), histogramme, boîte à moustaches",en:"Diagrams: bar chart, pie chart (sectors), histogram, box plot"} },
+      ]},
+      { id:10, emoji:"🎲", title:{fr:"Probabilités",en:"Probability"}, tag:null, notes:[
+        { text:{fr:"Probabilité d'un événement A",en:"Probability of event A"}, formula:"P(A) = cas favorables / cas totaux" },
+        { text:{fr:"Propriétés : 0 ≤ P(A) ≤ 1 ; P(Ω)=1 (événement certain) ; P(∅)=0 (événement impossible)",en:"Properties: 0≤P(A)≤1 ; P(Ω)=1 (certain event) ; P(∅)=0 (impossible event)"} },
+        { text:{fr:"Événement contraire : P(Ā) = 1 − P(A)",en:"Complementary event: P(Ā) = 1 − P(A)"}, formula:"P(Ā) = 1 − P(A)" },
+        { text:{fr:"Événements incompatibles (A ∩ B = ∅) : P(A ∪ B) = P(A) + P(B)",en:"Mutually exclusive events (A ∩ B = ∅): P(A ∪ B) = P(A) + P(B)"} },
+      ]},
     ],
     questions: [
-      { q: "Développer (x + 3)²", opts: ["x² + 6x + 9","x² + 9","x² + 3x + 9","x² + 6x + 6"], ans: 0,
-        expl: "Identité (a+b)² = a²+2ab+b². Ici a=x, b=3 → x² + 2·3·x + 9 = x² + 6x + 9." },
-      { q: "Dans un triangle rectangle, les cathètes mesurent 3 cm et 4 cm. Quelle est la longueur de l'hypoténuse ?", opts: ["5 cm","7 cm","√7 cm","25 cm"], ans: 0,
-        expl: "Pythagore : c² = 3² + 4² = 9 + 16 = 25, donc c = √25 = 5 cm." },
-      { q: "Quelle est la probabilité d'obtenir un nombre pair en lançant un dé à 6 faces ?", opts: ["1/2","1/3","2/3","1/6"], ans: 0,
-        expl: "Nombres pairs : 2, 4, 6 → 3 cas favorables sur 6. P = 3/6 = 1/2." },
-      { q: "Factoriser x² − 9", opts: ["(x − 3)(x + 3)","(x − 9)(x + 1)","(x − 3)²","(x + 3)²"], ans: 0,
-        expl: "x²−9 = x²−3² est une différence de carrés : (a−b)(a+b). Donc (x−3)(x+3)." },
-      { q: "Une droite passe par A(0, 2) et B(3, 8). Quelle est sa pente ?", opts: ["2","3","6","1/2"], ans: 0,
-        expl: "a = (8−2)/(3−0) = 6/3 = 2." },
-      { q: "Quelle est l'aire d'un cercle de rayon 5 cm ?", opts: ["25π cm²","10π cm²","5π cm²","50π cm²"], ans: 0,
-        expl: "A = πr² = π × 5² = 25π cm²." },
-      { q: "Résoudre 3x − 6 = 0", opts: ["x = 2","x = −2","x = 6","x = 3"], ans: 0,
-        expl: "3x − 6 = 0 → 3x = 6 → x = 2." },
-      { q: "La moyenne de 5 notes est 13. Les quatre premières sont 12, 14, 11, 15. Quelle est la 5ᵉ note ?", opts: ["13","12","15","10"], ans: 0,
-        expl: "Somme totale = 5×13 = 65. Somme des 4 premières = 52. 5ᵉ note = 65 − 52 = 13." },
-      { q: "Développer et réduire (2x − 1)(x + 4)", opts: ["2x² + 7x − 4","2x² + 8x − 4","2x² − 5x − 4","2x² + 7x + 4"], ans: 0,
-        expl: "(2x)(x) + (2x)(4) + (−1)(x) + (−1)(4) = 2x² + 8x − x − 4 = 2x² + 7x − 4." },
-      { q: "Dans △ABC, (DE) ∥ (BC) avec AD = 4, DB = 2, AE = 6. Quelle est EC ?", opts: ["3","4","6","2"], ans: 0,
-        expl: "Thalès : AD/DB = AE/EC → 4/2 = 6/EC → EC = 6×2/4 = 3." },
+      { q:{fr:"Développer (x + 3)²",en:"Expand (x + 3)²"}, opts:{fr:["x² + 6x + 9","x² + 9","x² + 3x + 9","x² + 6x + 6"],en:["x² + 6x + 9","x² + 9","x² + 3x + 9","x² + 6x + 6"]}, ans:0, expl:{fr:"(a+b)² = a²+2ab+b². Ici a=x, b=3 → x²+6x+9.",en:"(a+b)²=a²+2ab+b². Here a=x, b=3 → x²+6x+9."} },
+      { q:{fr:"Deux cathètes mesurent 3 cm et 4 cm. Quelle est l'hypoténuse ?",en:"Two legs measure 3 cm and 4 cm. What is the hypotenuse?"}, opts:{fr:["5 cm","7 cm","√7 cm","25 cm"],en:["5 cm","7 cm","√7 cm","25 cm"]}, ans:0, expl:{fr:"Pythagore : c²=3²+4²=25 → c=5 cm.",en:"Pythagoras: c²=3²+4²=25 → c=5 cm."} },
+      { q:{fr:"Probabilité d'obtenir un nombre pair sur un dé à 6 faces ?",en:"Probability of rolling an even number on a 6-sided die?"}, opts:{fr:["1/2","1/3","2/3","1/6"],en:["1/2","1/3","2/3","1/6"]}, ans:0, expl:{fr:"Nombres pairs: 2,4,6 → 3 cas sur 6. P=1/2.",en:"Even numbers: 2,4,6 → 3 cases out of 6. P=1/2."} },
+      { q:{fr:"Factoriser x² − 9",en:"Factorise x² − 9"}, opts:{fr:["(x−3)(x+3)","(x−9)(x+1)","(x−3)²","(x+3)²"],en:["(x−3)(x+3)","(x−9)(x+1)","(x−3)²","(x+3)²"]}, ans:0, expl:{fr:"x²−9=x²−3² → différence de carrés → (x−3)(x+3).",en:"x²−9=x²−3² → difference of two squares → (x−3)(x+3)."} },
+      { q:{fr:"Droite passant par A(0,2) et B(3,8). Quelle est sa pente ?",en:"A line passes through A(0,2) and B(3,8). What is its gradient?"}, opts:{fr:["2","3","6","1/2"],en:["2","3","6","1/2"]}, ans:0, expl:{fr:"a=(8−2)/(3−0)=6/3=2.",en:"a=(8−2)/(3−0)=6/3=2."} },
+      { q:{fr:"Aire d'un cercle de rayon 5 cm ?",en:"Area of a circle with radius 5 cm?"}, opts:{fr:["25π cm²","10π cm²","5π cm²","50π cm²"],en:["25π cm²","10π cm²","5π cm²","50π cm²"]}, ans:0, expl:{fr:"A=πr²=π×5²=25π cm².",en:"A=πr²=π×5²=25π cm²."} },
+      { q:{fr:"Résoudre 3x − 6 = 0",en:"Solve 3x − 6 = 0"}, opts:{fr:["x = 2","x = −2","x = 6","x = 3"],en:["x = 2","x = −2","x = 6","x = 3"]}, ans:0, expl:{fr:"3x=6 → x=2.",en:"3x=6 → x=2."} },
+      { q:{fr:"La moyenne de 5 notes est 13. Les 4 premières : 12,14,11,15. Quelle est la 5ᵉ ?",en:"The mean of 5 grades is 13. The first 4 are 12,14,11,15. What is the 5th?"}, opts:{fr:["13","12","15","10"],en:["13","12","15","10"]}, ans:0, expl:{fr:"Somme=5×13=65. Somme 4 premières=52. 5ᵉ=65−52=13.",en:"Total=5×13=65. Sum of 4 grades=52. 5th=65−52=13."} },
+      { q:{fr:"Développer (2x−1)(x+4)",en:"Expand (2x−1)(x+4)"}, opts:{fr:["2x²+7x−4","2x²+8x−4","2x²−5x−4","2x²+7x+4"],en:["2x²+7x−4","2x²+8x−4","2x²−5x−4","2x²+7x+4"]}, ans:0, expl:{fr:"2x²+8x−x−4=2x²+7x−4.",en:"2x²+8x−x−4=2x²+7x−4."} },
+      { q:{fr:"Thalès : AD=4, DB=2, AE=6. Quelle est EC ?",en:"Thales: AD=4, DB=2, AE=6. What is EC?"}, opts:{fr:["3","4","6","2"],en:["3","4","6","2"]}, ans:0, expl:{fr:"AD/DB=AE/EC → 4/2=6/EC → EC=3.",en:"AD/DB=AE/EC → 4/2=6/EC → EC=3."} },
     ]
   },
 
+  /* ─── FRANÇAIS ─── */
   francais: {
-    name: "Français", icon: "✍️", color: "#8B5CF6",
-    desc: "Grammaire · Littérature · Rédaction",
-    notes: [
-      {
-        title: "Conjugaison — Principaux temps",
-        items: [
-          { text: "Présent de l'indicatif : action actuelle ou vérité générale." },
-          { text: "Imparfait : action habituelle ou description dans le passé." },
-          { text: "Passé composé : action passée et terminée, avec lien au présent." },
-          { text: "Plus-que-parfait : action passée antérieure à une autre action passée." },
-          { text: "Futur simple : action à venir présentée comme certaine." },
-        ]
-      },
-      {
-        title: "Figures de style",
-        items: [
-          { text: "Métaphore : comparaison sans outil comparatif. Ex : « La vie est un long fleuve. »" },
-          { text: "Comparaison : avec outil (comme, tel, ainsi que…). Ex : « courageux comme un lion »." },
-          { text: "Personnification : attribuer des traits humains à un objet ou phénomène. Ex : « Le vent hurle. »" },
-          { text: "Hyperbole : exagération pour accentuer un effet. Ex : « mourir de rire »." },
-          { text: "Anaphore : répétition d'un mot ou groupe en début de phrase pour créer un rythme fort." },
-        ]
-      },
-      {
-        title: "Types de textes",
-        items: [
-          { text: "Texte narratif : raconte une histoire — verbes d'action, connecteurs temporels." },
-          { text: "Texte descriptif : décrit un lieu ou personnage — adjectifs, comparaisons, détails sensoriels." },
-          { text: "Texte argumentatif : défend une thèse — connecteurs logiques, exemples, contre-arguments." },
-          { text: "Texte explicatif : explique un phénomène — vocabulaire spécialisé, connecteurs de cause/conséquence." },
-        ]
-      },
-      {
-        title: "Rédaction — Méthode",
-        items: [
-          { text: "Introduction : accroche, présentation du sujet, annonce du plan." },
-          { text: "Développement : ≥ 2 paragraphes, chacun avec idée + exemple + explication." },
-          { text: "Conclusion : bilan des arguments + ouverture sur une question plus large." },
-          { text: "Connecteurs utiles : cependant, ainsi, de plus, or, en revanche, par conséquent, néanmoins." },
-        ]
-      }
+    name:  { fr:"Français",  en:"French" },
+    icon:  "📝",
+    color: "#A0192E",
+    desc:  { fr:"Grammaire · Littérature · Rédaction", en:"Grammar · Literature · Essay Writing" },
+    chapters: [
+      { id:1, emoji:"⚡", title:{fr:"Grammaire",en:"Grammar"}, tag:null, notes:[
+        { text:{fr:"Natures des mots : nom, adjectif, verbe, adverbe, pronom, préposition, conjonction, article",en:"Word classes: noun, adjective, verb, adverb, pronoun, preposition, conjunction, article"} },
+        { text:{fr:"Fonctions : sujet, COD (qui? quoi?), COI (à/de qui/quoi?), attribut du sujet, compléments circonstanciels",en:"Functions: subject, direct object (who/what?), indirect object, subject complement, adverbial phrases"} },
+        { text:{fr:"Propositions : principale, subordonnée relative (qui/que/dont/où), subordonnée conjonctive (que, si, quand…)",en:"Clauses: main clause, relative clause (who/which/where), noun clause (that, if, when…)"} },
+        { text:{fr:"Discours direct ↔ indirect : changements de pronoms, temps et indicateurs temporels",en:"Direct ↔ indirect speech: changes to pronouns, tenses, and time markers"} },
+      ]},
+      { id:2, emoji:"🕐", title:{fr:"Conjugaison",en:"Verb Conjugation"}, tag:null, notes:[
+        { text:{fr:"Présent : action actuelle ou vérité générale",en:"Present tense: current action or general truth"} },
+        { text:{fr:"Imparfait : action habituelle ou description dans le passé",en:"Imperfect: habitual action or description in the past"} },
+        { text:{fr:"Passé composé : action passée et terminée avec lien au présent",en:"Perfect tense: completed past action with link to the present"} },
+        { text:{fr:"Plus-que-parfait : action antérieure à une autre action passée",en:"Pluperfect: action that happened before another past action"} },
+        { text:{fr:"Futur simple : action à venir certaine",en:"Simple future: certain future action"} },
+        { text:{fr:"Conditionnel présent : action hypothétique (si + imparfait → conditionnel)",en:"Conditional: hypothetical action (si + imperfect → conditional)"} },
+        { text:{fr:"Subjonctif présent : après doute, souhait, sentiment introduit par 'que'",en:"Present subjunctive: after doubt, wish, or emotion introduced by 'que'"} },
+      ]},
+      { id:3, emoji:"✅", title:{fr:"Orthographe",en:"Spelling"}, tag:null, notes:[
+        { text:{fr:"Accord sujet-verbe : le verbe s'accorde en nombre (et personne) avec le sujet",en:"Subject-verb agreement: the verb agrees in number (and person) with the subject"} },
+        { text:{fr:"Accord de l'adjectif : en genre et en nombre avec le nom qu'il qualifie",en:"Adjective agreement: in gender and number with the noun it modifies"} },
+        { text:{fr:"Accord du participe passé avec avoir : s'accorde avec le COD si celui-ci est placé avant",en:"Past participle with avoir: agrees with a direct object that comes before the verb"} },
+        { text:{fr:"Accord du participe passé avec être : s'accorde avec le sujet",en:"Past participle with être: agrees with the subject"} },
+        { text:{fr:"Homophones clés : a/à, et/est, on/ont, son/sont, se/ce, ces/ses, là/la, peu/peut/peux",en:"Key homophones: a/à, et/est, on/ont, son/sont, se/ce, ces/ses"} },
+      ]},
+      { id:4, emoji:"💬", title:{fr:"Figures de style",en:"Figures of Speech"}, tag:null, notes:[
+        { text:{fr:"Métaphore : comparaison sans outil. Ex : « La vie est un voyage »",en:"Metaphor: comparison without a connective. Ex: 'Life is a journey'"} },
+        { text:{fr:"Comparaison : avec outil (comme, tel, ainsi que…). Ex : « courageux comme un lion »",en:"Simile: with a connective (like, as…). Ex: 'brave as a lion'"} },
+        { text:{fr:"Personnification : traits humains attribués à une chose. Ex : « Le vent hurle »",en:"Personification: human traits given to an object. Ex: 'The wind screams'"} },
+        { text:{fr:"Hyperbole : exagération. Ex : « mourir de rire »",en:"Hyperbole: exaggeration. Ex: 'dying of laughter'"} },
+        { text:{fr:"Anaphore : répétition en début de phrase pour créer un rythme fort",en:"Anaphora: repetition at the start of sentences to create a strong rhythm"} },
+        { text:{fr:"Métonymie : désigner le tout par la partie. Ex : « boire un verre »",en:"Metonymy: refer to something by a related concept. Ex: 'drinking a glass'"} },
+        { text:{fr:"Allitération : répétition d'un son consonantique. Ex : « Pour qui sont ces serpents qui sifflent sur vos têtes »",en:"Alliteration: repetition of a consonant sound for effect"} },
+      ]},
+      { id:5, emoji:"📖", title:{fr:"Le texte narratif",en:"Narrative Texts"}, tag:null, notes:[
+        { text:{fr:"Structure : situation initiale → élément perturbateur → péripéties → résolution → situation finale",en:"Structure: opening situation → trigger event → complications → resolution → final situation"} },
+        { text:{fr:"Points de vue : interne (narrateur = personnage), externe (observateur neutre), omniscient (narrateur sait tout)",en:"Narrative viewpoints: internal (narrator = character), external (neutral observer), omniscient (narrator knows all)"} },
+        { text:{fr:"Genres narratifs : roman, nouvelle, conte, fable",en:"Narrative genres: novel, short story, fairy tale, fable"} },
+        { text:{fr:"Connecteurs temporels : d'abord, puis, ensuite, enfin, finalement, soudain, simultanément",en:"Time connectives: first, then, next, finally, suddenly, at the same time"} },
+      ]},
+      { id:6, emoji:"🎭", title:{fr:"Le texte poétique",en:"Poetic Texts"}, tag:null, notes:[
+        { text:{fr:"Versification : alexandrin = 12 syllabes, décasyllabe = 10, octosyllabe = 8",en:"Versification: alexandrine = 12 syllables, decasyllable = 10, octosyllable = 8"} },
+        { text:{fr:"Rimes : plates AABB, croisées ABAB, embrassées ABBA",en:"Rhyme schemes: couplets AABB, alternating ABAB, enclosed ABBA"} },
+        { text:{fr:"Sonnet : 2 quatrains (4 vers) + 2 tercets (3 vers)",en:"Sonnet: 2 quatrains (4 lines) + 2 tercets (3 lines)"} },
+        { text:{fr:"Enjambement : rejet du sens d'un vers sur le suivant",en:"Enjambment: meaning runs over from one line to the next"} },
+      ]},
+      { id:7, emoji:"💡", title:{fr:"Le texte argumentatif",en:"Argumentative Texts"}, tag:null, notes:[
+        { text:{fr:"Structure : introduction (thèse + plan) → développement (arguments + exemples) → conclusion (bilan + ouverture)",en:"Structure: introduction (thesis + plan) → body (arguments + examples) → conclusion (summary + opening)"} },
+        { text:{fr:"Plan dialectique : thèse → antithèse → synthèse",en:"Dialectical plan: thesis → antithesis → synthesis"} },
+        { text:{fr:"Connecteurs logiques : cependant, ainsi, de plus, or, en revanche, par conséquent, certes, néanmoins",en:"Logical connectives: however, thus, furthermore, yet, on the other hand, therefore, admittedly, nevertheless"} },
+        { text:{fr:"Genres : essai, discours, lettre ouverte, article d'opinion, plaidoyer",en:"Genres: essay, speech, open letter, opinion article, plea"} },
+      ]},
+      { id:8, emoji:"✍️", title:{fr:"La rédaction",en:"Essay Writing"}, tag:null, notes:[
+        { text:{fr:"Rédiger un récit : choisir un point de vue, maintenir la cohérence des temps (passé composé/imparfait)",en:"Writing a narrative: choose a viewpoint, maintain tense consistency (perfect/imperfect)"} },
+        { text:{fr:"Texte descriptif : adjectifs précis, comparaisons, organisation spatiale (de gauche à droite, au premier plan…)",en:"Descriptive writing: precise adjectives, comparisons, spatial organisation (left to right, foreground…)"} },
+        { text:{fr:"Lettre formelle : formule d'appel (Madame/Monsieur), corps structuré, formule de politesse finale",en:"Formal letter: salutation (Dear Sir/Madam), structured body, formal closing"} },
+        { text:{fr:"Argument efficace = idée + exemple concret + explication du lien avec la thèse",en:"Effective argument = idea + concrete example + explanation of link to thesis"} },
+      ]},
     ],
     questions: [
-      { q: "Quelle figure de style est utilisée dans : « Le vent hurlait dans les arbres » ?", opts: ["Personnification","Métaphore","Hyperbole","Comparaison"], ans: 0,
-        expl: "On attribue l'action humaine « hurler » au vent, phénomène naturel → personnification." },
-      { q: "Quel temps exprime une action habituelle dans le passé ?", opts: ["L'imparfait","Le passé composé","Le présent","Le plus-que-parfait"], ans: 0,
-        expl: "L'imparfait traduit les actions habituelles ou répétées dans le passé. Ex : « Chaque matin, il se levait à 7h. »" },
-      { q: "Dans « Il est fort comme un lion », quelle figure de style est employée ?", opts: ["Comparaison","Métaphore","Personnification","Hyperbole"], ans: 0,
-        expl: "L'outil comparatif « comme » indique une comparaison. Sans cet outil, ce serait une métaphore." },
-      { q: "Qu'est-ce qu'une anaphore ?", opts: ["La répétition d'un mot en début de phrase","Une exagération","Une comparaison sans outil","L'attribution de traits humains à un objet"], ans: 0,
-        expl: "L'anaphore est la répétition d'un mot ou groupe en début de phrases/propositions consécutives. Ex : « I have a dream… »" },
-      { q: "Quelle est la structure correcte d'un texte argumentatif ?", opts: ["Introduction, développement, conclusion","Début, milieu, fin, annexe","Thèse, exemple, résumé","Problème, solution, bilan"], ans: 0,
-        expl: "Introduction (thèse + plan), développement (arguments + exemples), conclusion (bilan + ouverture)." },
-      { q: "Quelle est la différence entre métaphore et comparaison ?", opts: ["La comparaison utilise un outil (comme, tel), la métaphore non","La métaphore est plus longue","La comparaison parle toujours d'animaux","Il n'y a aucune différence"], ans: 0,
-        expl: "La comparaison = outil comparatif (comme…). La métaphore assimile directement deux éléments. Ex : « La vie est un voyage. »" },
-      { q: "Conjuguer « finir » à la 3ᵉ personne du pluriel au passé composé :", opts: ["Ils ont fini","Ils finissaient","Ils finirent","Ils finissent"], ans: 0,
-        expl: "Passé composé = auxiliaire (avoir) + participe passé. « Finir » → ils ont fini." },
-      { q: "Qu'est-ce qu'une hyperbole ?", opts: ["Une exagération pour accentuer un effet","Une répétition en début de phrase","Une comparaison directe","Un mot qui remplace un autre"], ans: 0,
-        expl: "Ex : « Je meurs de faim » — on n'est pas en train de mourir, mais l'exagération insiste sur la faim." },
-      { q: "Quel connecteur logique exprime une opposition ?", opts: ["Cependant","Ainsi","De plus","En effet"], ans: 0,
-        expl: "« Cependant » (= mais, or, en revanche, néanmoins, pourtant) marque une opposition ou restriction." },
-      { q: "Quel type de texte raconte une histoire avec des personnages et une intrigue ?", opts: ["Texte narratif","Texte argumentatif","Texte descriptif","Texte explicatif"], ans: 0,
-        expl: "Le texte narratif suit des personnages dans une trame : situation initiale → perturbation → résolution." },
+      { q:{fr:"Quelle figure de style est dans : « Le vent hurlait dans les arbres » ?",en:"Which figure of speech is used in: 'The wind howled through the trees'?"}, opts:{fr:["Personnification","Métaphore","Hyperbole","Comparaison"],en:["Personification","Metaphor","Hyperbole","Simile"]}, ans:0, expl:{fr:"Le vent (chose) reçoit l'action humaine 'hurler' → personnification.",en:"The wind (a thing) is given the human action 'to howl' → personification."} },
+      { q:{fr:"Quel temps exprime une action habituelle dans le passé ?",en:"Which tense expresses a habitual action in the past?"}, opts:{fr:["L'imparfait","Le passé composé","Le présent","Le plus-que-parfait"],en:["The imperfect","The perfect","The present","The pluperfect"]}, ans:0, expl:{fr:"L'imparfait traduit les actions habituelles/répétées dans le passé.",en:"The imperfect tense expresses habitual or repeated actions in the past."} },
+      { q:{fr:"« Il est fort comme un lion » — quelle figure de style ?",en:"'He is as strong as a lion' — which figure of speech?"}, opts:{fr:["Comparaison","Métaphore","Personnification","Hyperbole"],en:["Simile","Metaphor","Personification","Hyperbole"]}, ans:0, expl:{fr:"L'outil comparatif 'comme' indique une comparaison.",en:"The comparative word 'as' indicates a simile."} },
+      { q:{fr:"Qu'est-ce qu'une anaphore ?",en:"What is an anaphora?"}, opts:{fr:["Répétition d'un mot en début de phrase","Une exagération","Une comparaison sans outil","Traits humains à un objet"],en:["Repetition of a word at the start of sentences","An exaggeration","A comparison without 'like/as'","Human traits given to an object"]}, ans:0, expl:{fr:"L'anaphore répète un mot/groupe en début de phrases consécutives pour créer un effet rythmique.",en:"Anaphora repeats a word/phrase at the start of consecutive sentences to create a rhythmic effect."} },
+      { q:{fr:"Quelle est la structure d'un texte argumentatif ?",en:"What is the structure of an argumentative text?"}, opts:{fr:["Introduction, développement, conclusion","Début, milieu, fin, annexe","Thèse, exemple, résumé","Problème, solution, bilan"],en:["Introduction, body, conclusion","Beginning, middle, end, appendix","Thesis, example, summary","Problem, solution, review"]}, ans:0, expl:{fr:"Tout texte argumentatif : introduction (thèse), développement (arguments), conclusion (bilan).",en:"Every argumentative text: introduction (thesis), body (arguments), conclusion (summary)."} },
+      { q:{fr:"Différence entre métaphore et comparaison ?",en:"Difference between metaphor and simile?"}, opts:{fr:["La comparaison utilise un outil (comme, tel), la métaphore non","La métaphore est plus longue","Aucune différence","La comparaison parle toujours d'animaux"],en:["A simile uses a connective (like, as), a metaphor doesn't","A metaphor is longer","There is no difference","A simile always talks about animals"]}, ans:0, expl:{fr:"La comparaison exige un outil comparatif ; la métaphore assimile directement deux éléments.",en:"A simile requires a comparative connective; a metaphor directly equates two things."} },
+      { q:{fr:"Conjuguer 'finir' — 3ᵉ personne du pluriel — passé composé :",en:"Conjugate 'finir' — 3rd person plural — perfect tense:"}, opts:{fr:["Ils ont fini","Ils finissaient","Ils finirent","Ils finissent"],en:["They have finished","They were finishing","They finished","They finish"]}, ans:0, expl:{fr:"Passé composé = avoir/être + participe passé. 'Finir' → ils ont fini.",en:"Perfect tense = avoir/être + past participle. 'Finir' → ils ont fini."} },
+      { q:{fr:"Qu'est-ce qu'une hyperbole ?",en:"What is a hyperbole?"}, opts:{fr:["Une exagération pour accentuer un effet","Une répétition en début de phrase","Une comparaison directe","Un mot remplaçant un autre"],en:["An exaggeration to emphasise an effect","A repetition at the start of sentences","A direct comparison","A word replacing another"]}, ans:0, expl:{fr:"Ex : 'mourir de rire' — exagération pour insister sur une sensation.",en:"Ex: 'dying of laughter' — exaggeration to emphasise a feeling."} },
+      { q:{fr:"Quel connecteur exprime une opposition ?",en:"Which connective expresses opposition?"}, opts:{fr:["Cependant","Ainsi","De plus","En effet"],en:["However","Thus","Furthermore","Indeed"]}, ans:0, expl:{fr:"'Cependant' (= mais, or, en revanche, néanmoins) marque une opposition.",en:"'However' (= but, yet, on the other hand, nevertheless) marks an opposition."} },
+      { q:{fr:"Quel type de texte raconte une histoire avec une intrigue ?",en:"Which text type tells a story with a plot?"}, opts:{fr:["Texte narratif","Texte argumentatif","Texte descriptif","Texte explicatif"],en:["Narrative text","Argumentative text","Descriptive text","Explanatory text"]}, ans:0, expl:{fr:"Le texte narratif suit des personnages dans une intrigue : situation initiale → perturbation → résolution.",en:"A narrative text follows characters through a plot: opening → trigger → resolution."} },
     ]
   },
 
+  /* ─── HISTOIRE-GÉOGRAPHIE ─── */
   histoire: {
-    name: "Histoire-Géographie", icon: "🌍", color: "#F59E0B",
-    desc: "Histoire · Géographie · EMC",
-    notes: [
-      {
-        title: "Histoire — Les deux guerres mondiales",
-        items: [
-          { text: "1914–1918 : Première Guerre mondiale — guerre de tranchées, 10 millions de morts militaires." },
-          { text: "1917 : Révolution russe — chute du tsar Nicolas II, prise du pouvoir par les bolcheviks (Lénine)." },
-          { text: "1939–1945 : Deuxième Guerre mondiale — totalitarismes, Shoah (6 millions de Juifs assassinés), bombes atomiques (Hiroshima, Nagasaki)." },
-          { text: "1945 : Création de l'ONU pour maintenir la paix internationale." },
-        ]
-      },
-      {
-        title: "Histoire — France contemporaine",
-        items: [
-          { text: "1947–1991 : Guerre froide — opposition USA (bloc occidental) vs URSS (bloc soviétique)." },
-          { text: "1958 : Naissance de la Vᵉ République — de Gaulle, Constitution toujours en vigueur." },
-          { text: "1968 : Mai 68 — grèves étudiantes et ouvrières massives, transformations sociales profondes." },
-          { text: "1989 : Chute du mur de Berlin — symbole de la fin de la Guerre froide." },
-        ]
-      },
-      {
-        title: "Géographie — La mondialisation",
-        items: [
-          { text: "Mondialisation : circulation accélérée des biens, personnes, informations et capitaux à l'échelle mondiale." },
-          { text: "FMN (Firmes Multinationales) : entreprises implantées dans plusieurs pays, actrices majeures de la mondialisation." },
-          { text: "BRICS (Brésil, Russie, Inde, Chine, Afrique du Sud) : pays émergents dont le poids économique est en forte hausse." },
-          { text: "Inégalités mondiales : Nord développé vs Sud en développement, réduction lente mais réelle." },
-        ]
-      },
-      {
-        title: "EMC — Citoyenneté et République",
-        items: [
-          { text: "Devise de la République : Liberté, Égalité, Fraternité (héritée de la Révolution française)." },
-          { text: "Laïcité : séparation de l'Église et de l'État (loi de 1905) ; garantit la liberté de conscience." },
-          { text: "Déclaration Universelle des Droits de l'Homme : adoptée par l'ONU le 10 décembre 1948." },
-          { text: "Droit de vote en France : accordé à tout citoyen français de 18 ans et plus." },
-        ]
-      }
+    name:  { fr:"Histoire-Géographie",  en:"History-Geography" },
+    icon:  "🌍",
+    color: "#CD7F32",
+    desc:  { fr:"Histoire · Géographie · EMC", en:"History · Geography · Civics" },
+    chapters: [
+      { id:1, emoji:"⚔️", title:{fr:"La Première Guerre mondiale",en:"World War I (1914–1918)"}, tag:"Histoire", notes:[
+        { text:{fr:"Causes : nationalisme, rivalités coloniales, système d'alliances (Triple Entente vs Triple Alliance), attentat de Sarajevo 28 juin 1914",en:"Causes: nationalism, colonial rivalries, alliance system (Triple Entente vs Triple Alliance), assassination of Archduke Franz Ferdinand, 28 June 1914"} },
+        { text:{fr:"Guerre de mouvement (1914) puis enlisement dans les tranchées (1915–1917)",en:"War of movement (1914) then trench warfare stalemate (1915–1917)"} },
+        { text:{fr:"Innovations meurtrières : gaz de combat, chars d'assaut, aviation, sous-marins",en:"Deadly innovations: poison gas, tanks, aircraft, submarines"} },
+        { text:{fr:"1917 : Révolution russe → sortie de la Russie ; entrée en guerre des États-Unis",en:"1917: Russian Revolution → Russia withdraws; USA enters the war"} },
+        { text:{fr:"Armistice 11 novembre 1918 → Traité de Versailles 1919 → environ 10 millions de morts militaires",en:"Armistice 11 November 1918 → Treaty of Versailles 1919 → approx. 10 million military deaths"} },
+      ]},
+      { id:2, emoji:"😈", title:{fr:"Les régimes totalitaires",en:"Totalitarian Regimes (1920s–1930s)"}, tag:"Histoire", notes:[
+        { text:{fr:"Fascisme (Italie, Mussolini, 1922) : culte du chef, nationalisme exacerbé, violence politique, milices",en:"Fascism (Italy, Mussolini, 1922): cult of leader, extreme nationalism, political violence, militias"} },
+        { text:{fr:"Nazisme (Allemagne, Hitler, 1933) : antisémitisme, espace vital, race aryenne supérieure, propagande massive",en:"Nazism (Germany, Hitler, 1933): antisemitism, Lebensraum, Aryan supremacy, mass propaganda"} },
+        { text:{fr:"Stalinisme (URSS, Staline) : collectivisation forcée, Goulag, Grande Terreur, culte de la personnalité",en:"Stalinism (USSR, Stalin): forced collectivisation, Gulag, Great Terror, personality cult"} },
+        { text:{fr:"Crise de 1929 (krach de Wall Street) → chômage massif → montée des extrémismes",en:"1929 Wall Street Crash → mass unemployment → rise of extremism"} },
+      ]},
+      { id:3, emoji:"💣", title:{fr:"La Deuxième Guerre mondiale",en:"World War II (1939–1945)"}, tag:"Histoire", notes:[
+        { text:{fr:"Sept. 1939 : invasion de la Pologne → déclaration de guerre franco-britannique",en:"Sept. 1939: Invasion of Poland → France and Britain declare war"} },
+        { text:{fr:"Juin 1940 : défaite de la France ; armistice et régime de Vichy (Pétain) ; De Gaulle à Londres (Appel du 18 juin)",en:"June 1940: Fall of France; Vichy regime (Pétain); De Gaulle in London (Appeal of 18 June)"} },
+        { text:{fr:"La Shoah : génocide planifié et systématique de 6 millions de Juifs par les nazis (« Solution finale »)",en:"The Holocaust: planned, systematic genocide of 6 million Jews by the Nazis ('Final Solution')"} },
+        { text:{fr:"Résistance française : réseaux clandestins, maquis, sabotages",en:"French Resistance: clandestine networks, maquis, sabotage"} },
+        { text:{fr:"Juin 1944 : Débarquement en Normandie (D-Day) ; Mai 1945 : capitulation allemande",en:"June 1944: D-Day Normandy landings; May 1945: German surrender"} },
+        { text:{fr:"Août 1945 : bombes atomiques sur Hiroshima et Nagasaki → capitulation japonaise",en:"August 1945: atomic bombs on Hiroshima and Nagasaki → Japanese surrender"} },
+      ]},
+      { id:4, emoji:"❄️", title:{fr:"La Guerre froide",en:"The Cold War (1947–1991)"}, tag:"Histoire", notes:[
+        { text:{fr:"Deux blocs : USA + OTAN (démocratie libérale) vs URSS + Pacte de Varsovie (communisme)",en:"Two blocs: USA + NATO (liberal democracy) vs USSR + Warsaw Pact (communism)"} },
+        { text:{fr:"Doctrine Truman 1947 (endiguement) ; Plan Marshall (aide économique américaine à l'Europe)",en:"Truman Doctrine 1947 (containment); Marshall Plan (US economic aid to Europe)"} },
+        { text:{fr:"Crises : blocus de Berlin 1948, crise de Cuba 1962, guerres de Corée et du Vietnam",en:"Crises: Berlin Blockade 1948, Cuban Missile Crisis 1962, Korean and Vietnam Wars"} },
+        { text:{fr:"Course aux armements nucléaires et course à l'espace (Spoutnik 1957, Lune 1969)",en:"Nuclear arms race and space race (Sputnik 1957, Moon 1969)"} },
+        { text:{fr:"Fin de la Guerre froide : chute du mur de Berlin 9 nov. 1989 ; dissolution de l'URSS 1991",en:"End of Cold War: fall of Berlin Wall 9 Nov 1989; dissolution of USSR 1991"} },
+      ]},
+      { id:5, emoji:"🌅", title:{fr:"La décolonisation",en:"Decolonisation (1945–1970s)"}, tag:"Histoire", notes:[
+        { text:{fr:"Après 1945 : aspiration à l'indépendance des peuples colonisés (Asie, Afrique, Moyen-Orient)",en:"After 1945: colonised peoples aspire to independence (Asia, Africa, Middle East)"} },
+        { text:{fr:"Indépendances africaines massives entre 1956 et 1965 ('l'Année de l'Afrique' = 1960 : 17 indépendances)",en:"Wave of African independence between 1956 and 1965 ('Year of Africa' 1960 = 17 countries)"} },
+        { text:{fr:"Guerre d'Algérie 1954–1962 : guerre très violente ; indépendance par les Accords d'Évian (mars 1962)",en:"Algerian War 1954–1962: very violent conflict; independence via Évian Accords (March 1962)"} },
+        { text:{fr:"Néo-colonialisme : dépendance économique et politique persistante malgré l'indépendance formelle",en:"Neo-colonialism: persistent economic and political dependence despite formal independence"} },
+      ]},
+      { id:6, emoji:"🏛️", title:{fr:"La Ve République",en:"The French 5th Republic"}, tag:"Histoire", notes:[
+        { text:{fr:"1958 : De Gaulle fonde la Ve République ; Constitution qui renforce le pouvoir exécutif (Président fort)",en:"1958: De Gaulle establishes the 5th Republic; Constitution strengthens executive power (strong President)"} },
+        { text:{fr:"Institutions : Président (élu pour 5 ans au SUD depuis 1962), Premier ministre, Parlement (Assemblée nationale + Sénat)",en:"Institutions: President (elected for 5 years by direct vote since 1962), Prime Minister, Parliament (National Assembly + Senate)"} },
+        { text:{fr:"1968 : crise de Mai 68 — contestation sociale et politique majeure",en:"1968: May 68 crisis — major social and political protest movement"} },
+        { text:{fr:"Alternances politiques : Mitterrand (gauche) 1981 ; cohabitations (président et PM de partis opposés)",en:"Political alternations: Mitterrand (left) 1981; cohabitations (president and PM from opposing parties)"} },
+      ]},
+      { id:7, emoji:"🌐", title:{fr:"Le monde depuis 1989",en:"The World since 1989"}, tag:"Histoire", notes:[
+        { text:{fr:"Fin du monde bipolaire → monde unipolaire (hégémonie américaine) puis multipolaire",en:"End of the bipolar world → unipolar (US hegemony) then multipolar world"} },
+        { text:{fr:"Construction européenne : Traité de Maastricht 1992 (création de l'UE) ; euro mis en circulation 2002",en:"European integration: Maastricht Treaty 1992 (creation of EU); euro in circulation 2002"} },
+        { text:{fr:"Nouveaux conflits : ex-Yougoslavie (génocide de Srebrenica 1995), Moyen-Orient, terrorisme (11 sept. 2001)",en:"New conflicts: ex-Yugoslavia (Srebrenica genocide 1995), Middle East, terrorism (9/11 2001)"} },
+        { text:{fr:"Montée des pays émergents (Chine, Inde, Brésil) et remise en cause de l'ordre mondial occidental",en:"Rise of emerging economies (China, India, Brazil) and challenges to the Western-led world order"} },
+      ]},
+      { id:8, emoji:"💹", title:{fr:"La mondialisation",en:"Globalisation"}, tag:"Géographie", notes:[
+        { text:{fr:"Définition : circulation accélérée et à grande échelle des biens, capitaux, personnes et informations",en:"Definition: accelerated large-scale movement of goods, capital, people, and information"} },
+        { text:{fr:"Acteurs : FMN (Firmes Multinationales), États, ONG, organisations internationales (OMC, FMI, ONU)",en:"Actors: MNCs (Multinational Companies), States, NGOs, international organisations (WTO, IMF, UN)"} },
+        { text:{fr:"Pôles mondiaux : la Triade (Amérique du Nord, Europe occidentale, Asie orientale)",en:"Global poles: the Triad (North America, Western Europe, East Asia)"} },
+        { text:{fr:"Effets : croissance économique mondiale mais aussi inégalités accrues et risques environnementaux",en:"Effects: global economic growth but also greater inequality and environmental risks"} },
+      ]},
+      { id:9, emoji:"🇪🇺", title:{fr:"La France en Europe",en:"France in Europe"}, tag:"Géographie", notes:[
+        { text:{fr:"Construction européenne : CECA 1951, CEE 1957 (Traité de Rome), UE 1992 (Maastricht), zone euro (2002)",en:"European integration: ECSC 1951, EEC 1957 (Treaty of Rome), EU 1992 (Maastricht), eurozone (2002)"} },
+        { text:{fr:"Institutions UE : Commission européenne, Parlement européen, Conseil de l'UE, Cour de Justice",en:"EU institutions: European Commission, European Parliament, Council of the EU, Court of Justice"} },
+        { text:{fr:"Métropolisation : concentration des habitants et activités dans les grandes villes (Paris, Lyon, Marseille…)",en:"Metropolisation: concentration of people and activities in large cities (Paris, Lyon, Marseille…)"} },
+        { text:{fr:"La France = 6ᵉ puissance économique mondiale, membre permanent du Conseil de sécurité de l'ONU",en:"France = 6th largest economy, permanent member of the UN Security Council"} },
+      ]},
+      { id:10, emoji:"🌎", title:{fr:"Territoires et mondialisation",en:"Territories & Globalisation"}, tag:"Géographie", notes:[
+        { text:{fr:"Pays développés (IDH élevé, PIB/hab. fort), pays émergents (BRICS), PMA (Pays les Moins Avancés)",en:"Developed countries (high HDI, high GDP per capita), emerging countries (BRICS), LDCs (Least Developed Countries)"} },
+        { text:{fr:"BRICS : Brésil, Russie, Inde, Chine, Afrique du Sud — moteurs de la croissance mondiale",en:"BRICS: Brazil, Russia, India, China, South Africa — engines of global growth"} },
+        { text:{fr:"Littoralisation : concentration des activités et populations sur les façades maritimes",en:"Coastalisation: concentration of activities and populations on maritime coasts"} },
+        { text:{fr:"Migrations mondiales : réfugiés (conflits, climat), migrants économiques, diasporas",en:"Global migrations: refugees (conflicts, climate), economic migrants, diasporas"} },
+      ]},
+      { id:11, emoji:"🗳️", title:{fr:"Citoyenneté et démocratie",en:"Citizenship & Democracy"}, tag:"EMC", notes:[
+        { text:{fr:"Droits du citoyen : droit de vote, liberté d'expression, d'association, de presse, d'égalité devant la loi",en:"Citizens' rights: right to vote, freedom of speech, association, press, equality before the law"} },
+        { text:{fr:"Devoirs : payer ses impôts, respecter les lois, participer à la défense nationale, jury d'assises",en:"Duties: pay taxes, respect laws, contribute to national defence, serve on jury"} },
+        { text:{fr:"Valeurs républicaines : Liberté, Égalité, Fraternité (devise) ; Laïcité (loi de séparation 1905)",en:"Republican values: Liberty, Equality, Fraternity (motto); Laïcité (separation law 1905)"} },
+        { text:{fr:"DUDH 1948 : Déclaration Universelle des Droits de l'Homme, adoptée par l'ONU le 10 décembre 1948",en:"UDHR 1948: Universal Declaration of Human Rights, adopted by the UN on 10 December 1948"} },
+        { text:{fr:"Démocratie représentative : élections libres, suffrage universel, séparation des pouvoirs (exécutif, législatif, judiciaire)",en:"Representative democracy: free elections, universal suffrage, separation of powers (executive, legislative, judicial)"} },
+      ]},
     ],
     questions: [
-      { q: "Quelle est la devise de la République française ?", opts: ["Liberté, Égalité, Fraternité","Liberté, Justice, Paix","Unité, Laïcité, Solidarité","Patrie, Honneur, Courage"], ans: 0,
-        expl: "Héritée de la Révolution française, cette devise est inscrite dans la Constitution de 1958." },
-      { q: "En quelle année a débuté la Première Guerre mondiale ?", opts: ["1914","1918","1939","1917"], ans: 0,
-        expl: "Le 28 juin 1914, l'attentat de Sarajevo déclenche le conflit. L'armistice sera signé le 11 novembre 1918." },
-      { q: "Qu'est-ce que la Guerre froide ?", opts: ["Un affrontement indirect entre USA et URSS","Une guerre dans les pays nordiques","La Seconde Guerre mondiale","Un conflit entre France et Allemagne"], ans: 0,
-        expl: "1947–1991 : tensions idéologiques, course aux armements et espionnage entre les deux superpuissances, sans guerre directe." },
-      { q: "En quelle année a été fondée la Vᵉ République française ?", opts: ["1958","1945","1968","1981"], ans: 0,
-        expl: "La Vᵉ République, fondée par de Gaulle, a été approuvée par référendum en septembre 1958." },
-      { q: "Qu'est-ce que la laïcité en France ?", opts: ["La séparation de l'Église et de l'État","L'interdiction de toute religion","La religion d'État","L'obligation d'être catholique"], ans: 0,
-        expl: "La loi de 1905 sépare l'Église de l'État et garantit la liberté de conscience et de culte à tous." },
-      { q: "En quelle année a eu lieu la chute du mur de Berlin ?", opts: ["1989","1991","1985","1945"], ans: 0,
-        expl: "Le 9 novembre 1989, le mur de Berlin tombe, marquant la fin symbolique de la Guerre froide." },
-      { q: "Que sont les BRICS ?", opts: ["Un groupe de pays émergents (Brésil, Russie, Inde, Chine, Afrique du Sud)","Une alliance militaire","Les pays les plus pauvres du monde","Un traité commercial européen"], ans: 0,
-        expl: "Les BRICS représentent une part croissante du PIB et de la population mondiales." },
-      { q: "Qu'est-ce que l'ONU ?", opts: ["Une organisation internationale pour la paix","Une alliance militaire occidentale","Une union économique européenne","Un accord commercial mondial"], ans: 0,
-        expl: "L'ONU, créée en 1945, vise à maintenir la paix internationale et à favoriser la coopération entre États." },
-      { q: "Quel événement majeur a secoué la France en mai 1968 ?", opts: ["Des grèves étudiantes et ouvrières massives","La création de la Vᵉ République","La fin de la Guerre froide","L'adhésion à la CEE"], ans: 0,
-        expl: "Mai 68 : mouvement social intense qui a entraîné des transformations profondes dans la société et la politique françaises." },
-      { q: "Quand a été adoptée la Déclaration Universelle des Droits de l'Homme ?", opts: ["1948","1789","1918","1945"], ans: 0,
-        expl: "Adoptée par l'ONU le 10 décembre 1948, elle proclame des droits fondamentaux pour tous les êtres humains." },
+      { q:{fr:"Quelle est la devise de la République française ?",en:"What is the motto of the French Republic?"}, opts:{fr:["Liberté, Égalité, Fraternité","Liberté, Justice, Paix","Unité, Laïcité, Solidarité","Patrie, Honneur, Courage"],en:["Liberty, Equality, Fraternity","Liberty, Justice, Peace","Unity, Secularism, Solidarity","Homeland, Honour, Courage"]}, ans:0, expl:{fr:"Héritée de la Révolution française, inscrite dans la Constitution de 1958.",en:"Inherited from the French Revolution, enshrined in the 1958 Constitution."} },
+      { q:{fr:"En quelle année a débuté la Première Guerre mondiale ?",en:"In which year did World War I begin?"}, opts:{fr:["1914","1918","1939","1917"],en:["1914","1918","1939","1917"]}, ans:0, expl:{fr:"Attentat de Sarajevo le 28 juin 1914 → déclaration de guerre. Fin : armistice 11 novembre 1918.",en:"Assassination of Archduke Franz Ferdinand, 28 June 1914 → declarations of war. End: Armistice 11 November 1918."} },
+      { q:{fr:"Qu'est-ce que la Guerre froide ?",en:"What was the Cold War?"}, opts:{fr:["Affrontement indirect USA-URSS","Guerre dans les pays nordiques","La Deuxième Guerre mondiale","Conflit France-Allemagne"],en:["Indirect confrontation between the USA and USSR","A war in Nordic countries","World War II","A conflict between France and Germany"]}, ans:0, expl:{fr:"1947–1991 : tensions idéologiques, course aux armements, espionnage — sans conflit militaire direct.",en:"1947–1991: ideological tensions, arms race, espionage — without direct military conflict."} },
+      { q:{fr:"En quelle année a été fondée la Ve République ?",en:"In which year was the French 5th Republic founded?"}, opts:{fr:["1958","1945","1968","1981"],en:["1958","1945","1968","1981"]}, ans:0, expl:{fr:"La Ve République, fondée par de Gaulle, a été approuvée par référendum en 1958.",en:"The 5th Republic, founded by de Gaulle, was approved by referendum in 1958."} },
+      { q:{fr:"Qu'est-ce que la laïcité en France ?",en:"What is laïcité (secularism) in France?"}, opts:{fr:["Séparation de l'Église et de l'État","Interdiction de toute religion","La religion d'État","Obligation d'être catholique"],en:["Separation of Church and State","Prohibition of all religion","A state religion","Obligation to be Catholic"]}, ans:0, expl:{fr:"Loi de 1905 : séparation Église/État, garantie de la liberté de conscience et de culte.",en:"Law of 1905: separation of Church and State, guaranteeing freedom of conscience and religion."} },
+      { q:{fr:"En quelle année a eu lieu la chute du mur de Berlin ?",en:"In which year did the Berlin Wall fall?"}, opts:{fr:["1989","1991","1985","1945"],en:["1989","1991","1985","1945"]}, ans:0, expl:{fr:"9 novembre 1989, symbole de la fin de la Guerre froide.",en:"9 November 1989, symbol of the end of the Cold War."} },
+      { q:{fr:"Que sont les BRICS ?",en:"What are the BRICS?"}, opts:{fr:["Groupe de pays émergents (Brésil, Russie, Inde, Chine, Afrique du Sud)","Alliance militaire","Pays les plus pauvres","Traité commercial européen"],en:["Group of emerging economies (Brazil, Russia, India, China, South Africa)","Military alliance","Poorest countries in the world","European trade treaty"]}, ans:0, expl:{fr:"Les BRICS représentent une part croissante du PIB et de la population mondiales.",en:"The BRICS represent a growing share of world GDP and population."} },
+      { q:{fr:"Que sont les droits fondamentaux garantis par la DUDH (1948) ?",en:"What rights does the UDHR (1948) guarantee?"}, opts:{fr:["Droits civils, politiques, économiques, sociaux et culturels pour tous","Droits uniquement pour les citoyens européens","Droits économiques uniquement","Droits politiques uniquement"],en:["Civil, political, economic, social and cultural rights for all","Rights only for European citizens","Economic rights only","Political rights only"]}, ans:0, expl:{fr:"La DUDH adoptée par l'ONU le 10 déc. 1948 proclame des droits universels pour tous les êtres humains.",en:"The UDHR adopted by the UN on 10 Dec 1948 proclaims universal rights for all human beings."} },
+      { q:{fr:"Qu'est-ce que la Shoah ?",en:"What was the Holocaust (Shoah)?"}, opts:{fr:["Génocide de 6 millions de Juifs par les nazis","Bombardement de Londres","Guerre entre USA et Japon","Massacre en Russie soviétique"],en:["Genocide of 6 million Jews by the Nazis","The bombing of London","War between the USA and Japan","A massacre in Soviet Russia"]}, ans:0, expl:{fr:"La 'Solution finale' nazie = extermination planifiée et industrielle de 6 millions de Juifs d'Europe.",en:"The Nazi 'Final Solution' = planned, industrial extermination of 6 million European Jews."} },
+      { q:{fr:"Quand la France est-elle entrée dans la zone euro ?",en:"When did France join the eurozone?"}, opts:{fr:["2002","1999","1992","2005"],en:["2002","1999","1992","2005"]}, ans:0, expl:{fr:"L'euro a été mis en circulation dans 12 pays de l'UE le 1er janvier 2002.",en:"The euro was put into circulation in 12 EU countries on 1 January 2002."} },
     ]
   },
 
+  /* ─── SCIENCES ─── */
   sciences: {
-    name: "Sciences", icon: "🔬", color: "#10B981",
-    desc: "SVT · Physique · Chimie",
-    notes: [
-      {
-        title: "SVT — Cellule et organismes",
-        items: [
-          { text: "Photosynthèse (chloroplastes) : CO₂ + H₂O + lumière → glucose + O₂", formula: "6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂" },
-          { text: "Respiration cellulaire (mitochondries) : glucose + O₂ → CO₂ + H₂O + énergie (ATP)" },
-          { text: "L'ADN, support de l'information génétique, est situé dans le noyau de chaque cellule." },
-          { text: "Le système digestif transforme les aliments en nutriments absorbés par les villosités intestinales." },
-        ]
-      },
-      {
-        title: "SVT — Génétique et évolution",
-        items: [
-          { text: "L'être humain possède 46 chromosomes (23 paires) dans chaque cellule somatique." },
-          { text: "La méiose produit des gamètes (ovule, spermatozoïde) à 23 chromosomes chacun." },
-          { text: "Fécondation : 2 gamètes → cellule-œuf à 46 chromosomes → nouvel individu." },
-          { text: "Théorie de Darwin : sélection naturelle — les individus les mieux adaptés survivent et se reproduisent davantage." },
-        ]
-      },
-      {
-        title: "Physique — Forces, mouvements, électricité",
-        items: [
-          { text: "Loi d'inertie : un objet reste en mouvement rectiligne uniforme si les forces se compensent." },
-          { text: "Poids (N) = masse (kg) × intensité de la pesanteur  (g ≈ 10 N/kg sur Terre)", formula: "P = m × g" },
-          { text: "Vitesse moyenne", formula: "v = d / t" },
-          { text: "Loi d'Ohm", formula: "U = R × I  (V = Ω × A)" },
-        ]
-      },
-      {
-        title: "Chimie — Atomes et réactions",
-        items: [
-          { text: "Atome = noyau (protons + neutrons) + électrons en périphérie." },
-          { text: "Loi de conservation de la masse (Lavoisier) : rien ne se crée, rien ne se perd.", formula: "masse réactifs = masse produits" },
-          { text: "pH : < 7 → acide · = 7 → neutre · > 7 → basique (alcalin)." },
-          { text: "Combustion : combustible + O₂ → CO₂ + H₂O  (réaction exothermique, libère de l'énergie)." },
-        ]
-      }
+    name:  { fr:"Sciences",  en:"Sciences" },
+    icon:  "🧪",
+    color: "#1A7A50",
+    desc:  { fr:"SVT · Physique · Chimie", en:"Biology · Physics · Chemistry" },
+    chapters: [
+      { id:1, emoji:"🔬", title:{fr:"La cellule et le vivant",en:"The Cell & Living Things"}, tag:"SVT", notes:[
+        { text:{fr:"La cellule = unité de base de tout être vivant",en:"The cell = the basic unit of all living organisms"} },
+        { text:{fr:"Cellule animale : membrane plasmique, cytoplasme, noyau (ADN), mitochondries",en:"Animal cell: plasma membrane, cytoplasm, nucleus (DNA), mitochondria"} },
+        { text:{fr:"Cellule végétale : + paroi cellulosique, chloroplastes, grande vacuole centrale",en:"Plant cell: + cellulose cell wall, chloroplasts, large central vacuole"} },
+        { text:{fr:"Mitose : division cellulaire ordinaire → 2 cellules filles identiques à 46 chromosomes (croissance, réparation)",en:"Mitosis: ordinary cell division → 2 identical daughter cells with 46 chromosomes (growth, repair)"} },
+        { text:{fr:"Méiose : division spéciale → 4 gamètes à 23 chromosomes chacun (reproduction sexuée)",en:"Meiosis: special division → 4 gametes with 23 chromosomes each (sexual reproduction)"} },
+      ]},
+      { id:2, emoji:"🍎", title:{fr:"Nutrition et respiration",en:"Nutrition & Respiration"}, tag:"SVT", notes:[
+        { text:{fr:"Photosynthèse (dans les chloroplastes) :", en:"Photosynthesis (in chloroplasts):"}, formula:"6CO₂ + 6H₂O + lumière → C₆H₁₂O₆ + 6O₂" },
+        { text:{fr:"Respiration cellulaire (dans les mitochondries) :",en:"Cellular respiration (in mitochondria):"}, formula:"C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + ATP" },
+        { text:{fr:"Digestion : transformation des aliments en nutriments absorbés dans l'intestin grêle (villosités)",en:"Digestion: food broken down into nutrients absorbed in the small intestine (villi)"} },
+        { text:{fr:"Nutriments : glucides (énergie rapide), lipides (réserves), protéines (construction), vitamines et minéraux",en:"Nutrients: carbohydrates (quick energy), lipids (reserves), proteins (building), vitamins and minerals"} },
+      ]},
+      { id:3, emoji:"🧬", title:{fr:"Génétique et hérédité",en:"Genetics & Heredity"}, tag:"SVT", notes:[
+        { text:{fr:"ADN = support de l'information génétique, situé dans le noyau de chaque cellule",en:"DNA = carrier of genetic information, located in the nucleus of each cell"} },
+        { text:{fr:"Gène = portion d'ADN codant une protéine ; allèles = différentes versions d'un même gène",en:"Gene = section of DNA coding for a protein; alleles = different versions of the same gene"} },
+        { text:{fr:"Cellules humaines somatiques : 46 chromosomes (23 paires) ; gamètes : 23 chromosomes",en:"Human somatic cells: 46 chromosomes (23 pairs); gametes: 23 chromosomes"} },
+        { text:{fr:"Méiose + fécondation → brassage génétique → diversité des individus",en:"Meiosis + fertilisation → genetic shuffling → diversity of individuals"} },
+        { text:{fr:"Mutations : modifications de la séquence d'ADN ; peuvent être héréditaires ou dues à l'environnement",en:"Mutations: changes to the DNA sequence; can be hereditary or caused by environmental factors"} },
+      ]},
+      { id:4, emoji:"🦕", title:{fr:"Évolution des espèces",en:"Evolution of Species"}, tag:"SVT", notes:[
+        { text:{fr:"Darwin (1859, 'De l'origine des espèces') : théorie de l'évolution par sélection naturelle",en:"Darwin (1859, 'On the Origin of Species'): theory of evolution by natural selection"} },
+        { text:{fr:"Sélection naturelle : les individus les mieux adaptés à leur milieu survivent et transmettent leurs gènes",en:"Natural selection: individuals best adapted to their environment survive and pass on their genes"} },
+        { text:{fr:"Preuves de l'évolution : fossiles, anatomie comparée (homologies), similarités ADN entre espèces",en:"Evidence for evolution: fossils, comparative anatomy (homologous structures), DNA similarities between species"} },
+        { text:{fr:"Spéciation : formation de nouvelles espèces par isolement géographique + sélection naturelle",en:"Speciation: formation of new species through geographic isolation + natural selection"} },
+      ]},
+      { id:5, emoji:"🫀", title:{fr:"Corps humain et santé",en:"Human Body & Health"}, tag:"SVT", notes:[
+        { text:{fr:"Système nerveux : cerveau (centre de contrôle), moelle épinière, nerfs ; réflexes (arc réflexe)",en:"Nervous system: brain (control centre), spinal cord, nerves; reflexes (reflex arc)"} },
+        { text:{fr:"Système immunitaire : phagocytes (défense non spécifique), anticorps (défense spécifique), vaccination",en:"Immune system: phagocytes (non-specific defence), antibodies (specific defence), vaccination"} },
+        { text:{fr:"Reproduction humaine : gamètes → fécondation → nidation → grossesse de 9 mois → naissance",en:"Human reproduction: gametes → fertilisation → implantation → 9-month pregnancy → birth"} },
+        { text:{fr:"Maladies : infectieuses (bactéries, virus), génétiques (anomalies chromosomiques), comportementales (tabac, alcool)",en:"Diseases: infectious (bacteria, viruses), genetic (chromosomal anomalies), behavioural (tobacco, alcohol)"} },
+      ]},
+      { id:6, emoji:"🌿", title:{fr:"Écologie et écosystèmes",en:"Ecology & Ecosystems"}, tag:"SVT", notes:[
+        { text:{fr:"Écosystème = biotope (milieu physique) + biocénose (ensemble des êtres vivants)",en:"Ecosystem = biotope (physical environment) + biocoenosis (all living organisms)"} },
+        { text:{fr:"Chaînes alimentaires : producteurs (végétaux) → consommateurs primaires → secondaires → décomposeurs",en:"Food chains: producers (plants) → primary consumers → secondary consumers → decomposers"} },
+        { text:{fr:"Flux de matière et d'énergie : l'énergie diminue à chaque niveau trophique (~10% transmis)",en:"Flow of matter and energy: energy decreases at each trophic level (~10% is transferred)"} },
+        { text:{fr:"Perturbations : pollution, espèces invasives, déforestation, changement climatique → perte de biodiversité",en:"Disturbances: pollution, invasive species, deforestation, climate change → loss of biodiversity"} },
+        { text:{fr:"Développement durable : répondre aux besoins présents sans compromettre ceux des générations futures",en:"Sustainable development: meeting present needs without compromising future generations' needs"} },
+      ]},
+      { id:7, emoji:"⚛️", title:{fr:"Atomes et matière",en:"Atoms & Matter"}, tag:"Physique-Chimie", notes:[
+        { text:{fr:"Atome = noyau (protons chargés + et neutrons) + électrons (chargés −) sur des couches",en:"Atom = nucleus (positively charged protons + neutrons) + electrons (negatively charged) on shells"} },
+        { text:{fr:"Numéro atomique Z = nombre de protons ; Nombre de masse A = protons + neutrons",en:"Atomic number Z = number of protons; Mass number A = protons + neutrons"} },
+        { text:{fr:"Ion : cation (perd des e⁻, charge +) ou anion (gagne des e⁻, charge −)",en:"Ion: cation (loses electrons, positive charge) or anion (gains electrons, negative charge)"} },
+        { text:{fr:"Molécule : assemblage d'atomes liés ; formule moléculaire ex : H₂O, CO₂, NaCl",en:"Molecule: group of bonded atoms; molecular formula e.g. H₂O, CO₂, NaCl"} },
+        { text:{fr:"États de la matière : solide (vibration) → liquide (agitation) → gazeux (grande liberté) selon la température",en:"States of matter: solid (vibration) → liquid (agitation) → gas (free movement) depending on temperature"} },
+      ]},
+      { id:8, emoji:"🧫", title:{fr:"Réactions chimiques",en:"Chemical Reactions"}, tag:"Physique-Chimie", notes:[
+        { text:{fr:"Loi de Lavoisier : conservation de la masse → masse réactifs = masse produits",en:"Lavoisier's law: conservation of mass → mass of reactants = mass of products"}, formula:"masse réactifs = masse produits" },
+        { text:{fr:"Équation chimique : équilibrée (même nb d'atomes de chaque élément des deux côtés)",en:"Chemical equation: balanced (same number of atoms of each element on both sides)"} },
+        { text:{fr:"Réactions acide-base : acide + base → sel + eau (neutralisation)",en:"Acid-base reactions: acid + base → salt + water (neutralisation)"} },
+        { text:{fr:"Combustion : combustible + O₂ → CO₂ + H₂O + énergie (réaction exothermique)",en:"Combustion: fuel + O₂ → CO₂ + H₂O + energy (exothermic reaction)"} },
+        { text:{fr:"pH : < 7 acide, = 7 neutre, > 7 basique ; mesure avec indicateur coloré ou pH-mètre",en:"pH: < 7 acid, = 7 neutral, > 7 alkaline; measured with colour indicator or pH meter"} },
+      ]},
+      { id:9, emoji:"⚡", title:{fr:"Électricité",en:"Electricity"}, tag:"Physique-Chimie", notes:[
+        { text:{fr:"Loi d'Ohm :", en:"Ohm's Law:"}, formula:"U = R × I  (V = Ω × A)" },
+        { text:{fr:"Circuit en série : même intensité partout ; tensions s'additionnent (Utotal = U1+U2+…)",en:"Series circuit: same current everywhere; voltages add up (Vtotal = V1+V2+…)"} },
+        { text:{fr:"Circuit en dérivation : même tension aux bornes ; intensités s'additionnent (Itotal = I1+I2+…)",en:"Parallel circuit: same voltage across each branch; currents add up (Itotal = I1+I2+…)"} },
+        { text:{fr:"Puissance électrique :", en:"Electrical power:"}, formula:"P = U × I  (W = V × A)" },
+        { text:{fr:"Énergie électrique :", en:"Electrical energy:"}, formula:"E = P × t  (J = W × s)" },
+      ]},
+      { id:10, emoji:"🏃", title:{fr:"Forces et mouvement",en:"Forces & Motion"}, tag:"Physique-Chimie", notes:[
+        { text:{fr:"Loi d'inertie : si les forces se compensent → objet au repos ou en mouvement rectiligne uniforme",en:"Law of inertia: if forces are balanced → object at rest or in uniform straight-line motion"} },
+        { text:{fr:"Poids :", en:"Weight:"}, formula:"P = m × g  (g ≈ 10 N/kg sur Terre)" },
+        { text:{fr:"Vitesse moyenne :", en:"Average speed:"}, formula:"v = d / t  (m/s)" },
+        { text:{fr:"Force de frottement : s'oppose au mouvement, toujours dans le sens contraire du déplacement",en:"Friction force: opposes motion, always directed opposite to the displacement"} },
+        { text:{fr:"Représentation d'une force : vecteur avec point d'application, direction, sens et valeur (en Newtons)",en:"Representing a force: vector with point of application, direction, sense, and magnitude (in Newtons)"} },
+      ]},
+      { id:11, emoji:"🔋", title:{fr:"L'énergie",en:"Energy"}, tag:"Physique-Chimie", notes:[
+        { text:{fr:"Formes d'énergie : cinétique (mouvement), potentielle (altitude), thermique (chaleur), chimique, électrique",en:"Forms of energy: kinetic (motion), potential (height), thermal (heat), chemical, electrical"} },
+        { text:{fr:"Conservation de l'énergie : l'énergie totale se conserve — elle se transforme mais ne se crée ni ne se perd",en:"Conservation of energy: total energy is conserved — it transforms but is neither created nor destroyed"} },
+        { text:{fr:"Énergies renouvelables : solaire, éolien, hydraulique, géothermique, biomasse",en:"Renewable energies: solar, wind, hydroelectric, geothermal, biomass"} },
+        { text:{fr:"Énergies non renouvelables : pétrole, gaz naturel, charbon (fossiles), uranium (nucléaire)",en:"Non-renewable energies: oil, natural gas, coal (fossil fuels), uranium (nuclear)"} },
+        { text:{fr:"Transition énergétique : passage aux énergies renouvelables pour réduire les émissions de CO₂",en:"Energy transition: shift to renewable energies to reduce CO₂ emissions"} },
+      ]},
     ],
     questions: [
-      { q: "Quelle est l'équation-bilan de la photosynthèse ?", opts: ["CO₂ + H₂O + lumière → glucose + O₂","O₂ + glucose → CO₂ + H₂O","H₂O + O₂ → glucose + CO₂","glucose → CO₂ + H₂O + O₂"], ans: 0,
-        expl: "Dans les chloroplastes, la lumière permet de synthétiser du glucose à partir de CO₂ et d'H₂O, en libérant de l'O₂." },
-      { q: "Combien de chromosomes possède une cellule humaine somatique ?", opts: ["46","23","48","44"], ans: 0,
-        expl: "Les cellules somatiques humaines (non-reproductrices) ont 46 chromosomes en 23 paires. Les gamètes en ont 23." },
-      { q: "Quelle est la formule du poids d'un objet ?", opts: ["P = m × g","P = m / g","P = m + g","P = m²"], ans: 0,
-        expl: "P (Newtons) = m (kg) × g (N/kg). Sur Terre, g ≈ 10 N/kg. Un objet de 5 kg pèse donc 50 N." },
-      { q: "Quelle est la loi d'Ohm ?", opts: ["U = R × I","I = U × R","R = U × I","U = I / R"], ans: 0,
-        expl: "U (tension en V) = R (résistance en Ω) × I (intensité en A). Elle relie les trois grandeurs électriques fondamentales." },
-      { q: "Quel organite est le siège de la photosynthèse ?", opts: ["Le chloroplaste","La mitochondrie","Le noyau","Le ribosome"], ans: 0,
-        expl: "Les chloroplastes, présents dans les cellules végétales, contiennent la chlorophylle nécessaire à la photosynthèse." },
-      { q: "Qu'énonce la loi de conservation de la masse (Lavoisier) ?", opts: ["Masse des réactifs = masse des produits","L'énergie se conserve toujours","La chaleur est proportionnelle à la masse","La masse augmente après une réaction"], ans: 0,
-        expl: "« Rien ne se crée, rien ne se perd, tout se transforme. » Au cours d'une réaction chimique, la masse totale est conservée." },
-      { q: "Une solution avec un pH de 4 est :", opts: ["Acide","Basique","Neutre","Alcaline"], ans: 0,
-        expl: "pH < 7 → acide. pH = 7 → neutre. pH > 7 → basique. Un pH de 4 est donc acide." },
-      { q: "Quelle est la vitesse moyenne d'un objet parcourant 150 m en 30 s ?", opts: ["5 m/s","50 m/s","0,2 m/s","4 500 m/s"], ans: 0,
-        expl: "v = d/t = 150/30 = 5 m/s." },
-      { q: "Qu'est-ce que la méiose ?", opts: ["La division cellulaire qui produit les gamètes","La division cellulaire de croissance","La fusion de deux cellules","La mort programmée des cellules"], ans: 0,
-        expl: "La méiose divise le nombre de chromosomes par 2 (46→23) pour former les gamètes (ovules et spermatozoïdes)." },
-      { q: "Que stipule la théorie de Darwin sur la sélection naturelle ?", opts: ["Les individus les mieux adaptés survivent et se reproduisent","Les espèces les plus fortes éliminent les autres","L'environnement choisit les espèces qu'il garde","Les mutations sont toujours bénéfiques"], ans: 0,
-        expl: "La sélection naturelle : les individus avec des caractères avantageux survivent mieux et transmettent leurs gènes à leur descendance." },
+      { q:{fr:"Quelle est l'équation-bilan de la photosynthèse ?",en:"What is the equation for photosynthesis?"}, opts:{fr:["CO₂ + H₂O + lumière → glucose + O₂","O₂ + glucose → CO₂ + H₂O","H₂O + O₂ → glucose + CO₂","glucose → CO₂ + H₂O"],en:["CO₂ + H₂O + light → glucose + O₂","O₂ + glucose → CO₂ + H₂O","H₂O + O₂ → glucose + CO₂","glucose → CO₂ + H₂O"]}, ans:0, expl:{fr:"Dans les chloroplastes, la lumière permet de synthétiser du glucose à partir de CO₂ et H₂O en libérant de l'O₂.",en:"In chloroplasts, light energy allows glucose to be synthesised from CO₂ and H₂O, releasing O₂."} },
+      { q:{fr:"Combien de chromosomes possède une cellule humaine somatique ?",en:"How many chromosomes does a human somatic cell have?"}, opts:{fr:["46","23","48","44"],en:["46","23","48","44"]}, ans:0, expl:{fr:"Les cellules somatiques humaines ont 46 chromosomes en 23 paires. Les gamètes en ont 23.",en:"Human somatic cells have 46 chromosomes in 23 pairs. Gametes have 23."} },
+      { q:{fr:"Quelle est la formule du poids ?",en:"What is the formula for weight?"}, opts:{fr:["P = m × g","P = m / g","P = m + g","P = m²"],en:["P = m × g","P = m / g","P = m + g","P = m²"]}, ans:0, expl:{fr:"P (N) = m (kg) × g (N/kg). Sur Terre g ≈ 10 N/kg.",en:"P (N) = m (kg) × g (N/kg). On Earth g ≈ 10 N/kg."} },
+      { q:{fr:"Quelle est la loi d'Ohm ?",en:"What is Ohm's Law?"}, opts:{fr:["U = R × I","I = U × R","R = U × I","U = I / R"],en:["U = R × I","I = U × R","R = U × I","U = I / R"]}, ans:0, expl:{fr:"U (tension en V) = R (résistance en Ω) × I (intensité en A).",en:"V (voltage) = R (resistance in Ω) × I (current in A)."} },
+      { q:{fr:"Quel organite est le siège de la photosynthèse ?",en:"Which organelle is the site of photosynthesis?"}, opts:{fr:["Le chloroplaste","La mitochondrie","Le noyau","Le ribosome"],en:["The chloroplast","The mitochondrion","The nucleus","The ribosome"]}, ans:0, expl:{fr:"Les chloroplastes contiennent la chlorophylle et sont le lieu de la photosynthèse.",en:"Chloroplasts contain chlorophyll and are where photosynthesis takes place."} },
+      { q:{fr:"Qu'énonce la loi de conservation de la masse (Lavoisier) ?",en:"What does the law of conservation of mass (Lavoisier) state?"}, opts:{fr:["Masse réactifs = masse produits","L'énergie se conserve","La chaleur est proportionnelle à la masse","La masse augmente"],en:["Mass of reactants = mass of products","Energy is conserved","Heat is proportional to mass","Mass increases"]}, ans:0, expl:{fr:"'Rien ne se crée, rien ne se perd, tout se transforme.' La masse totale est conservée.",en:"'Nothing is created, nothing is destroyed, everything transforms.' Total mass is conserved."} },
+      { q:{fr:"Une solution avec pH = 4 est :",en:"A solution with pH = 4 is:"}, opts:{fr:["Acide","Basique","Neutre","Alcaline"],en:["Acidic","Alkaline","Neutral","Basic"]}, ans:0, expl:{fr:"pH < 7 = acide. pH = 7 = neutre. pH > 7 = basique.",en:"pH < 7 = acidic. pH = 7 = neutral. pH > 7 = alkaline/basic."} },
+      { q:{fr:"Quelle est la vitesse moyenne d'un objet parcourant 150 m en 30 s ?",en:"What is the average speed of an object covering 150 m in 30 s?"}, opts:{fr:["5 m/s","50 m/s","0,2 m/s","4 500 m/s"],en:["5 m/s","50 m/s","0.2 m/s","4,500 m/s"]}, ans:0, expl:{fr:"v = d/t = 150/30 = 5 m/s.",en:"v = d/t = 150/30 = 5 m/s."} },
+      { q:{fr:"Qu'est-ce que la méiose ?",en:"What is meiosis?"}, opts:{fr:["Division cellulaire produisant les gamètes (23 chromosomes)","Division normale de croissance","Fusion de deux cellules","Mort programmée des cellules"],en:["Cell division producing gametes (23 chromosomes)","Normal cell division for growth","Fusion of two cells","Programmed cell death"]}, ans:0, expl:{fr:"La méiose divise le nombre de chromosomes par 2 (46→23) pour former les gamètes.",en:"Meiosis halves the chromosome number (46→23) to form gametes."} },
+      { q:{fr:"Qu'affirme la sélection naturelle de Darwin ?",en:"What does Darwin's natural selection state?"}, opts:{fr:["Les individus les mieux adaptés survivent et se reproduisent davantage","Les espèces les plus fortes éliminent les autres","L'environnement choisit les espèces","Les mutations sont toujours bénéfiques"],en:["Best-adapted individuals survive and reproduce more","The strongest species eliminate others","The environment chooses species","Mutations are always beneficial"]}, ans:0, expl:{fr:"Les individus avec des caractères avantageux survivent mieux et transmettent leurs gènes.",en:"Individuals with advantageous traits survive better and pass their genes on."} },
+    ]
+  },
+
+  /* ─── ANGLAIS ─── */
+  anglais: {
+    name:  { fr:"Anglais", en:"English" },
+    icon:  "🇬🇧",
+    color: "#38BDF8",
+    desc:  { fr:"Grammaire · Vocabulaire · Compréhension", en:"Grammar · Vocabulary · Comprehension" },
+    chapters: [
+      { id:1, emoji:"⏰", title:{fr:"Les temps du présent",en:"Present Tenses"}, tag:null, notes:[
+        { text:{fr:"Present Simple : faits permanents, habitudes, vérités générales → sujet + V (+ s à la 3e personne)",en:"Present Simple: permanent facts, habits, general truths → subject + V (+ s in 3rd person)"}, formula:"She works every day." },
+        { text:{fr:"Present Continuous : action en cours maintenant → am/is/are + V-ing",en:"Present Continuous: action happening right now → am/is/are + V-ing"}, formula:"He is studying right now." },
+        { text:{fr:"Present Perfect : action passée avec lien au présent → have/has + past participle",en:"Present Perfect: past action with present relevance → have/has + past participle"}, formula:"I have just finished." },
+        { text:{fr:"Present Perfect Continuous : action qui a commencé dans le passé et continue → have/has + been + V-ing",en:"Present Perfect Continuous: action started in the past and still ongoing → have/has + been + V-ing"}, formula:"She has been living here for 5 years." },
+        { text:{fr:"Mots clés Present Simple : always, usually, often, sometimes, never, every day",en:"Key words for Present Simple: always, usually, often, sometimes, never, every day"} },
+        { text:{fr:"Mots clés Present Continuous : now, at the moment, currently, today, look!, listen!",en:"Key words for Present Continuous: now, at the moment, currently, today, look!, listen!"} },
+      ]},
+      { id:2, emoji:"📜", title:{fr:"Les temps du passé",en:"Past Tenses"}, tag:null, notes:[
+        { text:{fr:"Past Simple : action terminée à un moment précis du passé → V-ed ou forme irrégulière",en:"Past Simple: completed action at a specific past time → V-ed or irregular form"}, formula:"She visited Paris last year." },
+        { text:{fr:"Past Continuous : action en cours dans le passé, souvent interrompue → was/were + V-ing",en:"Past Continuous: action in progress in the past, often interrupted → was/were + V-ing"}, formula:"I was reading when he called." },
+        { text:{fr:"Past Perfect : action antérieure à une autre action passée → had + past participle",en:"Past Perfect: action earlier than another past action → had + past participle"}, formula:"She had left before I arrived." },
+        { text:{fr:"Verbes irréguliers fréquents : go/went/gone, come/came/come, see/saw/seen, take/took/taken, write/wrote/written",en:"Common irregular verbs: go/went/gone, come/came/come, see/saw/seen, take/took/taken, write/wrote/written"} },
+        { text:{fr:"Mots clés Past Simple : yesterday, last week/year/night, in 2010, ago, when",en:"Key words for Past Simple: yesterday, last week/year/night, in 2010, ago, when"} },
+      ]},
+      { id:3, emoji:"🔮", title:{fr:"L'avenir (Future)",en:"Future Forms"}, tag:null, notes:[
+        { text:{fr:"Will + infinitif : décision spontanée, prédiction, promesse",en:"Will + infinitive: spontaneous decision, prediction, promise"}, formula:"I will help you." },
+        { text:{fr:"Going to + infinitif : intention planifiée, prédiction basée sur une preuve visible",en:"Going to + infinitive: planned intention, prediction based on visible evidence"}, formula:"She is going to travel next month." },
+        { text:{fr:"Present Continuous avec valeur future : arrangement déjà fixé",en:"Present Continuous for future: already arranged event"}, formula:"We are meeting them tomorrow." },
+        { text:{fr:"Present Simple à valeur future : horaires, programmes officiels",en:"Present Simple for future: timetables, official schedules"}, formula:"The train leaves at 9 am." },
+      ]},
+      { id:4, emoji:"🔀", title:{fr:"Les conditionnels",en:"Conditionals"}, tag:null, notes:[
+        { text:{fr:"Conditionnel 0 : vérités générales, faits scientifiques → If + present simple, present simple",en:"Zero conditional: general truths, scientific facts → If + present simple, present simple"}, formula:"If you heat water to 100°C, it boils." },
+        { text:{fr:"1er conditionnel : situation possible dans le futur → If + present simple, will + infinitif",en:"First conditional: possible future situation → If + present simple, will + infinitive"}, formula:"If it rains, I will stay home." },
+        { text:{fr:"2e conditionnel : situation hypothétique ou improbable → If + past simple, would + infinitif",en:"Second conditional: hypothetical/unlikely situation → If + past simple, would + infinitive"}, formula:"If I had a million euros, I would travel." },
+        { text:{fr:"3e conditionnel : regret sur le passé → If + past perfect, would have + past participle",en:"Third conditional: regret about the past → If + past perfect, would have + past participle"}, formula:"If I had studied, I would have passed." },
+      ]},
+      { id:5, emoji:"🎭", title:{fr:"Les modaux",en:"Modal Verbs"}, tag:null, notes:[
+        { text:{fr:"CAN : capacité (I can swim) / COULD : capacité passée ou politesse (Could you help me?)",en:"CAN: ability (I can swim) / COULD: past ability or polite request (Could you help me?)"} },
+        { text:{fr:"MUST / HAVE TO : obligation forte. MUSTN'T : interdiction. DON'T HAVE TO : pas d'obligation",en:"MUST / HAVE TO: strong obligation. MUSTN'T: prohibition. DON'T HAVE TO: no obligation"}, formula:"You must stop at red lights." },
+        { text:{fr:"SHOULD / OUGHT TO : conseil, recommandation. SHOULDN'T : déconseiller",en:"SHOULD / OUGHT TO: advice, recommendation. SHOULDN'T: advise against"}, formula:"You should eat more vegetables." },
+        { text:{fr:"MAY / MIGHT : possibilité (might = moins probable que may). MAY : permission formelle",en:"MAY / MIGHT: possibility (might = less certain than may). MAY: formal permission"}, formula:"It might rain this afternoon." },
+        { text:{fr:"WOULD : conditionnel, désir poli. WILL : futur, promesse, refus (won't)",en:"WOULD: conditional, polite desire. WILL: future, promise, refusal (won't)"} },
+      ]},
+      { id:6, emoji:"🔄", title:{fr:"La voix passive",en:"The Passive Voice"}, tag:null, notes:[
+        { text:{fr:"Formation : be (conjugué au bon temps) + past participle du verbe principal",en:"Formation: be (conjugated in the right tense) + past participle of the main verb"}, formula:"The book was written by Rowling." },
+        { text:{fr:"Quand l'utiliser : l'agent est inconnu, non important, ou pour mettre l'accent sur l'objet",en:"When to use it: the agent is unknown, unimportant, or to emphasise the object/result"} },
+        { text:{fr:"Présent passif : is/are + pp. Passé passif : was/were + pp. Futur passif : will be + pp",en:"Present passive: is/are + pp. Past passive: was/were + pp. Future passive: will be + pp"}, formula:"Millions of phones are sold every year." },
+        { text:{fr:"Avec by : introduit l'agent (la personne qui fait l'action)",en:"With 'by': introduces the agent (person performing the action)"}, formula:"The painting was created by Picasso." },
+      ]},
+      { id:7, emoji:"💬", title:{fr:"Le discours rapporté",en:"Reported Speech"}, tag:null, notes:[
+        { text:{fr:"Règle de concordance des temps : on recule d'un temps (present → past, will → would, can → could)",en:"Backshift rule: tense moves one step back (present → past, will → would, can → could)"} },
+        { text:{fr:"He says 'I am tired.' → He says (that) he is tired. (verbe introducteur au présent = pas de changement)",en:"He says 'I am tired.' → He says (that) he is tired. (reporting verb in present = no backshift)"} },
+        { text:{fr:"He said 'I am tired.' → He said (that) he was tired. (verbe introducteur au passé = concordance des temps)",en:"He said 'I am tired.' → He said (that) he was tired. (reporting verb in past = backshift applies)"}, formula:"'I will help.' → She said she would help." },
+        { text:{fr:"Questions rapportées : ordre sujet + verbe ; pas de do/does/did ; if/whether pour les yes/no questions",en:"Reported questions: subject + verb order; no do/does/did; if/whether for yes/no questions"}, formula:"'Where do you live?' → He asked where I lived." },
+      ]},
+      { id:8, emoji:"📊", title:{fr:"Comparatifs et superlatifs",en:"Comparatives & Superlatives"}, tag:null, notes:[
+        { text:{fr:"Adjectifs courts (1 syllabe) : comparatif = adj + -er ; superlatif = the + adj + -est",en:"Short adjectives (1 syllable): comparative = adj + -er ; superlative = the + adj + -est"}, formula:"tall → taller → the tallest" },
+        { text:{fr:"Adjectifs longs (2+ syllabes) : more + adj ; the most + adj",en:"Long adjectives (2+ syllables): more + adj ; the most + adj"}, formula:"interesting → more interesting → the most interesting" },
+        { text:{fr:"Irréguliers : good → better → the best ; bad → worse → the worst ; far → farther → the farthest",en:"Irregular: good → better → the best ; bad → worse → the worst ; far → farther → the farthest"} },
+        { text:{fr:"Comparaison d'égalité : as + adj + as (She is as tall as him.) / Inégalité : not as + adj + as",en:"Equality comparison: as + adj + as (She is as tall as him.) / Inequality: not as + adj + as"} },
+      ]},
+      { id:9, emoji:"🌍", title:{fr:"Vocabulaire thématique",en:"Thematic Vocabulary"}, tag:null, notes:[
+        { text:{fr:"Environnement : climate change, global warming, pollution, deforestation, renewable energy, carbon footprint, biodiversity, endangered species",en:"Environment: climate change, global warming, pollution, deforestation, renewable energy, carbon footprint, biodiversity, endangered species"} },
+        { text:{fr:"Technologie & réseaux sociaux : social media, artificial intelligence, screen time, cyberbullying, privacy, digital, online, app, device",en:"Technology & social media: social media, artificial intelligence, screen time, cyberbullying, privacy, digital, online, app, device"} },
+        { text:{fr:"Société : equality, diversity, discrimination, human rights, community, protest, campaign, freedom, democracy",en:"Society: equality, diversity, discrimination, human rights, community, protest, campaign, freedom, democracy"} },
+        { text:{fr:"Santé : mental health, well-being, balanced diet, exercise, stress, addiction, healthcare, prevention",en:"Health: mental health, well-being, balanced diet, exercise, stress, addiction, healthcare, prevention"} },
+        { text:{fr:"Expressions utiles : in my opinion / I believe that / However / On the other hand / As a result / Therefore / Moreover / Nevertheless",en:"Useful expressions: In my opinion / I believe that / However / On the other hand / As a result / Therefore / Moreover / Nevertheless"} },
+      ]},
+      { id:10, emoji:"✍️", title:{fr:"Expression écrite & compréhension",en:"Writing & Reading Skills"}, tag:null, notes:[
+        { text:{fr:"Structure d'un texte argumentatif : Introduction (contexte + thèse) → Arguments + exemples → Conclusion",en:"Argumentative text structure: Introduction (context + thesis) → Arguments + examples → Conclusion"} },
+        { text:{fr:"Décrire une image : In the foreground/background… ; On the left/right… ; In the centre… ; I can see…",en:"Describing a picture: In the foreground/background… ; On the left/right… ; In the centre… ; I can see…"} },
+        { text:{fr:"Compréhension écrite : lis d'abord les questions, repère les mots-clés dans le texte, déduis le sens des mots inconnus par le contexte",en:"Reading comprehension: read questions first, spot key words in the text, infer unknown words from context"} },
+        { text:{fr:"Connecteurs de discours : First / Then / After that / Finally / Despite / Although / Because / Since / While",en:"Discourse connectors: First / Then / After that / Finally / Despite / Although / Because / Since / While"} },
+        { text:{fr:"Cohésion : utilise des pronoms (he, she, it, they) et des synonymes pour éviter les répétitions",en:"Cohesion: use pronouns (he, she, it, they) and synonyms to avoid repetition"} },
+      ]},
+    ],
+    questions: [
+      { q:{fr:"Quelle forme verbale complète : 'She ___ to school every day.' ?",en:"Which verb form completes: 'She ___ to school every day.'?"}, opts:{fr:["walks","is walking","has walked","was walking"],en:["walks","is walking","has walked","was walking"]}, ans:0, expl:{fr:"On utilise le Present Simple pour une habitude ou routine (every day = indice). La 3e personne du singulier prend un -s.",en:"We use the Present Simple for habits and routines ('every day' is the clue). The 3rd person singular takes -s."} },
+      { q:{fr:"Comment former le 1er conditionnel ?",en:"How do you form the first conditional?"}, opts:{fr:["If + présent simple, will + infinitif","If + passé simple, would + infinitif","If + présent simple, would + infinitif","If + passé perfect, would have + pp"],en:["If + present simple, will + infinitive","If + past simple, would + infinitive","If + present simple, would + infinitive","If + past perfect, would have + pp"]}, ans:0, expl:{fr:"Le 1er conditionnel exprime une situation réelle et possible dans le futur : If it rains, I will stay home.",en:"The first conditional expresses a real, possible future situation: If it rains, I will stay home."} },
+      { q:{fr:"Mets à la voix passive : 'Millions of people watch this show.'",en:"Put into the passive voice: 'Millions of people watch this show.'"}, opts:{fr:["This show is watched by millions of people.","This show watches millions of people.","Millions of people are watched by this show.","This show was watched by millions."],en:["This show is watched by millions of people.","This show watches millions of people.","Millions of people are watched by this show.","This show was watched by millions."]}, ans:0, expl:{fr:"Voix passive au présent : is/are + participe passé. Le sujet de la phrase active devient le complément d'agent (by).",en:"Present passive: is/are + past participle. The active subject becomes the agent (introduced by 'by')."} },
+      { q:{fr:"Quelle est la forme au discours rapporté de : 'I am happy,' she said. ?",en:"What is the reported speech form of: 'I am happy,' she said.?"}, opts:{fr:["She said she was happy.","She said she is happy.","She said I was happy.","She said that I am happy."],en:["She said she was happy.","She said she is happy.","She said I was happy.","She said that I am happy."]}, ans:0, expl:{fr:"Verbe introducteur au passé (said) → concordance des temps : am → was. Le pronom I devient she.",en:"Reporting verb in past (said) → backshift: am → was. The pronoun I becomes she."} },
+      { q:{fr:"Quel modal exprime une OBLIGATION forte ?",en:"Which modal verb expresses strong OBLIGATION?"}, opts:{fr:["Must","Should","Might","Could"],en:["Must","Should","Might","Could"]}, ans:0, expl:{fr:"MUST exprime une obligation forte ou une interdiction (mustn't). SHOULD est un conseil, MIGHT une possibilité.",en:"MUST expresses strong obligation or prohibition (mustn't). SHOULD is advice, MIGHT is possibility."} },
+      { q:{fr:"Complète : 'If I ___ a million euros, I ___ travel the world.' (2e conditionnel)",en:"Complete: 'If I ___ a million euros, I ___ travel the world.' (2nd conditional)"}, opts:{fr:["had / would","have / will","had / will","have / would"],en:["had / would","have / will","had / will","have / would"]}, ans:0, expl:{fr:"2e conditionnel (hypothétique) : If + past simple (had), would + infinitif (would travel).",en:"2nd conditional (hypothetical): If + past simple (had), would + infinitive (would travel)."} },
+      { q:{fr:"Quel est le superlatif irrégulier de 'good' ?",en:"What is the irregular superlative of 'good'?"}, opts:{fr:["The best","The goodest","The most good","The better"],en:["The best","The goodest","The most good","The better"]}, ans:0, expl:{fr:"Good → Better (comparatif) → The best (superlatif). Ce sont des formes irrégulières à mémoriser.",en:"Good → Better (comparative) → The best (superlative). These are irregular forms to memorise."} },
+      { q:{fr:"Quelle est la différence entre 'must not' et 'don't have to' ?",en:"What is the difference between 'must not' and 'don't have to'?"}, opts:{fr:["Mustn't = interdit ; don't have to = pas obligatoire","Les deux signifient la même chose","Mustn't = pas obligatoire ; don't have to = interdit","Mustn't = conseillé de ne pas ; don't have to = interdit"],en:["Mustn't = forbidden; don't have to = not necessary","They mean exactly the same thing","Mustn't = not necessary; don't have to = forbidden","Mustn't = advisable not to; don't have to = forbidden"]}, ans:0, expl:{fr:"Mustn't = interdiction (You mustn't cheat). Don't have to = absence d'obligation (You don't have to come).",en:"Mustn't = prohibition (You mustn't cheat). Don't have to = absence of obligation (You don't have to come)."} },
+      { q:{fr:"Que signifie le Present Perfect dans : 'I have just finished my homework.' ?",en:"What does the Present Perfect indicate in: 'I have just finished my homework.'?"}, opts:{fr:["Une action terminée qui a un lien avec le présent","Une action répétée dans le passé","Une habitude présente","Une action future planifiée"],en:["A completed action with present relevance","A repeated action in the past","A present habit","A planned future action"]}, ans:0, expl:{fr:"'Just' est un marqueur du Present Perfect indiquant qu'une action vient de se terminer et a un impact sur le présent.",en:"'Just' is a Present Perfect marker showing an action just completed that has relevance to the present moment."} },
+      { q:{fr:"Laquelle de ces phrases décrit une action en cours au moment où une autre a eu lieu ?",en:"Which sentence describes an action in progress when another action occurred?"}, opts:{fr:["I was cooking when she arrived.","I cooked when she arrived.","I had cooked when she arrived.","I will cook when she arrives."],en:["I was cooking when she arrived.","I cooked when she arrived.","I had cooked when she arrived.","I will cook when she arrives."]}, ans:0, expl:{fr:"Le Past Continuous (was/were + V-ing) décrit une action en cours interrompue par une autre (Past Simple).",en:"The Past Continuous (was/were + V-ing) describes an ongoing action interrupted by another (Past Simple)."} },
     ]
   }
+
 };
 
-/* ─────────────────────────────────────────
-   STATE
-───────────────────────────────────────── */
+/* ═══════════════════════════════════════
+   STATE & PROGRESS
+═══════════════════════════════════════ */
 let currentSubject = null;
-let currentQuiz    = [];
-let currentQ       = 0;
-let quizScore      = 0;
-let answered       = false;
+let currentQuiz = [], currentQ = 0, quizScore = 0, answered = false;
 
-/* ─────────────────────────────────────────
-   PROGRESS (localStorage)
-───────────────────────────────────────── */
-function getProgress() {
-  try { return JSON.parse(localStorage.getItem('brevetProgress') || '{}'); } catch { return {}; }
-}
+function getProgress() { try{ return JSON.parse(localStorage.getItem('brevetProg')||'{}'); }catch{ return {}; } }
 function saveProgress(sub, score) {
   const p = getProgress();
-  p[sub] = Math.max(p[sub] || 0, score);
-  localStorage.setItem('brevetProgress', JSON.stringify(p));
+  p[sub] = Math.max(p[sub]||0, score);
+  localStorage.setItem('brevetProg', JSON.stringify(p));
 }
 
-/* ─────────────────────────────────────────
+/* ═══════════════════════════════════════
    NAVIGATION
-───────────────────────────────────────── */
+═══════════════════════════════════════ */
 function showView(id) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
+  document.getElementById('view-'+id).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+function showHome() { renderHome(); showView('home'); }
 
-function showHome() {
-  renderHome();
-  showView('home');
-}
-
-/* ─────────────────────────────────────────
+/* ═══════════════════════════════════════
    HOME
-───────────────────────────────────────── */
+═══════════════════════════════════════ */
 function renderHome() {
-  const progress = getProgress();
+  const prog = getProgress();
   const keys = Object.keys(SUBJECTS);
   const grid = document.getElementById('subjects-grid');
   grid.innerHTML = '';
-
-  let totalPct = 0;
+  let total = 0;
   keys.forEach(key => {
     const s   = SUBJECTS[key];
-    const pct = Math.round(((progress[key] || 0) / s.questions.length) * 100);
-    totalPct += pct;
-
+    const pct = Math.round(((prog[key]||0)/s.questions.length)*100);
+    total += pct;
     const card = document.createElement('div');
     card.className = 'subject-card';
     card.dataset.subject = key;
     card.innerHTML = `
       <div class="sc-icon">${s.icon}</div>
-      <div class="sc-name">${s.name}</div>
-      <div class="sc-desc">${s.desc}</div>
+      <div class="sc-name">${s.name[LANG]}</div>
+      <div class="sc-desc">${s.desc[LANG]}</div>
+      <div class="sc-chapters" style="color:${s.color}">📚 ${s.chapters.length} ${T('chapters')}</div>
       <div class="prog-wrap">
-        <div class="prog-label"><span>Progression</span><span>${pct}%</span></div>
+        <div class="prog-label"><span>${T('progress')}</span><span>${pct}%</span></div>
         <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
       </div>
       <div class="btn-group">
         <button class="btn btn-primary" style="background:${s.color}"
-          onclick="event.stopPropagation(); openSubject('${key}'); switchTab('quiz')">📝 Quiz</button>
+          onclick="event.stopPropagation(); openSubject('${key}'); switchTab('quiz')">📝 ${T('quizTab')}</button>
         <button class="btn btn-outline" style="border-color:${s.color}; color:${s.color}"
-          onclick="event.stopPropagation(); openSubject('${key}'); switchTab('notes')">📖 Fiches</button>
+          onclick="event.stopPropagation(); openSubject('${key}'); switchTab('notes')">📖 ${T('notesTab')}</button>
       </div>`;
     card.addEventListener('click', () => openSubject(key));
     grid.appendChild(card);
   });
-
-  const overall = Math.round(totalPct / keys.length);
-  document.getElementById('overall-pct').textContent  = overall + '%';
-  document.getElementById('overall-fill').style.width = overall + '%';
+  const overall = Math.round(total/keys.length);
+  document.getElementById('overall-pct').textContent  = overall+'%';
+  document.getElementById('overall-fill').style.width = overall+'%';
 }
 
-/* ─────────────────────────────────────────
+/* ═══════════════════════════════════════
    SUBJECT
-───────────────────────────────────────── */
+═══════════════════════════════════════ */
 function openSubject(key) {
   currentSubject = key;
   const s = SUBJECTS[key];
-
-  /* accent colour on sub-views */
   ['view-subject','view-quiz','view-results'].forEach(id =>
     document.getElementById(id).style.setProperty('--accent', s.color));
-  document.getElementById('subject-tabs').style.setProperty('--accent', s.color);
+  document.querySelector('.tabs').style.setProperty('--accent', s.color);
 
-  /* Header */
+  // Header
   document.getElementById('subject-hdr').innerHTML = `
     <div class="subject-badge" style="background:${s.color}20">${s.icon}</div>
     <div>
-      <h2>${s.name}</h2>
-      <p>${s.desc}</p>
+      <h2>${s.name[LANG]}</h2>
+      <p>${s.desc[LANG]}</p>
     </div>`;
 
-  /* Quiz tab */
+  // Quiz start
   const prog = getProgress();
-  const best = prog[key] || 0;
-  const bestPct = Math.round(best / s.questions.length * 100);
+  const best = prog[key]||0;
+  const bestPct = Math.round(best/s.questions.length*100);
   document.getElementById('tab-quiz').innerHTML = `
     <div class="quiz-start">
-      <div class="qi">${s.icon}</div>
-      <h2>Quiz — ${s.name}</h2>
-      <p>${s.questions.length} questions pour tester tes connaissances</p>
-      ${best > 0 ? `<span class="best" style="color:${s.color}">🏆 Meilleur score : ${best}/${s.questions.length} (${bestPct}%)</span>` : ''}
-      <button class="btn btn-primary" style="background:${s.color}; font-size:1rem; padding:.8rem 2.2rem"
-        onclick="startQuiz('${key}')">🚀 Commencer le quiz</button>
+      <div class="qs-icon">${s.icon}</div>
+      <h2>${T('quizTab')} — ${s.name[LANG]}</h2>
+      <p>${s.questions.length} ${T('questions')}</p>
+      ${best>0?`<span class="best-badge" style="background:${s.color}20;color:${s.color}">${T('bestScore')} : ${best}/${s.questions.length} (${bestPct}%)</span>`:''}
+      <br>
+      <button class="btn btn-primary" style="background:${s.color};font-size:1rem;padding:.8rem 2.2rem"
+        onclick="startQuiz('${key}')">${T('startQuiz')}</button>
     </div>`;
 
-  /* Notes tab */
+  // Notes — chapters
   const notesDiv = document.getElementById('tab-notes');
-  notesDiv.innerHTML = '';
-  s.notes.forEach(section => {
-    const wrap = document.createElement('div');
-    wrap.className = 'notes-section';
-    wrap.innerHTML = `<h3><span style="color:${s.color}">◆</span> ${section.title}</h3>`;
-    const ul = document.createElement('ul');
-    ul.className = 'notes-list';
-    section.items.forEach(item => {
-      const li = document.createElement('li');
-      li.innerHTML = `<span class="arrow">→</span><span>${item.text}${
-        item.formula ? `<div class="formula-box" style="border-color:${s.color}">${item.formula}</div>` : ''
-      }</span>`;
-      ul.appendChild(li);
-    });
-    wrap.appendChild(ul);
-    notesDiv.appendChild(wrap);
+  notesDiv.innerHTML = `
+    <div class="notes-toolbar">
+      <button onclick="toggleAllChapters(true)">${T('expandAll')}</button>
+      <button onclick="toggleAllChapters(false)">${T('collapseAll')}</button>
+    </div>`;
+
+  const tagColors = { Histoire:'#F87171', Géographie:'#FBBF24', EMC:'#60A5FA', SVT:'#34D399', 'Physique-Chimie':'#A78BFA' };
+  const tagMap = {
+    Histoire: T('tagHist'), Géographie: T('tagGeo'), EMC: T('tagEMC'),
+    SVT: T('tagSVT'), 'Physique-Chimie': T('tagPC')
+  };
+
+  s.chapters.forEach(ch => {
+    const tagHTML = ch.tag ? `<span class="chapter-tag" style="background:${tagColors[ch.tag]||s.color}">${tagMap[ch.tag]||ch.tag}</span>` : '';
+    const card = document.createElement('div');
+    card.className = 'chapter-card';
+    card.innerHTML = `
+      <div class="chapter-header" onclick="toggleChapter(this)">
+        <div class="chapter-num" style="background:${s.color}">${ch.id}</div>
+        <div class="chapter-emoji">${ch.emoji}</div>
+        <div class="chapter-info">
+          <div class="chapter-title">${ch.title[LANG]}${tagHTML}</div>
+          <div class="chapter-sub">${ch.title[LANG==='fr'?'en':'fr']}</div>
+        </div>
+        <div class="chapter-arrow">▶</div>
+      </div>
+      <div class="chapter-body">
+        <ul class="notes-list">
+          ${ch.notes.map(n=>`
+            <li>
+              <span class="ni-arrow" style="color:${s.color}">→</span>
+              <span>${n.text[LANG]}${n.formula?`<span class="formula-box" style="border-color:${s.color}">${n.formula}</span>`:''}
+              </span>
+            </li>`).join('')}
+        </ul>
+      </div>`;
+    notesDiv.appendChild(card);
   });
 
-  /* Reset tabs */
   switchTab('quiz');
   showView('subject');
 }
 
 function switchTab(tab) {
-  const isQuiz = (tab === 'quiz');
-  document.getElementById('tab-btn-quiz').classList.toggle('active',  isQuiz);
-  document.getElementById('tab-btn-notes').classList.toggle('active', !isQuiz);
-  document.getElementById('tab-quiz').classList.toggle('active',  isQuiz);
-  document.getElementById('tab-notes').classList.toggle('active', !isQuiz);
+  const isQ = tab==='quiz';
+  document.getElementById('tab-btn-quiz').classList.toggle('active', isQ);
+  document.getElementById('tab-btn-notes').classList.toggle('active', !isQ);
+  document.getElementById('tab-quiz').classList.toggle('active', isQ);
+  document.getElementById('tab-notes').classList.toggle('active', !isQ);
 }
 
-/* ─────────────────────────────────────────
+function toggleChapter(hdr) {
+  const body  = hdr.nextElementSibling;
+  const arrow = hdr.querySelector('.chapter-arrow');
+  const open  = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  arrow.classList.toggle('open', !open);
+}
+
+function toggleAllChapters(expand) {
+  document.querySelectorAll('#tab-notes .chapter-body').forEach(b => b.classList.toggle('open', expand));
+  document.querySelectorAll('#tab-notes .chapter-arrow').forEach(a => a.classList.toggle('open', expand));
+}
+
+/* ═══════════════════════════════════════
    QUIZ
-───────────────────────────────────────── */
+═══════════════════════════════════════ */
 function startQuiz(key) {
-  currentSubject = key;
-  currentQ = 0; quizScore = 0; answered = false;
-  currentQuiz = [...SUBJECTS[key].questions].sort(() => Math.random() - 0.5);
-  document.getElementById('quiz-back').onclick = () => openSubject(key);
+  currentSubject = key; currentQ = 0; quizScore = 0; answered = false;
+  isCustomQuiz = false;
+  currentQuiz = [...SUBJECTS[key].questions].sort(() => Math.random()-0.5);
+  document.getElementById('quiz-back').onclick = () => { closeCalc(); openSubject(key); };
+  const accent = SUBJECTS[key].color;
+  document.getElementById('view-quiz').style.setProperty('--accent', accent);
+  document.getElementById('view-results').style.setProperty('--accent', accent);
+  // Show calculator only for maths
+  const calcBtn = document.getElementById('calc-toggle-btn');
+  calcBtn.style.display = (key === 'maths') ? 'inline-flex' : 'none';
+  closeCalc();
   showView('quiz');
   renderQuestion();
 }
 
 function renderQuestion() {
-  const q     = currentQuiz[currentQ];
+  const q = currentQuiz[currentQ];
   const total = currentQuiz.length;
   answered = false;
 
-  document.getElementById('q-num').textContent       = `Question ${currentQ + 1}/${total}`;
-  document.getElementById('q-prog').style.width       = `${((currentQ + 1) / total) * 100}%`;
-  document.getElementById('q-score-live').textContent = `Score : ${quizScore}`;
-  document.getElementById('q-text').textContent       = q.q;
+  document.getElementById('q-num').textContent       = `${T('question')} ${currentQ+1}/${total}`;
+  document.getElementById('q-prog').style.width       = `${((currentQ+1)/total)*100}%`;
+  document.getElementById('q-score-live').textContent = `${T('score')} : ${quizScore}`;
+  document.getElementById('q-text').textContent       = q.q[LANG];
   document.getElementById('q-expl').style.display     = 'none';
   document.getElementById('q-next').style.display     = 'none';
 
-  /* Shuffle options while tracking original indices */
-  const shuffled = q.opts.map((opt, i) => ({ opt, orig: i }))
-                         .sort(() => Math.random() - 0.5);
+  // Show subject badge for mixed/custom quizzes
+  const tagEl = document.getElementById('q-subject-tag');
+  if (isCustomQuiz && q._subject) {
+    const sub = SUBJECTS[q._subject];
+    tagEl.style.display    = 'inline-flex';
+    tagEl.style.background = sub.color + '30';
+    tagEl.style.color      = sub.color;
+    tagEl.style.border     = `2px solid ${sub.color}50`;
+    tagEl.textContent      = sub.icon + ' ' + sub.name[LANG];
+  } else {
+    tagEl.style.display = 'none';
+  }
+
+  const LABELS = ['A', 'B', 'C', 'D'];
+  const shuffled = q.opts[LANG].map((opt,i)=>({opt,orig:i})).sort(()=>Math.random()-.5);
   const optDiv = document.getElementById('q-options');
   optDiv.innerHTML = '';
-  shuffled.forEach(({ opt, orig }) => {
+  shuffled.forEach(({opt,orig}, idx) => {
     const btn = document.createElement('button');
     btn.className = 'option';
-    btn.textContent = opt;
-    btn.onclick = () => selectAnswer(orig === q.ans, btn, shuffled, q);
+    btn.innerHTML = `<span class="opt-label">${LABELS[idx]}</span><span class="opt-text">${opt}</span>`;
+    btn.onclick = () => selectAnswer(orig===q.ans, btn, shuffled, q);
     optDiv.appendChild(btn);
   });
 }
@@ -823,70 +1621,499 @@ function selectAnswer(isCorrect, chosenBtn, shuffled, q) {
   if (answered) return;
   answered = true;
   if (isCorrect) quizScore++;
-
   chosenBtn.classList.add(isCorrect ? 'correct' : 'wrong');
-
-  /* Reveal correct answer if wrong */
-  const allBtns = document.getElementById('q-options').querySelectorAll('.option');
-  allBtns.forEach((b, i) => {
+  document.getElementById('q-options').querySelectorAll('.option').forEach((b,i) => {
     b.disabled = true;
-    if (shuffled[i].orig === q.ans && !isCorrect) b.classList.add('correct');
+    if (shuffled[i].orig===q.ans && !isCorrect) b.classList.add('correct');
   });
-
-  /* Explanation */
   const expl = document.getElementById('q-expl');
-  expl.textContent = '💡 ' + q.expl;
+  expl.textContent = '💡 ' + q.expl[LANG];
   expl.style.display = 'block';
-
-  document.getElementById('q-score-live').textContent = `Score : ${quizScore}`;
-  const nextBtn = document.getElementById('q-next');
-  nextBtn.textContent = (currentQ + 1 < currentQuiz.length) ? 'Question suivante →' : 'Voir les résultats 🏁';
-  nextBtn.style.background = SUBJECTS[currentSubject].color;
-  nextBtn.style.display = 'inline-flex';
+  document.getElementById('q-score-live').textContent = `${T('score')} : ${quizScore}`;
+  const nxt = document.getElementById('q-next');
+  const isLast = currentQ+1 >= currentQuiz.length;
+  nxt.textContent = isLast ? T('seeResults') : T('nextQ');
+  nxt.style.background = isCustomQuiz ? '#C9A84C' : SUBJECTS[currentSubject].color;
+  nxt.style.display = 'inline-flex';
 }
 
 function nextQuestion() {
   currentQ++;
-  (currentQ < currentQuiz.length) ? renderQuestion() : showResults();
+  currentQ < currentQuiz.length ? renderQuestion() : showResults();
 }
 
-/* ─────────────────────────────────────────
+/* ═══════════════════════════════════════
+   QUIZ SELECTOR
+═══════════════════════════════════════ */
+let selectedQSubjects = [];  // keys of selected subjects
+let customQCount = 10;       // number of questions for custom quiz
+let isCustomQuiz = false;    // true when running a custom/multi-subject quiz
+
+function openQuizSelector() {
+  selectedQSubjects = [];
+  customQCount = 10;
+  renderQuizSelector();
+  showView('quiz-select');
+}
+
+function renderQuizSelector() {
+  const grid = document.getElementById('qs-grid');
+  grid.innerHTML = '';
+  Object.keys(SUBJECTS).forEach(key => {
+    const s = SUBJECTS[key];
+    const isSel = selectedQSubjects.includes(key);
+    const card = document.createElement('div');
+    card.className = 'qs-subject-card' + (isSel ? ' selected' : '');
+    card.id = 'qs-card-' + key;
+    card.style.borderColor = isSel ? s.color : 'var(--border)';
+    card.innerHTML = `
+      <div class="qs-check" id="qs-check-${key}" style="${isSel ? `background:${s.color}` : ''}">
+        ${isSel ? '✓' : ''}
+      </div>
+      <div class="qs-card-icon">${s.icon}</div>
+      <div class="qs-card-name">${s.name[LANG]}</div>
+      <div class="qs-card-desc">${s.desc[LANG]}</div>
+      <div class="qs-card-count" style="color:${s.color}">📝 ${s.questions.length} ${T('questions')}</div>`;
+    card.addEventListener('click', () => toggleSubjectSelect(key));
+    grid.appendChild(card);
+  });
+  // Refresh count buttons
+  document.querySelectorAll('.qs-count-btn').forEach(btn => {
+    const v = parseInt(btn.dataset.val);
+    btn.classList.toggle('active', v === customQCount);
+    btn.style.background  = (v === customQCount) ? '#C9A84C' : '';
+    btn.style.color       = (v === customQCount) ? '#070500' : '';
+    btn.style.borderColor = (v === customQCount) ? '#C9A84C' : '';
+  });
+  updateStartBtn();
+}
+
+function toggleSubjectSelect(key) {
+  const s = SUBJECTS[key];
+  if (selectedQSubjects.includes(key)) {
+    selectedQSubjects = selectedQSubjects.filter(k => k !== key);
+  } else {
+    selectedQSubjects.push(key);
+  }
+  // Update card appearance
+  const card  = document.getElementById('qs-card-' + key);
+  const check = document.getElementById('qs-check-' + key);
+  const isSel = selectedQSubjects.includes(key);
+  card.classList.toggle('selected', isSel);
+  card.style.borderColor = isSel ? s.color : 'var(--border)';
+  check.style.background = isSel ? s.color : '';
+  check.textContent      = isSel ? '✓' : '';
+  updateStartBtn();
+}
+
+function setQCount(n) {
+  customQCount = n;
+  document.querySelectorAll('.qs-count-btn').forEach(btn => {
+    const v = parseInt(btn.dataset.val);
+    const active = v === n;
+    btn.classList.toggle('active', active);
+    btn.style.background  = active ? '#C9A84C' : '';
+    btn.style.color       = active ? '#070500' : '';
+    btn.style.borderColor = active ? '#C9A84C' : '';
+  });
+}
+
+function updateStartBtn() {
+  const btn = document.getElementById('qs-start-btn');
+  btn.disabled = selectedQSubjects.length === 0;
+}
+
+function buildCustomQuiz() {
+  if (selectedQSubjects.length === 0) return;
+
+  // Gather and tag all questions from selected subjects
+  let pool = [];
+  selectedQSubjects.forEach(key => {
+    SUBJECTS[key].questions.forEach(q => {
+      pool.push({ ...q, _subject: key });
+    });
+  });
+
+  // Tile + reshuffle pool until we reach the target count (allows 40 Qs even with 10 in pool)
+  const target = customQCount === 0 ? pool.length : customQCount;
+  let fullPool = [];
+  while (fullPool.length < target) {
+    fullPool = fullPool.concat([...pool].sort(() => Math.random() - 0.5));
+  }
+  currentQuiz = fullPool.slice(0, target);
+  currentQ = 0; quizScore = 0; answered = false;
+
+  // Single subject vs mixed
+  if (selectedQSubjects.length === 1) {
+    currentSubject = selectedQSubjects[0];
+    isCustomQuiz = false;
+  } else {
+    currentSubject = null;
+    isCustomQuiz = true;
+  }
+
+  const accent = isCustomQuiz ? '#C9A84C' : SUBJECTS[currentSubject].color;
+  document.getElementById('view-quiz').style.setProperty('--accent', accent);
+  document.getElementById('view-results').style.setProperty('--accent', accent);
+
+  document.getElementById('quiz-back').onclick = () => { closeCalc(); showView('quiz-select'); };
+  // Show calc button if maths is among selected subjects
+  const hasMaths = selectedQSubjects.includes('maths');
+  const calcBtn  = document.getElementById('calc-toggle-btn');
+  calcBtn.style.display = hasMaths ? 'inline-flex' : 'none';
+  closeCalc();
+  showView('quiz');
+  renderQuestion();
+}
+
+/* ═══════════════════════════════════════
    RESULTS
-───────────────────────────────────────── */
+═══════════════════════════════════════ */
 function showResults() {
-  const s     = SUBJECTS[currentSubject];
-  const total = currentQuiz.length;
-  saveProgress(currentSubject, quizScore);
+  // Save progress only for single-subject quizzes
+  if (!isCustomQuiz && currentSubject) {
+    saveProgress(currentSubject, quizScore);
+  }
 
-  const pct = Math.round(quizScore / total * 100);
-  let emoji, msg;
-  if      (pct >= 90) { emoji = '🏆'; msg = 'Excellent ! Tu maîtrises parfaitement ce sujet !'; }
-  else if (pct >= 70) { emoji = '🎉'; msg = 'Très bien ! Encore un peu de travail et tu seras prêt(e) !'; }
-  else if (pct >= 50) { emoji = '👍'; msg = 'Bien ! Continue à réviser les fiches pour progresser.'; }
-  else                { emoji = '📚'; msg = 'Continue tes révisions ! Relis les fiches et réessaie.'; }
+  const pct = Math.round(quizScore / currentQuiz.length * 100);
+  let emoji, msgKey;
+  if(pct>=90){emoji='🏆';msgKey='msg90';}
+  else if(pct>=70){emoji='🎉';msgKey='msg70';}
+  else if(pct>=50){emoji='👍';msgKey='msg50';}
+  else{emoji='📚';msgKey='msg0';}
 
-  document.getElementById('r-emoji').textContent   = emoji;
-  document.getElementById('r-title').textContent   = s.name;
-  document.getElementById('score-num').textContent  = quizScore;
-  document.getElementById('score-denom').textContent = '/' + total;
-  document.getElementById('score-msg').textContent  = msg;
+  const displayName = isCustomQuiz
+    ? T('customQuizTitle')
+    : SUBJECTS[currentSubject].name[LANG];
+  const accentColor = isCustomQuiz
+    ? '#C9A84C'
+    : SUBJECTS[currentSubject].color;
 
-  const ring = document.getElementById('score-ring');
-  ring.style.borderColor = s.color;
-  document.getElementById('score-num').style.color = s.color;
-
-  document.getElementById('btn-retry').style.background  = s.color;
-  document.getElementById('btn-home').style.borderColor  = s.color;
-  document.getElementById('btn-home').style.color        = s.color;
-
+  document.getElementById('r-emoji').textContent    = emoji;
+  document.getElementById('r-title').textContent    = displayName;
+  document.getElementById('score-num').textContent   = quizScore;
+  document.getElementById('score-denom').textContent = '/'+currentQuiz.length;
+  document.getElementById('score-msg').textContent   = T(msgKey);
+  document.getElementById('score-ring').style.borderColor = accentColor;
+  document.getElementById('score-num').style.color   = accentColor;
+  document.getElementById('btn-retry').style.background = accentColor;
+  document.getElementById('btn-home').style.borderColor  = accentColor;
+  document.getElementById('btn-home').style.color        = accentColor;
+  document.getElementById('view-results').style.setProperty('--accent', accentColor);
   showView('results');
 }
 
-function retryQuiz() { startQuiz(currentSubject); }
+function retryQuiz() {
+  if (isCustomQuiz) {
+    buildCustomQuiz(); // re-run same custom config
+  } else {
+    startQuiz(currentSubject);
+  }
+}
 
-/* ─────────────────────────────────────────
+/* ═══════════════════════════════════════
+   CALCULATOR
+═══════════════════════════════════════ */
+let cExpr      = '';   // expression being built
+let cResult    = '';   // last computed result (for the top line)
+let cAfterEq   = false;// true right after hitting =
+
+function cKey(k) {
+  const isDigitOrDot = /^[\d.]$/.test(k);
+  const isOpenGroup  = k === '(' || k === '√(';
+
+  // After = : if new digit/function → start fresh; if operator → continue from result
+  if (cAfterEq) {
+    if (isDigitOrDot || isOpenGroup || k === 'π') {
+      cExpr = '';
+    }
+    cAfterEq = false;
+  }
+
+  if (k === 'C') {
+    cExpr = ''; cResult = ''; cAfterEq = false;
+  } else if (k === 'DEL') {
+    cExpr = cExpr.slice(0, -1);
+  } else {
+    cExpr += k;
+  }
+  cRefresh();
+}
+
+function cCalc() {
+  if (!cExpr.trim()) return;
+  try {
+    // Build a safe evaluable expression
+    const safe = cExpr
+      .replace(/×/g,  '*')
+      .replace(/÷/g,  '/')
+      .replace(/−/g,  '-')
+      .replace(/\^2/g, '**2')
+      .replace(/π/g,  '(Math.PI)')
+      .replace(/√\(/g,'Math.sqrt(');
+
+    // Safety: only allow chars that can appear in a maths expression
+    const cleaned = safe.replace(/Math\.(sqrt|PI|pow|abs|log|sin|cos|tan)/g, '');
+    if (/[^0-9+\-*/.() e]/.test(cleaned)) throw new Error('unsafe');
+
+    const raw = Function('"use strict"; return (' + safe + ')')();
+    if (!isFinite(raw)) throw new Error('infinity');
+    const rounded = Math.round(raw * 1e9) / 1e9;
+    cResult = cExpr;          // save expression as the top line
+    cExpr   = String(rounded);
+    cAfterEq = true;
+  } catch {
+    cResult = cExpr;
+    cExpr   = 'Erreur';
+    cAfterEq = true;
+    setTimeout(() => { cExpr = ''; cResult = ''; cAfterEq = false; cRefresh(); }, 1800);
+  }
+  cRefresh();
+}
+
+function cRefresh() {
+  const disp = document.getElementById('calc-display');
+  const expr = document.getElementById('calc-expr');
+  if (disp) disp.textContent = cExpr || '0';
+  if (expr) expr.textContent = cAfterEq ? cResult : '';
+}
+
+function toggleCalc() {
+  const calc = document.getElementById('calculator');
+  const btn  = document.getElementById('calc-toggle-btn');
+  calc.classList.toggle('open');
+  btn.classList.toggle('calc-open', calc.classList.contains('open'));
+  if (calc.classList.contains('open')) cRefresh();
+}
+
+function closeCalc() {
+  const calc = document.getElementById('calculator');
+  const btn  = document.getElementById('calc-toggle-btn');
+  if (calc) calc.classList.remove('open');
+  if (btn)  btn.classList.remove('calc-open');
+}
+
+/* ═══════════════════════════════════════
+   ANNALES DATA
+═══════════════════════════════════════ */
+const ANNALES = [
+  {
+    year: 2024, covid: false,
+    subjects: {
+      maths: {
+        fr: ["Probabilités : modélisation d'un jeu de roulette (casino)", "Algorithmique et programmation Python", "Géométrie : théorème de Thalès + calcul d'aire", "Trigonométrie dans le triangle rectangle", "Puissances et notation scientifique", "Calcul littéral et équations du 1er degré"],
+        en: ["Probability: casino roulette modelling", "Algorithms and Python programming", "Geometry: Thales' theorem + area calculation", "Trigonometry in right-angled triangles", "Powers and scientific notation", "Algebra and 1st-degree equations"]
+      },
+      francais: {
+        fr: ["Compréhension et analyse d'un texte narratif contemporain", "Grammaire : fonctions syntaxiques et classes grammaticales", "Dictée (environ 15 lignes)", "Rédaction : suite de texte ou texte argumentatif (30 lignes min.)", "Questions de vocabulaire en contexte"],
+        en: ["Comprehension and analysis of a contemporary narrative text", "Grammar: syntactic functions and word classes", "Dictation (approx. 15 lines)", "Essay: text continuation or argumentative piece (30 lines min.)", "Vocabulary questions in context"]
+      },
+      histoire: {
+        fr: ["Histoire : La Deuxième Guerre mondiale — régimes totalitaires et Résistance", "Géographie : Les espaces productifs et la mondialisation", "EMC : Valeurs et principes républicains — laïcité et droits des citoyens"],
+        en: ["History: WW2 — totalitarian regimes and Resistance", "Geography: Productive spaces and globalisation", "Civics: Republican values — secularism and citizens' rights"]
+      },
+      sciences: {
+        fr: ["SVT : Génétique et hérédité — ADN, mutations et maladies génétiques", "SVT : Écosystèmes, biodiversité et impacts humains", "Physique-Chimie : Loi d'Ohm, circuits électriques série et dérivation", "Physique-Chimie : Chimie des solutions acido-basiques et pH"],
+        en: ["Biology: Genetics and heredity — DNA, mutations and genetic diseases", "Biology: Ecosystems, biodiversity and human impact", "Physics-Chem: Ohm's Law, series and parallel circuits", "Physics-Chem: Acid-base chemistry and pH"]
+      },
+      anglais: {
+        fr: ["Compréhension écrite : texte sur l'impact des réseaux sociaux sur les jeunes", "Compréhension orale : extrait audio (accent britannique ou américain)", "Expression écrite : rédiger un texte d'opinion sur la technologie (100 mots min.)"],
+        en: ["Reading comprehension: text on social media's impact on young people", "Listening comprehension: audio extract (British or American accent)", "Written expression: write an opinion text on technology (100 words min.)"]
+      }
+    }
+  },
+  {
+    year: 2023, covid: false,
+    subjects: {
+      maths: {
+        fr: ["Calcul littéral : développement, factorisation, identités remarquables", "Théorèmes de Thalès et de Pythagore — démonstration et calcul", "Statistiques : lecture de tableaux, moyenne, médiane", "Proportionnalité et pourcentages", "Géométrie dans l'espace : volumes de solides"],
+        en: ["Algebra: expanding, factorising, special identities", "Thales' and Pythagoras' theorems — proof and calculation", "Statistics: reading tables, mean, median", "Proportionality and percentages", "3D geometry: volumes of solids"]
+      },
+      francais: {
+        fr: ["Compréhension d'un texte argumentatif sur l'écologie et l'environnement", "Grammaire : subordination, coordination, propositions relatives", "Dictée (extrait littéraire)", "Rédaction : texte de fiction ou argumentatif sur un thème de société"],
+        en: ["Comprehension of an argumentative text on ecology and the environment", "Grammar: subordination, coordination, relative clauses", "Dictation (literary extract)", "Essay: fictional or argumentative text on a social theme"]
+      },
+      histoire: {
+        fr: ["Histoire : La Première Guerre mondiale — guerre totale et Traité de Versailles", "Géographie : La densité de population en France et ses inégalités", "EMC : La démocratie et les institutions françaises et européennes"],
+        en: ["History: WW1 — total war and the Treaty of Versailles", "Geography: Population density in France and regional inequalities", "Civics: Democracy and French and European institutions"]
+      },
+      sciences: {
+        fr: ["SVT : La photosynthèse et la production de matière organique", "SVT : Le système nerveux et le mouvement humain", "Physique-Chimie : Les forces et la loi d'inertie — vitesse et mouvement", "Physique-Chimie : Réactions chimiques et conservation de la masse"],
+        en: ["Biology: Photosynthesis and organic matter production", "Biology: The nervous system and human movement", "Physics-Chem: Forces and law of inertia — speed and motion", "Physics-Chem: Chemical reactions and conservation of mass"]
+      },
+      anglais: {
+        fr: ["Compréhension écrite : article sur le changement climatique et ses conséquences", "Compréhension orale : interview ou reportage audio", "Expression écrite : décrire une situation ou proposer des solutions à un problème"],
+        en: ["Reading comprehension: article on climate change and its consequences", "Listening comprehension: interview or audio report", "Written expression: describe a situation or propose solutions to a problem"]
+      }
+    }
+  },
+  {
+    year: 2022, covid: false,
+    subjects: {
+      maths: {
+        fr: ["Probabilités : arbre de probabilités et calcul de fréquences", "Géométrie dans le plan : cercles, angles inscrit et central", "Calcul numérique : fractions, puissances, racines carrées", "Équations et inéquations du 1er degré", "Fonctions linéaires et affines — lecture graphique"],
+        en: ["Probability: probability trees and frequency calculation", "Plane geometry: circles, inscribed and central angles", "Numerical calculation: fractions, powers, square roots", "1st-degree equations and inequalities", "Linear and affine functions — graphical reading"]
+      },
+      francais: {
+        fr: ["Compréhension d'un texte de théâtre ou d'un récit de voyage", "Grammaire : modes et temps verbaux — subjonctif présent", "Dictée sur un texte du XIXe siècle", "Rédaction : réécrire un passage ou rédiger un texte poétique en prose"],
+        en: ["Comprehension of a theatrical or travel narrative text", "Grammar: verb moods and tenses — present subjunctive", "Dictation from a 19th-century text", "Essay: rewrite a passage or write a poetic prose text"]
+      },
+      histoire: {
+        fr: ["Histoire : Les régimes totalitaires en Europe dans les années 1930", "Géographie : Les espaces urbains dans le monde — métropolisation", "EMC : Les droits de l'Homme et la citoyenneté mondiale"],
+        en: ["History: Totalitarian regimes in Europe in the 1930s", "Geography: Urban spaces worldwide — metropolisation", "Civics: Human rights and global citizenship"]
+      },
+      sciences: {
+        fr: ["SVT : La reproduction sexuée et la diversité génétique", "SVT : L'immunité et les défenses de l'organisme", "Physique-Chimie : L'énergie électrique — puissance et consommation", "Physique-Chimie : La lumière et les spectres lumineux"],
+        en: ["Biology: Sexual reproduction and genetic diversity", "Biology: Immunity and the body's defences", "Physics-Chem: Electrical energy — power and consumption", "Physics-Chem: Light and light spectra"]
+      },
+      anglais: {
+        fr: ["Compréhension écrite : texte sur l'égalité des genres et les droits civiques", "Compréhension orale : extrait de documentaire", "Expression écrite : rédiger un courriel ou un article de blog (80 mots min.)"],
+        en: ["Reading comprehension: text on gender equality and civil rights", "Listening comprehension: documentary extract", "Written expression: write an email or blog article (80 words min.)"]
+      }
+    }
+  },
+  {
+    year: 2021, covid: true,
+    subjects: {
+      maths: {
+        fr: ["Session aménagée : épreuves allégées suite à la crise sanitaire", "Proportionnalité, pourcentages et représentations graphiques", "Calcul algébrique : développement et factorisation simplifiés", "Géométrie : Pythagore, Thalès et constructions", "Lecture et interprétation de données statistiques"],
+        en: ["Adapted session: reduced papers due to health crisis", "Proportionality, percentages and graphs", "Algebra: simplified expanding and factorising", "Geometry: Pythagoras, Thales and constructions", "Reading and interpreting statistical data"]
+      },
+      francais: {
+        fr: ["Session aménagée — épreuves simplifiées", "Compréhension d'un texte descriptif ou narratif", "Exercices de grammaire ciblés sur les acquis fondamentaux", "Rédaction courte : description de personnage ou de lieu (20 lignes)"],
+        en: ["Adapted session — simplified papers", "Comprehension of a descriptive or narrative text", "Grammar exercises focused on core knowledge", "Short essay: character or place description (20 lines)"]
+      },
+      histoire: {
+        fr: ["Session aménagée", "Histoire : La France libre et la Résistance (1940-1944)", "Géographie : Les mobilités humaines à l'échelle mondiale", "EMC : Les libertés fondamentales et leur protection en France"],
+        en: ["Adapted session", "History: Free France and the Resistance (1940-1944)", "Geography: Human mobility at global scale", "Civics: Fundamental freedoms and their protection in France"]
+      },
+      sciences: {
+        fr: ["Session aménagée — programme allégé", "SVT : La reproduction et la diversité du vivant", "SVT : L'alimentation et la digestion humaine", "Physique-Chimie : Les signaux lumineux et sonores", "Physique-Chimie : Transformations chimiques et conservation"],
+        en: ["Adapted session — reduced programme", "Biology: Reproduction and diversity of living organisms", "Biology: Nutrition and human digestion", "Physics-Chem: Light and sound signals", "Physics-Chem: Chemical transformations and conservation"]
+      },
+      anglais: {
+        fr: ["Session aménagée", "Compréhension écrite : texte sur les défis environnementaux", "Expression écrite : rédiger un texte sur les habitudes de vie et l'environnement"],
+        en: ["Adapted session", "Reading comprehension: text on environmental challenges", "Written expression: write a text on lifestyle and the environment"]
+      }
+    }
+  },
+  {
+    year: 2020, covid: true,
+    subjects: {
+      maths: {
+        fr: ["⚠️ Pas d'épreuves écrites en 2020 : obtention du Brevet par contrôle continu uniquement (COVID-19)", "Les notes de l'année (bulletins trimestriels) ont constitué l'intégralité de l'évaluation", "Aucun sujet écrit national disponible pour cette session"],
+        en: ["⚠️ No written exams in 2020: Brevet awarded by continuous assessment only (COVID-19)", "School year grades (term reports) made up the entire assessment", "No national written paper available for this session"]
+      },
+      francais: {
+        fr: ["⚠️ Session contrôle continu uniquement — COVID-19", "Évaluation basée sur les notes des trois trimestres", "Aucun sujet d'examen écrit national"],
+        en: ["⚠️ Continuous assessment session only — COVID-19", "Assessment based on all three term grades", "No national written exam paper"]
+      },
+      histoire: {
+        fr: ["⚠️ Session contrôle continu uniquement — COVID-19", "Évaluation basée sur les notes des trois trimestres"],
+        en: ["⚠️ Continuous assessment session only — COVID-19", "Assessment based on all three term grades"]
+      },
+      sciences: {
+        fr: ["⚠️ Session contrôle continu uniquement — COVID-19", "Évaluation basée sur les notes des trois trimestres"],
+        en: ["⚠️ Continuous assessment session only — COVID-19", "Assessment based on all three term grades"]
+      },
+      anglais: {
+        fr: ["⚠️ Session contrôle continu uniquement — COVID-19", "Compétences d'oral et d'écrit évaluées en classe tout au long de l'année"],
+        en: ["⚠️ Continuous assessment session only — COVID-19", "Oral and written skills assessed in class throughout the year"]
+      }
+    }
+  },
+  {
+    year: 2019, covid: false,
+    subjects: {
+      maths: {
+        fr: ["Calcul littéral : développement, réduction, équations du 1er et 2nd degré", "Théorèmes de Thalès et Pythagore — calcul de longueurs et démonstration", "Fonctions : représentation graphique, lecture d'image et d'antécédent", "Statistiques et probabilités : tableaux de fréquences, diagrammes", "Géométrie dans l'espace : patron, volume et section"],
+        en: ["Algebra: expanding, simplifying, 1st and 2nd degree equations", "Thales' and Pythagoras' theorems — length calculations and proof", "Functions: graphical representation, images and pre-images", "Statistics and probability: frequency tables, diagrams", "3D geometry: nets, volumes and cross-sections"]
+      },
+      francais: {
+        fr: ["Compréhension d'un texte littéraire classique (roman du XIXe ou XXe siècle)", "Grammaire : analyse de la phrase complexe, propositions subordonnées", "Dictée d'un extrait d'œuvre classique", "Rédaction : texte narratif de 30 lignes minimum avec contrainte stylistique"],
+        en: ["Comprehension of a classic literary text (19th or 20th-century novel)", "Grammar: analysis of complex sentences, subordinate clauses", "Dictation from a classic literary extract", "Essay: narrative text of at least 30 lines with a stylistic constraint"]
+      },
+      histoire: {
+        fr: ["Histoire : Les deux guerres mondiales et leurs conséquences pour l'Europe", "Géographie : La France et l'Union Européenne — organisation et enjeux", "EMC : La République française et ses valeurs — égalité, fraternité, laïcité"],
+        en: ["History: Both world wars and their consequences for Europe", "Geography: France and the European Union — organisation and challenges", "Civics: The French Republic and its values — equality, fraternity, secularism"]
+      },
+      sciences: {
+        fr: ["SVT : Le corps humain et la santé — système immunitaire et maladies", "SVT : L'évolution des espèces et la sélection naturelle (Darwin)", "Physique-Chimie : Le mouvement des objets — vitesse, forces et interactions", "Physique-Chimie : La réaction chimique — réactifs, produits, conservation"],
+        en: ["Biology: The human body and health — immune system and disease", "Biology: Evolution of species and natural selection (Darwin)", "Physics-Chem: Motion of objects — speed, forces and interactions", "Physics-Chem: Chemical reactions — reactants, products, conservation"]
+      },
+      anglais: {
+        fr: ["Compréhension écrite : texte journalistique ou littéraire en anglais", "Compréhension orale : enregistrement audio (environ 2 minutes)", "Expression écrite : texte de 80 à 120 mots sur un thème de société ou d'actualité"],
+        en: ["Reading comprehension: journalistic or literary text in English", "Listening comprehension: audio recording (approx. 2 minutes)", "Written expression: 80 to 120-word text on a topical or social theme"]
+      }
+    }
+  }
+];
+
+let currentAnnaleYear = 2024;
+const SUBJ_DISPLAY = {
+  maths:    { icon:'🧮', fr:'Mathématiques', en:'Mathematics' },
+  francais: { icon:'📝', fr:'Français',       en:'French' },
+  histoire: { icon:'🏛️', fr:'Histoire-Géo · EMC', en:'History-Geo · Civics' },
+  sciences: { icon:'🔬', fr:'Sciences',       en:'Sciences' },
+  anglais:  { icon:'🇬🇧', fr:'Anglais',        en:'English' }
+};
+
+function openAnnales() {
+  renderAnnales();
+  showView('annales');
+}
+
+function renderAnnales() {
+  // Year tabs
+  const tabsEl = document.getElementById('year-tabs');
+  tabsEl.innerHTML = '';
+  ANNALES.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = 'year-btn' + (a.year === currentAnnaleYear ? ' active' : '');
+    btn.textContent = a.year + (a.covid ? ' 🦠' : '');
+    btn.onclick = () => { currentAnnaleYear = a.year; renderAnnales(); };
+    tabsEl.appendChild(btn);
+  });
+
+  const data = ANNALES.find(a => a.year === currentAnnaleYear);
+  const grid = document.getElementById('annales-grid');
+  grid.innerHTML = '';
+
+  if (data.covid && data.year === 2020) {
+    const badge = document.createElement('div');
+    badge.style.cssText = 'grid-column:1/-1; text-align:center;';
+    badge.innerHTML = `<div class="covid-badge">🦠 ${LANG==='fr' ? 'Session COVID-19 — Contrôle continu uniquement (pas d\'épreuves écrites nationales)' : 'COVID-19 Session — Continuous assessment only (no national written exams)'}</div>`;
+    grid.appendChild(badge);
+  } else if (data.covid) {
+    const badge = document.createElement('div');
+    badge.style.cssText = 'grid-column:1/-1; text-align:center;';
+    badge.innerHTML = `<div class="covid-badge">🦠 ${LANG==='fr' ? 'Session aménagée COVID-19 — Épreuves allégées' : 'COVID-19 Adapted Session — Reduced papers'}</div>`;
+    grid.appendChild(badge);
+  }
+
+  Object.entries(SUBJ_DISPLAY).forEach(([key, meta]) => {
+    const topics = data.subjects[key];
+    if (!topics) return;
+    const card = document.createElement('div');
+    card.className = 'annale-card';
+    const topicsHTML = topics[LANG].map(t =>
+      `<li><span class="annale-bullet"></span><span>${t}</span></li>`
+    ).join('');
+    card.innerHTML = `
+      <div class="annale-card-hdr">
+        <span class="annale-card-icon">${meta.icon}</span>
+        <span class="annale-card-name">${meta[LANG]}</span>
+      </div>
+      <ul class="annale-topics">${topicsHTML}</ul>
+      ${key !== 'anglais' ? `<a class="annale-link" href="https://www.letudiant.fr/college/annales-du-brevet.html" target="_blank">📄 ${LANG==='fr' ? 'Sujet PDF officiel' : 'Official PDF paper'} →</a>` : `<a class="annale-link" href="https://www.letudiant.fr/college/annales-du-brevet.html" target="_blank">📄 ${LANG==='fr' ? 'Sujet PDF officiel' : 'Official PDF paper'} →</a>`}
+    `;
+    grid.appendChild(card);
+  });
+}
+
+/* ═══════════════════════════════════════
    INIT
-───────────────────────────────────────── */
+═══════════════════════════════════════ */
 renderHome();
 </script>
 </body>
